@@ -35,6 +35,12 @@ composer install
 
 We recomend use of [VS Code](https://code.visualstudio.com) and [PHP Intelephense](https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client) extension.
 
+### Services
+
+- Pagseguro API: https://github.com/pagseguro/pagseguro-php-sdk
+- Mercado Pago API: https://github.com/mercadopago/dx-php
+- PagarMe API: https://github.com/pagarme/pagarme-php
+
 ### Start server
 
 Copy enviroment variables template
@@ -55,7 +61,7 @@ Access container via terminal
 docker container exec -it phpay-webserver /bin/bash
 ```
 
-To test it on the browser, simply go to: `http://localhost:8000/welcome`
+To test it on the browser, simply go to: `http://localhost:8000`
 
 <div id='gitflow'/>
 
