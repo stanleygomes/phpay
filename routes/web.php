@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,6 +12,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// payment routes
+Route::group(['as' => 'payment', 'prefix' => 'payment'], function () {
+    Route::get('preview', 'MercadoPagoController@preview')->name('preview');
+    Route::get('create-customer-sandbox', 'MercadoPagoController@createCustomerSandbox')->name('createCustomerSandbox');
+    Route::get('status', 'MercadoPagoController@status')->name('status');
+    Route::get('callback/{type}', 'MercadoPagoController@callback')->name('callback');
+});
 
 Route::get('/', function () {
     return view('welcome');
