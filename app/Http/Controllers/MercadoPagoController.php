@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use MercadoPago;
-use Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MercadoPagoController extends Controller {
     public function preview () {
         $accesToken = $this->getAccessToken();
 
-        $MP = new MercadoPago();
+        $MP = new MercadoPago\SDK();
         $MP->setAccessToken($accesToken);
 
         $preference = new MercadoPago\Preference();
@@ -33,7 +33,7 @@ class MercadoPagoController extends Controller {
         Log::debug($request);
 
         $accesToken = $this->getAccessToken();
-        $MP = new MercadoPago();
+        $MP = new MercadoPago\SDK();
         $MP->setAccessToken($accesToken);
 
         $merchantOrder = null;
