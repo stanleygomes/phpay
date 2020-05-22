@@ -3,29 +3,29 @@ version: '3.1'
 services:
   mariadb:
     image: mariadb
-    container_name: php-wan-mariadb
+    container_name: phpay-mariadb
     restart: always
     ports:
       - 3306:3306
     environment:
-      - MYSQL_DATABASE=php-wan
-      - MYSQL_USER=php-wan
-      - MYSQL_PASSWORD=php-wan
-      - MYSQL_ROOT_PASSWORD=php-wan
+      - MYSQL_DATABASE=phpay
+      - MYSQL_USER=phpay
+      - MYSQL_PASSWORD=phpay
+      - MYSQL_ROOT_PASSWORD=phpay
     volumes:
       - ./server/storage/mariadb:/var/lib/mysql
       - ./server/config/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
   flyway-mariadb:
-    container_name: php-wan-flyway-mariadb
+    container_name: phpay-flyway-mariadb
     image: boxfuse/flyway:5.2.4
-    command: -url=jdbc:mysql://mariadb/php-wan -schemas=php-wan -user=php-wan -password=php-wan -connectRetries=10 migrate
+    command: -url=jdbc:mysql://mariadb/phpay -schemas=phpay -user=phpay -password=phpay -connectRetries=10 migrate
     volumes:
       - ./server/migrations:/flyway/sql
     depends_on:
       - mariadb
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: php-wan-phpmyadmin
+    container_name: phpay-phpmyadmin
     restart: always
     environment:
       PMA_HOST: mariadb
@@ -43,7 +43,7 @@ services:
     build:
       context: .
       dockerfile: ./server/dockerfile/php/Dockerfile
-    container_name: php-wan-webserver
+    container_name: phpay-webserver
     restart: always
     ports:
       - 8000:80
