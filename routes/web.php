@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // payment routes
-Route::group(['as' => 'payment', 'prefix' => 'payment'], function () {
+Route::group(['as' => 'mercadoPago.', 'prefix' => 'mercado-pago'], function () {
     Route::get('preview', 'MercadoPagoController@preview')->name('preview');
     Route::get('create-customer-sandbox', 'MercadoPagoController@createCustomerSandbox')->name('createCustomerSandbox');
     Route::get('status', 'MercadoPagoController@status')->name('status');
