@@ -49,6 +49,12 @@ Via docker-compose (start database, run migrations and start server)
 docker-compose up
 ```
 
+Access container via terminal
+
+```
+docker container exec -it phpay-webserver /bin/bash
+```
+
 To test it on the browser, simply go to: `http://localhost:8000/welcome`
 
 <div id='gitflow'/>
