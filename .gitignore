@@ -1,0 +1,17 @@
+# App
+/node_modules
+
+# Laravel
+/public/storage
+/storage/*.key
+/vendor
+.env
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+*.log
+
+# Docker
+server/storage/*
+server/data/*
+server/logs/*

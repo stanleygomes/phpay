@@ -1,0 +1,59 @@
+version: '3.1'
+
+services:
+  mariadb:
+    image: mariadb
+    container_name: php-wan-mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=php-wan
+      - MYSQL_USER=php-wan
+      - MYSQL_PASSWORD=php-wan
+      - MYSQL_ROOT_PASSWORD=php-wan
+    volumes:
+      - ./server/storage/mariadb:/var/lib/mysql
+      - ./server/config/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+  flyway-mariadb:
+    container_name: php-wan-flyway-mariadb
+    image: boxfuse/flyway:5.2.4
+    command: -url=jdbc:mysql://mariadb/php-wan -schemas=php-wan -user=php-wan -password=php-wan -connectRetries=10 migrate
+    volumes:
+      - ./server/migrations:/flyway/sql
+    depends_on:
+      - mariadb
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: php-wan-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+    ports:
+      - 8888:80
+    volumes:
+      - /sessions
+      - ./server/config/phpmyadmin/php.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+    links:
+      - mariadb
+    depends_on:
+      - mariadb
+  webserver:
+    build:
+      context: .
+      dockerfile: ./server/dockerfile/php/Dockerfile
+    container_name: php-wan-webserver
+    restart: always
+    ports:
+      - 8000:80
+      - 443:443
+    volumes:
+      - .:/var/www/html
+      - ./server/config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./server/config/vhosts:/etc/apache2/sites-enabled
+      - ./server/logs/apache2:/var/log/apache2
+    links:
+      - mariadb
+    depends_on:
+      - flyway-mariadb
