@@ -30,7 +30,7 @@
                         <a class="nav-link @yield('pageAboutActive')" href="{{ route('website.about') }}">Loja</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">Sair</a>
+                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.logout') }}">Sair</a>
                     </li>
                 </ul>
             </div>

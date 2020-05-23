@@ -4,7 +4,6 @@ namespace App\Model;
 
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Model;
 use App\Helper\Helper;
 
@@ -24,27 +23,17 @@ class Contact extends Model {
         'deleted_at' => 'datetime'
     ];
 
-    protected $validationRules = [
+    public $validationRules = [
         'name' => 'required',
         'email' => 'required',
         'message' => 'required'
     ];
 
-    protected $validationMessages = [
+    public $validationMessages = [
         'name.required' => 'O campo nome é obrigatório.',
         'email.required' => 'O campo email é obrigatório.',
         'message.required' => 'O campo mensagem é obrigatório.'
     ];
-
-    public function validateRequest ($request) {
-        $validator = Validator::make($request->all(), $this->validationRules, $this->validationMessages);
-
-        if ($validator->fails()) {
-            return $validator;
-        }
-
-        return null;
-    }
 
     public function getContact ($id) {
         return Contact::where('id', $id)

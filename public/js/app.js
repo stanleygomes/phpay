@@ -1,4 +1,4 @@
-
+// form masks
 $(".mask-cpfcnpj").keydown(function () {
     try {
         $(".mask-cpfcnpj").unmask();
@@ -40,3 +40,14 @@ $('.mask-money').mask('000.000.000.000.000,00', {
 });
 
 $('.mask-plaque').mask('AAA-0000');
+
+
+// form validation
+$('form').submit(function(e) {
+    $(this)
+        .find('button:submit')
+        .attr('disabled', 'disabled')
+        .text('Por favor, aguarde...');
+
+    return true;
+})
