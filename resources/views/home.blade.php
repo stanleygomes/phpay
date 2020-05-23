@@ -1,4 +1,5 @@
 @extends('layouts.website')
+@section('pageTitle', 'Página inicial')
 
 @section('content')
 

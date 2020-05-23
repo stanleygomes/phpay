@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Helper\HttpUtil;
-use App\Helper\LangUtil;
+use App\Helper\Helper;
 use App\Model\User;
 use App\Exceptions\Handler as Exception;
 use Illuminate\Support\Facades\Log;
@@ -14,8 +13,24 @@ class UserController extends Controller {
             return $userInstance->getAllUsers();
         } catch(Exception $e) {
             Log::error($e);
-            $message = LangUtil::getMessage('USER_LIST_ERROR');
-            return HttpUtil::httpResponse($message, 500);
+            $message = Helper::getMessage('USER_LIST_ERROR');
+            return Helper::httpResponse($message, 500);
         }
+    }
+
+    public function login() {
+        return view('auth.login');
+    }
+
+    public function register() {
+        return view('auth.register');
+    }
+
+    public function passwordRequest() {
+        return view('auth.password-request');
+    }
+
+    public function passwordReset() {
+        return view('auth.password-reset');
     }
 }
