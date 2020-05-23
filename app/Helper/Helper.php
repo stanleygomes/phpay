@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class Helper {
     private static $messages = [
@@ -12,6 +13,16 @@ class Helper {
         'en' => [
         ]
     ];
+
+    public static function validateRequest ($request, $rules, $messages) {
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return $validator;
+        }
+
+        return null;
+    }
 
     public static function getMessage($key) {
         $defaultLocale = env('APP_LOCALE');

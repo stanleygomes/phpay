@@ -70,7 +70,6 @@ CREATE TABLE `transaction_history` (
 
 CREATE TABLE `user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `code` varchar(255) NOT NULL,
   `profile` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,

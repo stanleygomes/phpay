@@ -37,9 +37,16 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     // });
 });
 
+// app routes
+Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], function () {
+    Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
+});
+
 // auth routes
 Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::get('login', ['as' => 'login', 'uses' => 'UserController@login']);
+    Route::post('loginPost', ['as' => 'loginPost', 'uses' => 'UserController@loginPost']);
+    Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
     Route::get('register', ['as' => 'register', 'uses' => 'UserController@register']);
     Route::get('password-reset', ['as' => 'passwordReset', 'uses' => 'UserController@passwordReset']);
     Route::get('password-request', ['as' => 'passwordRequest', 'uses' => 'UserController@passwordRequest']);

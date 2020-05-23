@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Model\Contact;
+use App\Helper\Helper;
 use Exception;
 
 class ContactController extends Controller {
@@ -15,7 +16,7 @@ class ContactController extends Controller {
     public function send(Request $request) {
         try {
             $contactInstance = new Contact();
-            $validateRequest = $contactInstance->validateRequest($request);
+            $validateRequest = Helper::validateRequest($request, $contactInstance->validationRules, $contactInstance->validationMessages);
 
             if ($validateRequest != null) {
                 return Redirect::back()
