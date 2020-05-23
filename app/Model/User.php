@@ -7,7 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+use App\Helper\Helper;
 
 class User extends Authenticatable {
     use Notifiable;
@@ -84,11 +85,45 @@ class User extends Authenticatable {
         return $user;
     }
 
+    public function passwordRequest($request) {
+        $user = $this->getUserByEmail($request->email);
+
+        if ($user == null) {
+            throw new Exception('Não encontramos um usuário cadastrado com esse email.');
+        }
+
+        $userPasswordResetInstance = new UserPasswordReset();
+        $userPasswordReset = $userPasswordResetInstance->storeUserPasswordReset($user->id);
+        $user->token = $userPasswordReset->token;
+
+        return $user;
+    }
+
     public function logout() {
         Auth::logout();
     }
 
     public function getAllUsers() {
         return User::get();
+    }
+
+    public function sendMailPasswordRequest($user) {
+        $param = [
+            'from_email' => env('MAIL_FROM_ADDRESS'),
+            'from_name' => env('MAIL_FROM_NAME'),
+            'to_email' => $user->email,
+            'to_name' => $user->name
+        ];
+        $subject = 'Sua nova senha';
+        $template = 'password-request';
+        $data = $user;
+
+        try {
+            $helperInstance = new Helper();
+            $helperInstance->sendMail($param, $data, $template, $subject);
+        } catch(Exception $e) {
+            Log::error($e);
+            throw new Exception('Erro ao enviar email.');
+        }
     }
 }

@@ -2,12 +2,9 @@
 
 namespace App\Model;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class UserLoginHistory extends Authenticatable {
-    use Notifiable;
-
+class UserLoginHistory extends Model {
     protected $table = 'user_login_history';
     protected $fillable = [
         'user_id'

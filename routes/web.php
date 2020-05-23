@@ -48,8 +48,9 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::post('loginPost', ['as' => 'loginPost', 'uses' => 'UserController@loginPost']);
     Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
     Route::get('register', ['as' => 'register', 'uses' => 'UserController@register']);
-    Route::get('password-reset', ['as' => 'passwordReset', 'uses' => 'UserController@passwordReset']);
     Route::get('password-request', ['as' => 'passwordRequest', 'uses' => 'UserController@passwordRequest']);
+    Route::post('password-request', ['as' => 'passwordRequestPost', 'uses' => 'UserController@passwordRequestPost']);
+    Route::get('password-reset', ['as' => 'passwordReset', 'uses' => 'UserController@passwordReset']);
 });
 
 // payment routes
