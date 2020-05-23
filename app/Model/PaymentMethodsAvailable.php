@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentMethodsAvailable extends Model {
+    protected $table = 'payment_methods_available';
     protected $fillable = [
         'gateway_id',
         'method_id',

@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,800" rel="stylesheet" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/css/app.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css?v={{ env('APP_VERSION') }}" />
+    <link rel="stylesheet" href="/css/font-awesome.min.css?v={{ env('APP_VERSION') }}" />
+    <link rel="stylesheet" href="/css/app.css?v={{ env('APP_VERSION') }}" />
 </head>
 
 <body>
@@ -79,11 +79,16 @@
                     </div>
                     <div class="mt-2">
                         <a href="{{ route('website.returning') }}">
-                            Devoluções
+                            Devoluções e cancelamentos
                         </a>
                     </div>
                     <div class="mt-2">
-                        <a href="{{ route('website.contact') }}">
+                        <a href="{{ route('website.faq') }}">
+                            Dúvidas frequentes
+                        </a>
+                    </div>
+                    <div class="mt-2">
+                        <a href="{{ route('website.contact.form') }}">
                             Fale conosco
                         </a>
                     </div>
@@ -93,9 +98,28 @@
         </div>
     </footer>
 
-    <script src="/js/jquery-3.5.1.slim.min.js"></script>
-    <script src="/js/popper.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-3.5.1.slim.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/popper.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/bootstrap.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
+
+    <script>
+        (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', '{{ env("ANALYTICS_CODE") }}', 'auto');
+        ga('send', 'pageview');
+    </script>
 
 </body>
 
