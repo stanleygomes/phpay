@@ -13,11 +13,11 @@ strong {
 }
 
 header {
-  padding: 156px 0 100px;
+  padding: 100px 0;
 }
 
 section {
-  padding: 150px 0;
+  padding: 100px 0;
 }
 
 /* forms */
@@ -26,7 +26,7 @@ section {
 }
 
 .auth-form {
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 /* general config */

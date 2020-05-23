@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionHistory extends Model {
+    protected $table = 'transaction_history';
     protected $fillable = [
         'transition_id',
         'status',

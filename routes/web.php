@@ -17,10 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::group(['as' => 'website.', 'prefix' => ''], function () {
     Route::get('', ['as' => 'home', 'uses' => 'WebsiteController@home']);
     Route::get('about', ['as' => 'about', 'uses' => 'WebsiteController@about']);
-    Route::get('contact', ['as' => 'contact', 'uses' => 'WebsiteController@contact']);
     Route::get('privacy', ['as' => 'privacy', 'uses' => 'WebsiteController@privacy']);
     Route::get('delivery', ['as' => 'delivery', 'uses' => 'WebsiteController@delivery']);
+    Route::get('faq', ['as' => 'faq', 'uses' => 'WebsiteController@faq']);
     Route::get('returning', ['as' => 'returning', 'uses' => 'WebsiteController@returning']);
+
+    Route::group(['as' => 'contact.', 'prefix' => 'contact'], function () {
+        Route::get('', ['as' => 'form', 'uses' => 'ContactController@contact']);
+        Route::post('send', ['as' => 'send', 'uses' => 'ContactController@send']);
+    });
 
     // Route::group(['as' => 'product.', 'prefix' => ''], function () {
     //     Route::get('products', 'ProductController@home');
