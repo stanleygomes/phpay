@@ -59,6 +59,21 @@ class UserController extends Controller {
         }
     }
 
+    public function passwordRequestPost(Request $request) {
+        try {
+            $userInstance = new User();
+            $user = $userInstance->passwordRequest($request);
+            $userInstance->sendMailPasswordRequest($user);
+
+            return Redirect::back()
+                ->with('status', 'Enviamos um email para você. Por favor, verifique sua caixa de entrada para recuperação de senha.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
     public function register() {
         return view('auth.register');
     }

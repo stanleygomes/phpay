@@ -27,12 +27,12 @@
 
                 <div class="form-group">
                     <label for="inputEmail">Email</label>
-                    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus value="{{ old('message') }}">
+                    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus value="{{ old('email') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="inputPassword">Senha</label>
-                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="********" required value="{{ old('message') }}">
+                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="********" required value="{{ old('password') }}">
                 </div>
 
                 <button type="submit" class="btn btn-lg btn-primary btn-block">Entrar</button>
