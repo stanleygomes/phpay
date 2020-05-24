@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Model\Contact;
+use App\Model\ContactReply;
 use App\Helper\Helper;
 use Exception;
 
@@ -25,11 +26,11 @@ class ContactController extends Controller {
                     ->withInput();
             }
 
-            $contactInstance->storeContact($request);
+            $contact = $contactInstance->storeContact($request);
             $contactInstance->sendMail($request);
 
             return Redirect::back()
-                ->with('status', 'Sua mensagem foi enviada com sucesso.');
+                ->with('status', $contact['message']);
         } catch(Exception $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
@@ -41,11 +42,48 @@ class ContactController extends Controller {
         try {
             $filter = Session::get('contactSearch');
             $contactInstance = new Contact();
-            $contacts = $contactInstance->getContactList($filter, true);
+            $contacts = $contactInstance->getContactList($filter, true, 8);
 
             return view('contact.index', compact('contacts', 'filter'));
         } catch (Exception $e) {
             return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function reply($id) {
+        try {
+            $filter = [
+                'contact_id' => $id
+            ];
+
+            $contactInstance = new Contact();
+            $contact = $contactInstance->getContactById($id);
+            $contactReplyInstance = new ContactReply();
+            $contactReplies = $contactReplyInstance->getContactReplyList($filter);
+
+            return view('contact.form', compact('contact', 'contactReplies', 'filter'));
+        } catch (Exception $e) {
+            return Redirect::route('app.contact.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function replyPost(Request $request, $id) {
+        try {
+            $contactInstance = new Contact();
+            $contact = $contactInstance->getContactById($id);
+            $contactReplyInstance = new ContactReply();
+            $contactReply = $contactReplyInstance->storeContactReply($request);
+            $contact->reply = $request->message;
+            $contactReplyInstance->sendMail($contact);
+
+            return Redirect::back()
+                ->with('status', $contactReply['message']);
+        } catch (Exception $e) {
+            return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

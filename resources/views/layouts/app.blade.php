@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageAboutActive')" href="{{ route('website.about') }}">Loja</a>
+                        <a class="nav-link @yield('pageAboutActive')" href="{{ route('website.home') }}">Voltar à loja</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.logout') }}">Sair</a>

@@ -31,6 +31,17 @@ CREATE TABLE `contact` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `contact_reply` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `contact_id` int(10) NOT NULL,
+    `message` text NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
 CREATE TABLE `product` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `title` varchar(255) NOT NULL,
@@ -73,6 +84,10 @@ CREATE TABLE `user` (
   `profile` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NULL,
+  `sex` varchar(255) NULL,
+  `cpf` varchar(255) NULL,
+  `born_at` timestamp NULL,
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -102,6 +117,7 @@ CREATE TABLE `user_password_reset` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+ALTER TABLE `contact_reply` ADD FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`);
 ALTER TABLE `user_password_reset` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_login_history` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `transaction_history` ADD FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`);

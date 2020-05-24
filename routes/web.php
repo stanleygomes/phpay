@@ -60,6 +60,8 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('', ['as' => 'index', 'uses' => 'ContactController@index']);
         Route::post('search', ['as' => 'search', 'uses' => 'ContactController@search']);
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ContactController@delete']);
+        Route::get('reply/{id}', ['as' => 'reply', 'uses' => 'ContactController@reply']);
+        Route::post('reply/{id}', ['as' => 'replyPost', 'uses' => 'ContactController@replyPost']);
     });
 });
 
