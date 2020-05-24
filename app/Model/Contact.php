@@ -41,21 +41,16 @@ class Contact extends Model {
     }
 
     public function getContactList ($filter = null, $paginate = false, $limit = 15) {
-        if ($filter == null) {
-            $filter['name'] = '';
-        }
-
         $contact = Contact::orderBy('id', 'desc');
 
-        if (isset($filter['name']) && $filter['name'] != '') {
+        if ($filter != null && $filter->name != '') {
             $contact->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
-        if ($paginate) {
+        if ($paginate === true) {
             $contact = $contact->paginate($limit);
         } else {
-            $contact = $contact->take($limit)
-                ->get();
+            $contact = $contact->get();
         }
 
         return $contact;

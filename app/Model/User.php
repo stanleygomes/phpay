@@ -62,6 +62,22 @@ class User extends Authenticatable {
             ->first();
     }
 
+    public function getUserList($filter = null, $paginate = false, $limit = 15) {
+        $user = User::orderBy('name', 'asc');
+
+        if ($filter != null && $filter->name != '') {
+            $user->where('name', 'like', '%' . $filter['name'] . '%');
+        }
+
+        if ($paginate === true) {
+            $user = $user->paginate($limit);
+        } else {
+            $user = $user->get();
+        }
+
+        return $user;
+    }
+
     public function getUserByEmail($email) {
         return User::where('email', $email)
             ->select('id', 'name', 'email', 'profile', 'password')
@@ -146,7 +162,7 @@ class User extends Authenticatable {
 
         if ($request->password != null) {
             $passwordPlain = $request->password;
-            $user->profile = 'COLABORATOR';
+            $user->profile = 'CUSTOMER';
         } else {
             $passwordPlain = rand(1111, 9999) * 987456;
             $user->profile = $request->profile;

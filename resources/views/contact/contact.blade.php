@@ -11,19 +11,7 @@
                 <h1 class="h3 mb-3 font-weight-normal">Deixe-nos uma mensagem abaixo.</h1>
                 <p>Responderemos o mais breve possível!</p>
 
-                @if (count($errors) > 0)
-                <div class="alert alert-danger" role="alert">
-                    @foreach ($errors->all() as $error)
-                    <div>{!! $error !!}</div>
-                    @endforeach
-                </div>
-                @endif
-
-                @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {!! session('status') !!}
-                </div>
-                @endif
+                @include('layouts.alert-messages')
 
                 <div class="row">
                     <div class="col-sm-12">

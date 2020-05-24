@@ -40,6 +40,11 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
 // app routes
 Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], function () {
     Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
+
+    Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'UserController@index']);
+        Route::post('', ['as' => 'search', 'uses' => 'UserController@search']);
+    });
 });
 
 // auth routes
