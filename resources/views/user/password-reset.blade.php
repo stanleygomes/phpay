@@ -12,7 +12,7 @@
                 <h1 class="h3 mb-3 font-weight-normal">Uma nova senha pra você</h1>
                 <p>Por favor, escolha uma senha de pelo menos 8 digitos.</p>
 
-                @include('layouts.alert-messages')
+                @include('layouts.components.alert-messages')
 
                 <input type="hidden" name="token" value="{{ $token }}">
 

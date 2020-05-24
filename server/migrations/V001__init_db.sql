@@ -1,14 +1,12 @@
-﻿CREATE TABLE `customer` (
+﻿CREATE TABLE `address` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
+    `user_id` int(10) NOT NULL,
     `name` varchar(255) NULL,
-    `email` varchar(255) NULL,
-    `phone` varchar(255) NULL,
-    `cpf` varchar(255) NULL,
     `zipcode` varchar(255) NULL,
     `street` varchar(255) NULL,
     `number` int(11) NULL,
     `complement` varchar(255) NULL,
-    `ditrict` varchar(255) NULL,
+    `district` varchar(255) NULL,
     `city` varchar(255) NULL,
     `state` varchar(255) NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -117,6 +115,7 @@ CREATE TABLE `user_password_reset` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+ALTER TABLE `adddress` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `contact_reply` ADD FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`);
 ALTER TABLE `user_password_reset` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_login_history` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);

@@ -26,7 +26,7 @@
     </div>
 </form>
 
-@include('layouts.alert-messages')
+@include('layouts.components.alert-messages')
 
 @if(count($contacts) == 0)
 <div class="text-center mt-5">

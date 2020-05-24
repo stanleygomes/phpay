@@ -47,7 +47,7 @@
 <form class="search-form formulary mt-3" method="post" action="{{ route('app.contact.reply', [ 'id' => $contact->id ]) }}">
     {!! csrf_field() !!}
 
-    @include('layouts.alert-messages')
+    @include('layouts.components.alert-messages')
 
     <input type="hidden" name="contact_id" value="{{ $contact->id }}">
 
