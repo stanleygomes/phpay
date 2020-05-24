@@ -42,12 +42,20 @@
             <div class="row">
                 <div class="col-sm-3">
                     <div class="side-menu list-group">
+                        <!-- CUSTOMER -->
                         <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserAccount1Active')">Minhas compras</a>
-                        <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuUserAddressActive')">Endereços</a>
+                        <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuAddressActive')">Endereços</a>
                         <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
 
+                        <!-- COLABORATOR -->
+                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Pedidos</a>
+                        <a href="{{ route('app.category.index') }}" class="list-group-item @yield('sidebarMenuCategoryActive')">Categorias</a>
+                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
+
+                        <!-- ADMIN -->
+                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuPaymentMethodsAvailableActive')">Formas de pagamento</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                     </div>
                 </div>

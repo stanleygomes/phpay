@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Model\Address;
@@ -67,7 +65,6 @@ class AddressController extends Controller {
             return Redirect::route('app.address.index')
                 ->with('status', $address['message']);
         } catch (Exception $e) {
-            DB::rollBack();
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();

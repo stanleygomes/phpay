@@ -55,6 +55,10 @@ class Address extends Model {
     public function getAddressList($filter = null, $paginate = false, $limit = 15) {
         $address = Address::orderBy('id', 'desc');
 
+        $filter = [
+            'user_id' => Auth::user()->id
+        ];
+
         if ($filter != null && $filter['user_id'] != '') {
             $address->where('user_id', $filter['user_id']);
         }

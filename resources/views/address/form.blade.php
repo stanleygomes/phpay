@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('pageTitle', 'Cadastrar')
-@section('sidebarMenuAdressActive', 'active')
+@section('sidebarMenuAddressActive', 'active')
 
 @section('content')
 
