@@ -152,6 +152,29 @@ class User extends Authenticatable {
         ];
     }
 
+    public function passwordChange ($request, $id) {
+        $user = User::getUserById($id);
+
+        if ($user == null) {
+            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+        }
+
+        $validPassword = Hash::check($request->password, $user->password);
+
+        if ($validPassword === false) {
+            throw new Exception('A senha atual informada não está correta. Você pode tentar a recuperação de senha.');
+        }
+
+        $user->password = Hash::make($request->password_new);
+
+        $user->save();
+
+        return [
+            'message' => 'Senha alterada com sucesso.',
+            'data' => $user
+        ];
+    }
+
     public function getUserById($id) {
         return User::where('id', $id)
             ->first();

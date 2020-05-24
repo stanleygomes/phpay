@@ -44,8 +44,9 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
+        <div class="row border-top"></div>
         @foreach($users as $key => $user)
-        <div class="row shadow-sm p-3 mb-1 bg-white rounded">
+        <div class="row p-3 mb-1 border-bottom">
             <div class="col-sm-3">
                 <strong>{{ $user->name }}</strong>
             </div>

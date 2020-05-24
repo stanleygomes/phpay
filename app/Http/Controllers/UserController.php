@@ -19,7 +19,7 @@ class UserController extends Controller {
                 ->route('app.dashboard');
         }
 
-        return view('auth.login');
+        return view('user.login');
     }
 
     public function loginPost(Request $request) {
@@ -62,7 +62,7 @@ class UserController extends Controller {
     }
 
     public function register() {
-        return view('auth.register');
+        return view('user.register');
     }
 
     public function registerPost(Request $request) {
@@ -94,7 +94,7 @@ class UserController extends Controller {
     }
 
     public function passwordRequest() {
-        return view('auth.password-request');
+        return view('user.password-request');
     }
 
     public function passwordRequestPost(Request $request) {
@@ -124,7 +124,7 @@ class UserController extends Controller {
                     ->with('status', 'Essa solicitação de recuperação de senha expirou, por favor tente novamente.');
             }
 
-            return view('auth.password-reset', compact('token'));
+            return view('user.password-reset', compact('token'));
         } catch (Exception $e) {
             return Redirect::route('auth.login')
                 ->withErrors($e->getMessage())
@@ -161,6 +161,66 @@ class UserController extends Controller {
         }
     }
 
+    public function passwordChange() {
+        try {
+            return view('user.password-change');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function passwordChangePost(Request $request) {
+        try {
+            $userId = Auth::user()->id;
+            $userInstance = new User();
+            $user = $userInstance->passwordChange($request, $userId);
+
+            return Redirect::route('app.user.passwordChange')
+                ->with('status', $user['message']);
+        } catch (Exception $e) {
+            return Redirect::route('app.user.passwordChange')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function accountUpdate() {
+        try {
+            $userId = Auth::user()->id;
+            $userInstance = new User();
+            $user = $userInstance->getUserById($userId);
+            $profiles = $userInstance->getProfiles();
+            $modeEdit = true;
+            $modeAccount = true;
+
+            return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function accountUpdatePost(Request $request) {
+        try {
+            $userId = Auth::user()->id;
+            $userProfile = Auth::user()->profile;
+            $request->profile = $userProfile;
+
+            $userInstance = new User();
+            $user = $userInstance->updateUser($request, $userId);
+
+            return Redirect::route('app.user.accountUpdate')
+                ->with('status', $user['message']);
+        } catch (Exception $e) {
+            return Redirect::route('app.user.accountUpdate')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
     public function index() {
         try {
             $filter = Session::get('userSearch');
@@ -181,7 +241,7 @@ class UserController extends Controller {
             Session::put('userSearch', $filter);
             return Redirect::route('app.user.index');
         } catch (Exception $e) {
-            return Redirect::route('app.dashboard')
+            return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
@@ -192,10 +252,11 @@ class UserController extends Controller {
             $userInstance = new User();
             $profiles = $userInstance->getProfiles();
             $modeEdit = false;
+            $modeAccount = false;
 
-            return view('user.form', compact('profiles', 'modeEdit'));
+            return view('user.form', compact('profiles', 'modeEdit', 'modeAccount'));
         } catch (Exception $e) {
-            return Redirect::route('app.dashboard')
+            return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
@@ -220,7 +281,7 @@ class UserController extends Controller {
                 ->with('status', $user['message']);
         } catch (Exception $e) {
             DB::rollBack();
-            return Redirect::back()
+            return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
@@ -232,10 +293,11 @@ class UserController extends Controller {
             $user = $userInstance->getUserById($id);
             $profiles = $userInstance->getProfiles();
             $modeEdit = true;
+            $modeAccount = true;
 
-            return view('user.form', compact('user', 'profiles', 'modeEdit'));
+            return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
         } catch (Exception $e) {
-            return Redirect::route('app.dashboard')
+            return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
@@ -249,7 +311,7 @@ class UserController extends Controller {
             return Redirect::route('app.user.index')
                 ->with('status', $user['message']);
         } catch (Exception $e) {
-            return Redirect::route('app.dashboard')
+            return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
@@ -263,7 +325,7 @@ class UserController extends Controller {
             return Redirect::route('app.user.index')
                 ->with('status', $message);
         } catch (Exception $e) {
-            return Redirect::route('app.dashboard')
+            return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

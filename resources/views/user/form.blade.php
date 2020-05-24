@@ -1,22 +1,24 @@
 @extends('layouts.app')
 @section('pageTitle', ($modeEdit === true ? 'Editar' : 'Cadastrar'))
-@section('sidebarMenuUserActive', 'active')
+@section(($modeAccount === true ? 'sidebarMenuUserAccountActive' : 'sidebarMenuUserActive'), 'active')
 
 @section('content')
 
 <div class="row">
+    @if($modeAccount === false)
     <div class="col-sm-12">
         <a href="{{ route('app.user.index') }}">
             <i class="fa fa-arrow-left"></i>
             Voltar
         </a>
     </div>
+    @endif
     <div class="col-sm-12 mt-3">
         <h1>{{ $modeEdit === true ? 'Editar' : 'Cadastrar' }} usuário</h1>
     </div>
 </div>
 
-<form class="search-form formulary mt-3" method="post" action="{{ $modeEdit === true ? route('app.user.update', [ 'id' => $user->id ]) : route('app.user.store') }}">
+<form class="search-form formulary mt-3" method="post" action="{{ $modeAccount === true ? route('app.user.accountUpdatePost') : ($modeEdit === true ? route('app.user.update', [ 'id' => $user->id ]) : route('app.user.store')) }}">
     {!! csrf_field() !!}
 
     @include('layouts.alert-messages')
@@ -34,6 +36,7 @@
                 <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" required value="{{ $modeEdit === true ? $user->email : old('email') }}">
             </div>
         </div>
+        @if($modeAccount === false)
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="inputProfile">Perfil</label>
@@ -46,6 +49,7 @@
                 </select>
             </div>
         </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-sm-3">
