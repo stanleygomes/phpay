@@ -79,7 +79,7 @@ class UserController extends Controller {
             DB::beginTransaction();
             $userInstance = new User();
             $user = $userInstance->storeUser($request);
-            $userInstance->sendMailCredentials($user);
+            $userInstance->sendMailCredentials($user['data']);
             $userInstance->login($request);
             DB::commit();
 
@@ -135,10 +135,25 @@ class UserController extends Controller {
     public function passwordResetPost(Request $request) {
         try {
             $userInstance = new User();
-            $user = $userInstance->passwordReset($request);
+            $userInstance->passwordReset($request);
 
             return Redirect::route('auth.login')
                 ->with('status', 'Sua senha foi alterada com sucesso.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function passwordGenerate($id) {
+        try {
+            $userInstance = new User();
+            $user = $userInstance->passwordGenerate($id);
+            $userInstance->sendMailCredentials($user['data']);
+
+            return Redirect::route('app.user.index')
+                ->with('status', $user['message']);
         } catch (Exception $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
@@ -152,7 +167,101 @@ class UserController extends Controller {
             $userInstance = new User();
             $users = $userInstance->getUserList($filter, true);
 
-            return view('user.index', compact('users'));
+            return view('user.index', compact('users', 'filter'));
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function search(Request $request) {
+        try {
+            $filter = $request->all();
+            Session::put('userSearch', $filter);
+            return Redirect::route('app.user.index');
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function create() {
+        try {
+            $userInstance = new User();
+            $profiles = $userInstance->getProfiles();
+            $modeEdit = false;
+
+            return view('user.form', compact('profiles', 'modeEdit'));
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function store(Request $request) {
+        try {
+            $userInstance = new User();
+            $validateRequest = Helper::validateRequest($request, $userInstance->validationRules, $userInstance->validationMessages);
+
+            if ($validateRequest != null) {
+                return Redirect::back()
+                    ->withErrors($validateRequest)
+                    ->withInput();
+            }
+
+            $userInstance = new User();
+            $user = $userInstance->storeUser($request);
+            $userInstance->sendMailCredentials($user['data']);
+
+            return Redirect::route('app.user.index')
+                ->with('status', $user['message']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function edit($id) {
+        try {
+            $userInstance = new User();
+            $user = $userInstance->getUserById($id);
+            $profiles = $userInstance->getProfiles();
+            $modeEdit = true;
+
+            return view('user.form', compact('user', 'profiles', 'modeEdit'));
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function update(Request $request, $id) {
+        try {
+            $userInstance = new User();
+            $user = $userInstance->updateUser($request, $id);
+
+            return Redirect::route('app.user.index')
+                ->with('status', $user['message']);
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function delete($id) {
+        try {
+            $userInstance = new User();
+            $message = $userInstance->deleteUser($id);
+
+            return Redirect::route('app.user.index')
+                ->with('status', $message);
         } catch (Exception $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
