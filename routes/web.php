@@ -50,6 +50,10 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::post('update/{id}', ['as' => 'update', 'uses' => 'UserController@update']);
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'UserController@delete']);
         Route::get('passwordGenerate/{id}', ['as' => 'passwordGenerate', 'uses' => 'UserController@passwordGenerate']);
+        Route::get('passwordChange', ['as' => 'passwordChange', 'uses' => 'UserController@passwordChange']);
+        Route::post('passwordChangePost', ['as' => 'passwordChangePost', 'uses' => 'UserController@passwordChangePost']);
+        Route::get('accountUpdate', ['as' => 'accountUpdate', 'uses' => 'UserController@accountUpdate']);
+        Route::post('accountUpdatePost', ['as' => 'accountUpdatePost', 'uses' => 'UserController@accountUpdatePost']);
     });
 });
 

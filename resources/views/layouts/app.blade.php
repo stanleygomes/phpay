@@ -42,8 +42,11 @@
             <div class="row">
                 <div class="col-sm-3">
                     <div class="side-menu list-group">
-                        <a href="#" class="list-group-item">Dados da loja</a>
-                        <a href="#" class="list-group-item">Compras</a>
+                        <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserAccount1Active')">Minhas compras</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserAccount1Active')">Endereços</a>
+                        <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
+
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                     </div>
                 </div>
