@@ -57,6 +57,11 @@ class User extends Authenticatable {
     public function getPermissionsByRole($code) {
     }
 
+    public function getUserById($id) {
+        return User::where('id', $id)
+            ->first();
+    }
+
     public function getUserByEmail($email) {
         return User::where('email', $email)
             ->select('id', 'name', 'email', 'profile', 'password')
@@ -99,12 +104,65 @@ class User extends Authenticatable {
         return $user;
     }
 
-    public function logout() {
-        Auth::logout();
+    public function passwordReset($request) {
+        $userPasswordResetInstance = new UserPasswordReset();
+        $userId = $userPasswordResetInstance->getUserByToken($request->token);
+
+        if ($request->token == null || $userId == null) {
+            throw new Exception('O token informado é inválido. Por favor, tente recuperar a senha novamente.');
+        }
+
+        if ($request->password === null) {
+            throw new Exception('Por favor, informe a nova senha e a repetição dela.');
+        }
+
+        $hashPassword = Hash::make($request->password);
+
+        $user = User::where('id', $userId)
+            ->update([
+                'password' => $hashPassword
+            ]);
+
+        return $user;
     }
 
-    public function getAllUsers() {
-        return User::get();
+    public function storeUser($request) {
+        $user = $this->getUserByEmail($request->email);
+
+        if ($user != null) {
+            throw new Exception('Já existe uma conta cadastrada com esse email. Você pode efetuar o login.');
+        }
+
+        $user = new User();
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if (Auth::user() != null) {
+            $user->created_by = Auth::user()->id;
+        } else {
+            $user->created_by = 1;
+        }
+
+        if ($request->password != null) {
+            $passwordPlain = $request->password;
+            $user->profile = 'COLABORATOR';
+        } else {
+            $passwordPlain = rand(1111, 9999) * 987456;
+            $user->profile = $request->profile;
+        }
+
+        $user->password = Hash::make($passwordPlain);
+
+        $user->save();
+
+        $user->password_plain = $passwordPlain;
+
+        return $user;
+    }
+
+    public function logout() {
+        Auth::logout();
     }
 
     public function sendMailPasswordRequest($user) {
@@ -116,6 +174,26 @@ class User extends Authenticatable {
         ];
         $subject = 'Sua nova senha';
         $template = 'password-request';
+        $data = $user;
+
+        try {
+            $helperInstance = new Helper();
+            $helperInstance->sendMail($param, $data, $template, $subject);
+        } catch(Exception $e) {
+            Log::error($e);
+            throw new Exception('Erro ao enviar email.');
+        }
+    }
+
+    public function sendMailCredentials($user) {
+        $param = [
+            'from_email' => env('MAIL_FROM_ADDRESS'),
+            'from_name' => env('MAIL_FROM_NAME'),
+            'to_email' => $user->email,
+            'to_name' => $user->name
+        ];
+        $subject = 'Suas credenciais de acesso';
+        $template = 'user-password-generate';
         $data = $user;
 
         try {

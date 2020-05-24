@@ -32,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="inputPassword">Senha</label>
-                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="********" required value="{{ old('password') }}">
+                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="********" minlength="8" required value="{{ old('password') }}">
                 </div>
 
                 <button type="submit" class="btn btn-lg btn-primary btn-block">Entrar</button>

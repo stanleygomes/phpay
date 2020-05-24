@@ -64,4 +64,8 @@ class Helper {
             'message' => $message
         ];
     }
+
+    public function uploadFile() {
+        // TODO: move to cloud storage
+    }
 }

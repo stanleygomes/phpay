@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Model\User;
+use App\Model\UserPasswordReset;
 use App\Helper\Helper;
 
 class UserController extends Controller {
@@ -36,7 +37,7 @@ class UserController extends Controller {
             DB::commit();
 
             return Redirect::route('app.dashboard')
-                ->with('status', 'Sua mensagem foi enviada com sucesso.');
+                ->with('status', '');
         } catch (Exception $e) {
             DB::rollBack();
             return Redirect::back()
@@ -59,6 +60,42 @@ class UserController extends Controller {
         }
     }
 
+    public function register() {
+        return view('auth.register');
+    }
+
+    public function registerPost(Request $request) {
+        try {
+            $userInstance = new User();
+            $validateRequest = Helper::validateRequest($request, $userInstance->validationRules, $userInstance->validationMessages);
+
+            if ($validateRequest != null) {
+                return Redirect::back()
+                    ->withErrors($validateRequest)
+                    ->withInput();
+            }
+
+            DB::beginTransaction();
+            $userInstance = new User();
+            $user = $userInstance->storeUser($request);
+            $userInstance->sendMailCredentials($user);
+            $userInstance->login($request);
+            DB::commit();
+
+            return Redirect::route('app.dashboard')
+                ->with('status', 'Sua conta foi criada com sucesso.');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function passwordRequest() {
+        return view('auth.password-request');
+    }
+
     public function passwordRequestPost(Request $request) {
         try {
             $userInstance = new User();
@@ -74,15 +111,38 @@ class UserController extends Controller {
         }
     }
 
-    public function register() {
-        return view('auth.register');
+    public function passwordReset(Request $request) {
+        try {
+            $token = $request->token;
+
+            $userPasswordResetInstance = new UserPasswordReset();
+            $userId = $userPasswordResetInstance->getUserByToken($request->token);
+
+            if ($userId == null) {
+                return Redirect::route('auth.login')
+                    ->with('status', 'Essa solicitação de recuperação de senha expirou, por favor tente novamente.');
+            }
+
+            return view('auth.password-reset', compact('token'));
+        } catch (Exception $e) {
+            return Redirect::route('auth.login')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
     }
 
-    public function passwordRequest() {
-        return view('auth.password-request');
+    public function passwordResetPost(Request $request) {
+        try {
+            $userInstance = new User();
+            $user = $userInstance->passwordReset($request);
+
+            return Redirect::route('auth.login')
+                ->with('status', 'Sua senha foi alterada com sucesso.');
+        } catch (Exception $e) {
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
     }
 
-    public function passwordReset() {
-        return view('auth.password-reset');
-    }
 }
