@@ -20,6 +20,10 @@ class User extends Authenticatable {
         'name',
         'email',
         'password',
+        'cpf',
+        'born_at',
+        'sex',
+        'phone'
     ];
 
     protected $hidden = [
@@ -29,6 +33,7 @@ class User extends Authenticatable {
 
     protected $casts = [
         'created_at' => 'datetime',
+        'born_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime'
     ];
@@ -250,6 +255,17 @@ class User extends Authenticatable {
         $user->name = $request->name;
         $user->email = $request->email;
         $user->profile = $request->profile;
+
+        $user->cpf = $request->cpf;
+
+        if ($request->born_at != null) {
+            $user->born_at = date_create_from_format('d/m/Y H:i:s', $request->born_at . ' 00:00:00');
+        } else {
+            $user->born_at = null;
+        }
+
+        $user->sex = $request->sex;
+        $user->phone = $request->phone;
 
         $user->save();
 

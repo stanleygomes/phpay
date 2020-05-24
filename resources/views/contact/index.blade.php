@@ -40,10 +40,25 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
+        <div class="row p-3 mb-3 border-top border-bottom">
+            <div class="col-sm-3">
+                <strong>Nome</strong>
+            </div>
+            <div class="col-sm-4">
+                <strong>Email</strong>
+            </div>
+            <div class="col-sm-3">
+                <strong>Celular</strong>
+            </div>
+            <div class="col-sm-2 text-center">
+                <strong>Opções</strong>
+            </div>
+        </div>
+
         @foreach($contacts as $key => $contact)
         <div class="row shadow p-3 mb-3 bg-white rounded">
             <div class="col-sm-3">
-                <strong>{{ $contact->name }}</strong>
+                {{ $contact->name }}
             </div>
             <div class="col-sm-4">
                 {{ $contact->email }}
@@ -52,7 +67,12 @@
                 {{ $contact->phone }}
             </div>
             <div class="col-sm-2 text-right">
-                <a href="{{ route('app.contact.delete', [ 'id' => $contact->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar o usuário {{ $contact->name }}?">
+                <a href="{{ route('app.contact.reply', [ 'id' => $contact->id ]) }}" class="not-underlined">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Responder">
+                        <i class="fa fa-envelope"></i>
+                    </button>
+                </a>
+                <a href="{{ route('app.contact.delete', [ 'id' => $contact->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar a mensagem de {{ $contact->name }}?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
                     </button>

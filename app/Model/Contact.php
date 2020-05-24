@@ -70,7 +70,10 @@ class Contact extends Model {
 
         $contact->save();
 
-        return ['Cadastro efetuado com sucesso.', $contact];
+        return [
+            'message' => 'Sua mensagem foi enviada com sucesso.',
+            'data' => $contact
+        ];
     }
 
     public function deleteContact ($id) {

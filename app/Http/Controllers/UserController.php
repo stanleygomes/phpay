@@ -293,7 +293,7 @@ class UserController extends Controller {
             $user = $userInstance->getUserById($id);
             $profiles = $userInstance->getProfiles();
             $modeEdit = true;
-            $modeAccount = true;
+            $modeAccount = false;
 
             return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
         } catch (Exception $e) {

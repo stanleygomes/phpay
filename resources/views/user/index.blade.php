@@ -44,11 +44,24 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row border-top"></div>
+        <div class="row p-3 mb-1 border-top border-bottom">
+            <div class="col-sm-3">
+                <strong>Nome</strong>
+            </div>
+            <div class="col-sm-4">
+                <strong>Email</strong>
+            </div>
+            <div class="col-sm-2">
+                <strong>Perfil</strong>
+            </div>
+            <div class="col-sm-3 text-center">
+                <strong>Opções</strong>
+            </div>
+        </div>
         @foreach($users as $key => $user)
         <div class="row p-3 mb-1 border-bottom">
             <div class="col-sm-3">
-                <strong>{{ $user->name }}</strong>
+                {{ $user->name }}
             </div>
             <div class="col-sm-4">
                 {{ $user->email }}
