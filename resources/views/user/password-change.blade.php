@@ -14,7 +14,7 @@
 <form class="search-form formulary mt-3" method="post" action="{{ route('app.user.passwordChangePost') }}">
     {!! csrf_field() !!}
 
-    @include('layouts.alert-messages')
+    @include('layouts.components.alert-messages')
 
     <div class="row">
         <div class="col-sm-6">

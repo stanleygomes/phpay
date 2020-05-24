@@ -11,7 +11,7 @@
                 <h1 class="h3 mb-3 font-weight-normal">Deixe-nos uma mensagem abaixo.</h1>
                 <p>Responderemos o mais breve possível!</p>
 
-                @include('layouts.alert-messages')
+                @include('layouts.components.alert-messages')
 
                 <div class="row">
                     <div class="col-sm-12">

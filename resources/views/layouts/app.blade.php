@@ -44,7 +44,7 @@
                     <div class="side-menu list-group">
                         <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserAccount1Active')">Minhas compras</a>
-                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserAccount1Active')">Endereços</a>
+                        <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuUserAddressActive')">Endereços</a>
                         <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
 
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>

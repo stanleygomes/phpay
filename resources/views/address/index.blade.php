@@ -1,21 +1,21 @@
 @extends('layouts.app')
-@section('pageTitle', 'Usuários')
-@section('sidebarMenuUserActive', 'active')
+@section('pageTitle', 'Meus endereços')
+@section('sidebarMenuAdressActive', 'active')
 
 @section('content')
 
 <div class="row">
     <div class="col-sm-10">
-        <h1>Usuários</h1>
+        <h1>Meus endereços</h1>
     </div>
     <div class="col-sm-2">
-        <a href="{{ route('app.user.create') }}" class="not-underlined">
+        <a href="{{ route('app.address.create') }}" class="not-underlined">
             <button type="submit" class="btn btn-lg btn-primary btn-block">Cadastrar</button>
         </a>
     </div>
 </div>
 
-<form class="search-form formulary" method="post" action="{{ route('app.user.search') }}">
+<form class="search-form formulary" method="post" action="{{ route('app.address.search') }}">
     {!! csrf_field() !!}
     <div class="row mt-4">
         <div class="col-sm-9">
@@ -32,7 +32,7 @@
 
 @include('layouts.components.alert-messages')
 
-@if(count($users) == 0)
+@if(count($addresses) == 0)
 <div class="text-center mt-5">
     <h1>
         <div class="mb-3">
@@ -45,42 +45,25 @@
 <div class="col-sm-12">
     <div class="mt-3">
         <div class="row p-3 mb-1 border-top border-bottom">
-            <div class="col-sm-3">
+            <div class="col-sm-9">
                 <strong>Nome</strong>
-            </div>
-            <div class="col-sm-4">
-                <strong>Email</strong>
-            </div>
-            <div class="col-sm-2">
-                <strong>Perfil</strong>
             </div>
             <div class="col-sm-3 text-center">
                 <strong>Opções</strong>
             </div>
         </div>
-        @foreach($users as $key => $user)
+        @foreach($addresses as $key => $address)
         <div class="row p-3 mb-1 border-bottom">
-            <div class="col-sm-3">
-                {{ $user->name }}
-            </div>
-            <div class="col-sm-4">
-                {{ $user->email }}
-            </div>
-            <div class="col-sm-2">
-                <span class="badge badge-secondary">{{ $user->profile }}</span>
+            <div class="col-sm-9">
+                {{ $address->name }}
             </div>
             <div class="col-sm-3 text-right">
-                <a href="{{ route('app.user.edit', [ 'id' => $user->id ]) }}" class="not-underlined">
+                <a href="{{ route('app.address.edit', [ 'id' => $address->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Editar">
                         <i class="fa fa-pencil-alt"></i>
                     </button>
                 </a>
-                <a href="{{ route('app.user.passwordGenerate', [ 'id' => $user->id ]) }}" class="not-underlined confirmAction" data-message="Deseja gerar uma nova senha?">
-                    <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="Gerar nova senha">
-                        <i class="fa fa-key"></i>
-                    </button>
-                </a>
-                <a href="{{ route('app.user.delete', [ 'id' => $user->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar o usuário {{ $user->name }}?">
+                <a href="{{ route('app.address.delete', [ 'id' => $address->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar o endereço {{ $address->name }}?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
                     </button>
@@ -90,7 +73,7 @@
         @endforeach
 
         <div class="row mt-5">
-            {{ $users->links() }}
+            {{ $addresses->links() }}
         </div>
     </div>
 </div>
