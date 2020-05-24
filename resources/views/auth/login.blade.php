@@ -23,7 +23,7 @@
                     <input type="password" id="inputPassword" name="password" class="form-control" placeholder="********" minlength="8" required value="{{ old('password') }}">
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Entrar</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Um momento...">Entrar</button>
 
                 <div class="mt-4">
                     <a href="{{ route('auth.passwordRequest') }}">

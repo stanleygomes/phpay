@@ -5,6 +5,7 @@ namespace App\Model;
 use Exception;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,7 @@ use App\Helper\Helper;
 
 class User extends Authenticatable {
     use Notifiable;
+    use SoftDeletes;
 
     protected $table = 'user';
     protected $fillable = [
@@ -51,37 +53,22 @@ class User extends Authenticatable {
         'password.required' => 'O campo senha é obrigatório.'
     ];
 
-    public function getRole($code) {
-    }
+    protected $profiles = [
+        'ADMIN',
+        'COLABORATOR',
+        'CUSTOMER'
+    ];
 
-    public function getPermissionsByRole($code) {
-    }
+    protected $roles = [
+        'ADMIN' => ['MANAGE_USER'],
+    ];
 
-    public function getUserById($id) {
-        return User::where('id', $id)
-            ->first();
-    }
+    protected $permissions = [
+        'MANAGE_USER' => ['code' => 'user', 'route' => 'app.user', 'title' => 'Usuários', 'icon' => 'users'],
+    ];
 
-    public function getUserList($filter = null, $paginate = false, $limit = 15) {
-        $user = User::orderBy('name', 'asc');
-
-        if ($filter != null && $filter->name != '') {
-            $user->where('name', 'like', '%' . $filter['name'] . '%');
-        }
-
-        if ($paginate === true) {
-            $user = $user->paginate($limit);
-        } else {
-            $user = $user->get();
-        }
-
-        return $user;
-    }
-
-    public function getUserByEmail($email) {
-        return User::where('email', $email)
-            ->select('id', 'name', 'email', 'profile', 'password')
-            ->first();
+    public function getProfiles() {
+        return $this->profiles;
     }
 
     public function login($request) {
@@ -142,6 +129,56 @@ class User extends Authenticatable {
         return $user;
     }
 
+    public function passwordGenerate($id) {
+        $user = User::getUserById($id);
+
+        if ($user == null) {
+            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+        }
+
+        $passwordPlain = rand(1111, 9999) * 987456;
+        $hashPassword = Hash::make($passwordPlain);
+
+        User::where('id', $id)
+            ->update([
+                'password' => $hashPassword
+            ]);
+
+        $user->password_plain = $passwordPlain;
+
+        return [
+            'message' => 'Senha gerada e enviada para o email ' . $user->email . ' com sucesso.',
+            'data' => $user
+        ];
+    }
+
+    public function getUserById($id) {
+        return User::where('id', $id)
+            ->first();
+    }
+
+    public function getUserList($filter = null, $paginate = false, $limit = 15) {
+        $user = User::orderBy('name', 'asc');
+
+        if ($filter != null && $filter['name'] != '') {
+            $user->where('name', 'like', '%' . $filter['name'] . '%');
+        }
+
+        if ($paginate === true) {
+            $user = $user->paginate($limit);
+        } else {
+            $user = $user->get();
+        }
+
+        return $user;
+    }
+
+    public function getUserByEmail($email) {
+        return User::where('email', $email)
+            ->select('id', 'name', 'email', 'profile', 'password')
+            ->first();
+    }
+
     public function storeUser($request) {
         $user = $this->getUserByEmail($request->email);
 
@@ -174,7 +211,42 @@ class User extends Authenticatable {
 
         $user->password_plain = $passwordPlain;
 
-        return $user;
+        return [
+            'message' => 'Cadastro efetuado com sucesso.',
+            'data' => $user
+        ];
+    }
+
+    public function updateUser ($request, $id) {
+        $user = User::getUserById($id);
+
+        if ($user == null) {
+            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->profile = $request->profile;
+
+        $user->save();
+
+        return [
+            'message' => 'Cadastro atualizado com sucesso.',
+            'data' => $user
+        ];
+    }
+
+    public function deleteUser ($id) {
+        $user = User::getUserById($id);
+
+        if ($user == null) {
+            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+        }
+
+        $user->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $user->save();
+
+        return 'Cadastro deletado com sucesso.';
     }
 
     public function logout() {

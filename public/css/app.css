@@ -41,6 +41,10 @@ section {
   font-size: 16px;
 }
 
+a.not-underlined:hover {
+    text-decoration: none;
+}
+
 .side-menu .list-group-item:hover, .side-menu .list-group-item.active {
     color: #555;
     text-decoration: none;

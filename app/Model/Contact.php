@@ -35,12 +35,12 @@ class Contact extends Model {
         'message.required' => 'O campo mensagem é obrigatório.'
     ];
 
-    public function getContact ($id) {
+    public function getContactById ($id) {
         return Contact::where('id', $id)
         ->first();
     }
 
-    public function getContactList ($filter = null, $paginate = false, $limit = 15) {
+    public function getContactByIdList ($filter = null, $paginate = false, $limit = 15) {
         $contact = Contact::orderBy('id', 'desc');
 
         if ($filter != null && $filter->name != '') {
@@ -71,7 +71,7 @@ class Contact extends Model {
     }
 
     public function updateContact ($request, $id) {
-        $contact = Contact::getContact($id);
+        $contact = Contact::getContactById($id);
 
         if ($contact == null) {
             throw new Exception('Cadastro [' . $id . '] não encontrado.');
@@ -88,7 +88,7 @@ class Contact extends Model {
     }
 
     public function deleteContact ($id) {
-        $contact = Contact::getContact($id);
+        $contact = Contact::getContactById($id);
 
         if ($contact == null) {
             throw new Exception('Cadastro [' . $id . '] não encontrado.');

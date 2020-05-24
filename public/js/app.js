@@ -4,7 +4,7 @@ $(".mask-cpfcnpj").keydown(function () {
         $(".mask-cpfcnpj").unmask();
     } catch (e) { }
 
-    var tamanho = $(".mask-cpfcnpj").val().length;
+    const tamanho = $(".mask-cpfcnpj").val().length;
 
     if (tamanho < 11) {
         $(".mask-cpfcnpj").mask("999.999.999-99");
@@ -43,15 +43,34 @@ $('.mask-plaque').mask('AAA-0000');
 
 // form validation
 $('form').submit(function(e) {
+    let message = $(this)
+        .find('button:submit')
+        .attr('data-message');
+
+    if (message == null) {
+        message = 'Por favor, aguarde...';
+    }
+
     $(this)
         .find('button:submit')
         .attr('disabled', 'disabled')
-        .text('Por favor, aguarde...');
+        .text(message);
 
     return true;
 })
 
 // bootstrap components
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 })
+
+$('.confirmAction').click(function(e) {
+    e.preventDefault();
+    const message = $(this).attr('data-message') || 'Você tem certeza?';
+    const url = $(this).attr('href');
+    const res = confirm(message);
+
+    if (res == true) {
+        window.location.href = url;
+    }
+});

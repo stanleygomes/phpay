@@ -43,7 +43,13 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
 
     Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'UserController@index']);
-        Route::post('', ['as' => 'search', 'uses' => 'UserController@search']);
+        Route::post('search', ['as' => 'search', 'uses' => 'UserController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'UserController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'UserController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'UserController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'UserController@delete']);
+        Route::get('passwordGenerate/{id}', ['as' => 'passwordGenerate', 'uses' => 'UserController@passwordGenerate']);
     });
 });
 

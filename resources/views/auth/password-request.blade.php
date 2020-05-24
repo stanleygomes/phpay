@@ -18,7 +18,7 @@
                     <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus value="{{ old('email') }}">
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Solicitar</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Enviando...">Solicitar</button>
 
                 <div class="mt-4">
                     <a href="{{ route('auth.login') }}">

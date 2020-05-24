@@ -21,7 +21,7 @@
                     <input type="password" id="inputPassword" name="password" class="form-control" placeholder="********" minlength="8" autofocus required value="{{ old('password') }}">
                 </div>
 
-                <button type="submit" class="btn btn-lg btn-primary btn-block">Alterar senha</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Salvando...">Alterar senha</button>
 
                 <div class="mt-4">
                     <a href="{{ route('auth.login') }}">
