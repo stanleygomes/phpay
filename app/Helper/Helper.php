@@ -33,7 +33,7 @@ class Helper {
         Mail::send('mail.' . $template, ['data' => $data], function ($m) use ($param, $subject) {
             $m->from($param['from_email'], $param['from_name']);
             $m->to($param['to_email'], $param['to_name'])
-                ->subject($subject . env('APP_NAME'));
+                ->subject($subject . ' - ' . env('APP_NAME'));
         });
     }
 

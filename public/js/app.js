@@ -41,7 +41,6 @@ $('.mask-money').mask('000.000.000.000.000,00', {
 
 $('.mask-plaque').mask('AAA-0000');
 
-
 // form validation
 $('form').submit(function(e) {
     $(this)
@@ -50,4 +49,9 @@ $('form').submit(function(e) {
         .text('Por favor, aguarde...');
 
     return true;
+})
+
+// bootstrap components
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
 })

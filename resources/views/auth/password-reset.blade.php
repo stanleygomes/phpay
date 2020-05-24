@@ -12,19 +12,7 @@
                 <h1 class="h3 mb-3 font-weight-normal">Uma nova senha pra você</h1>
                 <p>Por favor, escolha uma senha de pelo menos 8 digitos.</p>
 
-                @if (count($errors) > 0)
-                <div class="alert alert-danger" role="alert">
-                    @foreach ($errors->all() as $error)
-                    <div>{!! $error !!}</div>
-                    @endforeach
-                </div>
-                @endif
-
-                @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {!! session('status') !!}
-                </div>
-                @endif
+                @include('layouts.alert-messages')
 
                 <input type="hidden" name="token" value="{{ $token }}">
 

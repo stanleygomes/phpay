@@ -5,7 +5,10 @@ html, body {
     font-weight: 200;
     height: 100vh;
     margin: 0;
-    padding-top: 56px;
+}
+
+.page-content {
+    margin-top: 100px;
 }
 
 strong {
@@ -36,4 +39,10 @@ section {
   height: auto;
   padding: 10px;
   font-size: 16px;
+}
+
+.side-menu .list-group-item:hover, .side-menu .list-group-item.active {
+    color: #555;
+    text-decoration: none;
+    background: #eee;
 }

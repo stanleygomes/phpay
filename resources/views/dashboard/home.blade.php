@@ -5,4 +5,6 @@
 
 <h1>dashboard</h1>
 
+@include('layouts.alert-messages')
+
 @endsection

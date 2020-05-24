@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Model\User;
 use App\Model\UserPasswordReset;
@@ -145,4 +146,17 @@ class UserController extends Controller {
         }
     }
 
+    public function index() {
+        try {
+            $filter = Session::get('userSearch');
+            $userInstance = new User();
+            $users = $userInstance->getUserList($filter, true);
+
+            return view('user.index', compact('users'));
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
 }

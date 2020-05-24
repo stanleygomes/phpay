@@ -11,19 +11,7 @@
                 <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Por favor, efetue o login</h1>
 
-                @if (count($errors) > 0)
-                <div class="alert alert-danger" role="alert">
-                    @foreach ($errors->all() as $error)
-                    <div>{!! $error !!}</div>
-                    @endforeach
-                </div>
-                @endif
-
-                @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {!! session('status') !!}
-                </div>
-                @endif
+                @include('layouts.alert-messages')
 
                 <div class="form-group">
                     <label for="inputEmail">Email</label>

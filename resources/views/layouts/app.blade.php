@@ -37,14 +37,14 @@
         </div>
     </nav>
 
-    <div class="content">
+    <div class="page-content">
         <div class="container">
             <div class="row">
                 <div class="col-sm-3">
-                    <div class="list-group">
+                    <div class="side-menu list-group">
                         <a href="#" class="list-group-item">Dados da loja</a>
                         <a href="#" class="list-group-item">Compras</a>
-                        <a href="#" class="list-group-item">Category 3</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                     </div>
                 </div>
                 <div class="col-sm-9">
@@ -63,6 +63,7 @@
     <script src="/js/jquery-3.5.1.slim.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/popper.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/bootstrap.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
 
     <script>

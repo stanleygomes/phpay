@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="content">
+    <div class="page-content">
         @yield('content')
     </div>
 
