@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Model\Contact;
 use App\Helper\Helper;
 use Exception;
@@ -37,24 +38,42 @@ class ContactController extends Controller {
     }
 
     public function index() {
-        \Session::forget('filtercontact');
-        $contacts = Contacts::orderBy('name', 'asc')
-            ->paginate(20);
-        return view('app.contact.index', compact('contacts'));
-    }
+        try {
+            $filter = Session::get('contactSearch');
+            $contactInstance = new Contact();
+            $contacts = $contactInstance->getContactList($filter, true);
 
-    public function show($id) {
-        $contact = Contacts::find($id);
-        if (!$contact) {
-            return redirect()->route('contact.index');
+            return view('contact.index', compact('contacts', 'filter'));
+        } catch (Exception $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
         }
-        return view('app.contact.show', compact('contact'));
     }
 
-    public function delete ($id) {
-        $contact = Contacts::where('id', $id)
-            ->first();
-        $contact->delete();
-        return redirect()->route('app.contact.index')->with('status', 'Mensagem Excluída.');
+    public function search(Request $request) {
+        try {
+            $filter = $request->all();
+            Session::put('contactSearch', $filter);
+            return Redirect::route('app.contact.index');
+        } catch (Exception $e) {
+            return Redirect::route('app.contact.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function delete($id) {
+        try {
+            $contactInstance = new Contact();
+            $message = $contactInstance->deleteContact($id);
+
+            return Redirect::route('app.contact.index')
+                ->with('status', $message);
+        } catch (Exception $e) {
+            return Redirect::route('app.contact.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
     }
 }
