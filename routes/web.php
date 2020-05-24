@@ -66,6 +66,16 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'AddressController@delete']);
     });
 
+    Route::group(['as' => 'category.', 'prefix' => 'category'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'CategoryController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'CategoryController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'CategoryController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'CategoryController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'CategoryController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'CategoryController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CategoryController@delete']);
+    });
+
     Route::group(['as' => 'contact.', 'prefix' => 'contact'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'ContactController@index']);
         Route::post('search', ['as' => 'search', 'uses' => 'ContactController@search']);
