@@ -19,6 +19,7 @@ class UserLoginHistory extends Model {
     public function storeUserLoginHistory($userId) {
         $userLoginHistory = new UserLoginHistory();
         $userLoginHistory->user_id = $userId;
+        $userLoginHistory->created_by = 1;
         $userLoginHistory->save();
 
         return $userLoginHistory->id;

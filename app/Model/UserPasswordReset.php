@@ -27,4 +27,15 @@ class UserPasswordReset extends Model {
 
         return $userLoginHistory;
     }
+
+    public function getUserByToken($token) {
+        $userPasswordReset = UserPasswordReset::where('token', $token)
+            ->first();
+
+        if ($userPasswordReset != null) {
+            return $userPasswordReset->user_id;
+        }
+
+        return null;
+    }
 }
