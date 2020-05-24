@@ -5,9 +5,12 @@ namespace App\Model;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Helper\Helper;
 
 class Contact extends Model {
+    use SoftDeletes;
+
     protected $table = 'contact';
     protected $fillable = [
         'name',
@@ -40,10 +43,10 @@ class Contact extends Model {
         ->first();
     }
 
-    public function getContactByIdList ($filter = null, $paginate = false, $limit = 15) {
+    public function getContactList ($filter = null, $paginate = false, $limit = 15) {
         $contact = Contact::orderBy('id', 'desc');
 
-        if ($filter != null && $filter->name != '') {
+        if ($filter != null && $filter['name'] != '') {
             $contact->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
@@ -68,23 +71,6 @@ class Contact extends Model {
         $contact->save();
 
         return ['Cadastro efetuado com sucesso.', $contact];
-    }
-
-    public function updateContact ($request, $id) {
-        $contact = Contact::getContactById($id);
-
-        if ($contact == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
-        }
-
-        $contact->name = $request->name;
-        $contact->email = $request->email;
-        $contact->phone = $request->phone;
-        $contact->message = $request->message;
-
-        $contact->save();
-
-        return ['Cadastro atualizado com sucesso.', $contact];
     }
 
     public function deleteContact ($id) {

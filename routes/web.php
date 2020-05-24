@@ -55,6 +55,12 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('accountUpdate', ['as' => 'accountUpdate', 'uses' => 'UserController@accountUpdate']);
         Route::post('accountUpdatePost', ['as' => 'accountUpdatePost', 'uses' => 'UserController@accountUpdatePost']);
     });
+
+    Route::group(['as' => 'contact.', 'prefix' => 'contact'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ContactController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ContactController@search']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ContactController@delete']);
+    });
 });
 
 // auth routes
