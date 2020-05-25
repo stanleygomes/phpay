@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/css/bootstrap.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/font-awesome.min.css?v={{ env('APP_VERSION') }}" />
+    <link rel="stylesheet" href="/css/summernote.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/app.css?v={{ env('APP_VERSION') }}" />
 </head>
 
@@ -55,7 +56,7 @@
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
 
                         <!-- ADMIN -->
-                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuPaymentMethodsAvailableActive')">Formas de pagamento</a>
+                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive')">Configurações</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                     </div>
                 </div>
@@ -76,6 +77,7 @@
     <script src="/js/popper.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/bootstrap.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/summernote.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
 
     <script>

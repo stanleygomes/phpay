@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // website routes
 Route::group(['as' => 'website.', 'prefix' => ''], function () {
-    Route::get('', ['as' => 'home', 'uses' => 'WebsiteController@home']);
+    Route::get('', ['as' => 'home', 'uses' => 'ProductController@home']);
     Route::get('about', ['as' => 'about', 'uses' => 'WebsiteController@about']);
     Route::get('privacy', ['as' => 'privacy', 'uses' => 'WebsiteController@privacy']);
     Route::get('delivery', ['as' => 'delivery', 'uses' => 'WebsiteController@delivery']);
@@ -27,19 +27,19 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
         Route::post('send', ['as' => 'send', 'uses' => 'ContactController@send']);
     });
 
-    // Route::group(['as' => 'product.', 'prefix' => ''], function () {
-    //     Route::get('products', 'ProductController@home');
-    //     Route::get('product', 'ProductController@home')->name('home');
-    // });
-
-    // Route::group(['as' => 'cart.', 'prefix' => ''], function () {
-    //     Route::get('', 'ProductController@home')->name('cart');
-    // });
+    Route::group(['as' => 'product.', 'prefix' => 'product'], function () {
+        Route::get('', ['as' => 'send', 'uses' => 'ProductController@home']);
+        Route::get('detail/{id}', ['as' => 'send', 'uses' => 'ProductController@show']);
+    });
 });
 
 // app routes
 Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], function () {
-    Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'DashboardController@dashboard']);
+    Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AppController@dashboard']);
+
+    Route::group(['as' => 'config.', 'prefix' => 'config'], function () {
+        Route::get('', ['as' => 'config', 'uses' => 'AppController@config']);
+    });
 
     Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'UserController@index']);

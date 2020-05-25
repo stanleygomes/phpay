@@ -24,7 +24,7 @@ section {
 }
 
 /* forms */
-.formulary .btn {
+.formulary button[type=submit] {
     margin-top: 30px;
 }
 
