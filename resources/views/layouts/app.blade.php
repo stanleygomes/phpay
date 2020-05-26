@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/font-awesome.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/summernote.min.css?v={{ env('APP_VERSION') }}" />
+    <link rel="stylesheet" href="/css/fileinput.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/app.css?v={{ env('APP_VERSION') }}" />
 </head>
 
@@ -96,6 +97,7 @@
     <script src="/js/bootstrap.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/summernote.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/fileinput.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/admin.js?v={{ env('APP_VERSION') }}"></script>
 

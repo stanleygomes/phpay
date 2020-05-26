@@ -13,4 +13,14 @@ $(document).ready(function () {
             ['view', ['fullscreen', 'codeview', 'help']]
         ]
     });
+
+    $('.upload-image').fileinput({
+        showUpload: false,
+        removeClass: 'hidden',
+        showPreview: false,
+        msgPlaceholder: 'Arquivo selecionado...',
+        browseLabel: 'Escolher',
+        allowedFileTypes: 'image',
+        msgInvalidFileType: 'Tipo de arquivo não suportado'
+    });
 });

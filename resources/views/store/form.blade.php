@@ -172,10 +172,10 @@
                 <strong>Logo</strong>
             </h4>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
             <div class="form-group">
-                <label for="inputInstagrm">Intagram</label>
-                <input type="url" id="inputIntagram" name="photo" class="form-control" placeholder="URL do instagram" value="{{ $modeEdit === true ? $store->instagram_url : old('instagram_url') }}">
+                <label for="inputInstagrm">Logo da loja (tamanho ideal: 350px / 150px)</label>
+                <input class="upload-image" name="logo_url" type="file" class="file">
             </div>
         </div>
     </div>
