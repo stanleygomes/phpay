@@ -59,7 +59,6 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-3">
             <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Enviando...">Responder</button>
@@ -67,7 +66,7 @@
     </div>
 
     @if(count($contactReplies) > 0)
-    <h3 class="mt-5">Respostas</h3>
+    <h3 class="mt-5 mb-3">Respostas</h3>
     @endif
 
     <div class="col-sm-12">

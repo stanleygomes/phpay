@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,7 +46,7 @@ class Contact extends Model {
     public function getContactList ($filter = null, $paginate = false, $limit = 15) {
         $contact = Contact::orderBy('id', 'desc');
 
-        if ($filter != null && $filter['name'] != '') {
+        if ($filter != null && isset($filter['name']) && $filter['name'] != '') {
             $contact->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
@@ -80,7 +80,7 @@ class Contact extends Model {
         $contact = Contact::getContactById($id);
 
         if ($contact == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $contact->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
@@ -103,9 +103,9 @@ class Contact extends Model {
         try {
             $helperInstance = new Helper();
             $helperInstance->sendMail($param, $data, $template, $subject);
-        } catch(Exception $e) {
+        } catch(AppException $e) {
             Log::error($e);
-            throw new Exception('Erro ao enviar email.');
+            throw new AppException('Erro ao enviar email.');
         }
     }
 }

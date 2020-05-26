@@ -1,4 +1,31 @@
-﻿CREATE TABLE `address` (
+﻿CREATE TABLE `store` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) NULL,
+    `razao_social` varchar(255) NULL,
+    `cpf_cnpj` varchar(255) NULL,
+    `logo_url` varchar(255) NULL,
+    `email` varchar(255) NULL,
+    `phone` varchar(255) NULL,
+    `whatsapp` varchar(255) NULL,
+    `zipcode` varchar(255) NULL,
+    `street` varchar(255) NULL,
+    `number` int(11) NULL,
+    `complement` varchar(255) NULL,
+    `district` varchar(255) NULL,
+    `city` varchar(255) NULL,
+    `state` varchar(255) NULL,
+    `facebook_url` varchar(255) NULL,
+    `instagram_url` varchar(255) NULL,
+    `youtube_url` varchar(255) NULL,
+    `twitter_url` varchar(255) NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `address` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `user_id` int(10) NOT NULL,
     `name` varchar(255) NULL,

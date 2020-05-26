@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -80,14 +80,14 @@ class User extends Authenticatable {
         $user = $this->getUserByEmail($request->email);
 
         if ($user == null) {
-            throw new Exception('Não encontramos um usuário cadastrado com esse email.');
+            throw new AppException('Não encontramos um usuário cadastrado com esse email.');
         }
 
         // $hashPassword = Hash::make($request->password);
         $validPassword = Hash::check($request->password, $user->password);
 
         if ($validPassword === false) {
-            throw new Exception('A senha informada não está correta. Você pode tentar a recuperação de senha abaixo.');
+            throw new AppException('A senha informada não está correta. Você pode tentar a recuperação de senha abaixo.');
         }
 
         Auth::login($user);
@@ -102,7 +102,7 @@ class User extends Authenticatable {
         $user = $this->getUserByEmail($request->email);
 
         if ($user == null) {
-            throw new Exception('Não encontramos um usuário cadastrado com esse email.');
+            throw new AppException('Não encontramos um usuário cadastrado com esse email.');
         }
 
         $userPasswordResetInstance = new UserPasswordReset();
@@ -117,11 +117,11 @@ class User extends Authenticatable {
         $userId = $userPasswordResetInstance->getUserByToken($request->token);
 
         if ($request->token == null || $userId == null) {
-            throw new Exception('O token informado é inválido. Por favor, tente recuperar a senha novamente.');
+            throw new AppException('O token informado é inválido. Por favor, tente recuperar a senha novamente.');
         }
 
         if ($request->password === null) {
-            throw new Exception('Por favor, informe a nova senha e a repetição dela.');
+            throw new AppException('Por favor, informe a nova senha e a repetição dela.');
         }
 
         $hashPassword = Hash::make($request->password);
@@ -138,7 +138,7 @@ class User extends Authenticatable {
         $user = User::getUserById($id);
 
         if ($user == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $passwordPlain = rand(1111, 9999) * 987456;
@@ -161,13 +161,13 @@ class User extends Authenticatable {
         $user = User::getUserById($id);
 
         if ($user == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $validPassword = Hash::check($request->password, $user->password);
 
         if ($validPassword === false) {
-            throw new Exception('A senha atual informada não está correta. Você pode tentar a recuperação de senha.');
+            throw new AppException('A senha atual informada não está correta. Você pode tentar a recuperação de senha.');
         }
 
         $user->password = Hash::make($request->password_new);
@@ -188,7 +188,7 @@ class User extends Authenticatable {
     public function getUserList($filter = null, $paginate = false, $limit = 15) {
         $user = User::orderBy('name', 'asc');
 
-        if ($filter != null && $filter['name'] != '') {
+        if ($filter != null && isset($filter['name']) && $filter['name'] != '') {
             $user->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
@@ -211,7 +211,7 @@ class User extends Authenticatable {
         $user = $this->getUserByEmail($request->email);
 
         if ($user != null) {
-            throw new Exception('Já existe uma conta cadastrada com esse email. Você pode efetuar o login.');
+            throw new AppException('Já existe uma conta cadastrada com esse email. Você pode efetuar o login.');
         }
 
         $user = new User();
@@ -249,7 +249,7 @@ class User extends Authenticatable {
         $user = User::getUserById($id);
 
         if ($user == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $user->name = $request->name;
@@ -279,7 +279,7 @@ class User extends Authenticatable {
         $user = User::getUserById($id);
 
         if ($user == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $user->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
@@ -306,9 +306,9 @@ class User extends Authenticatable {
         try {
             $helperInstance = new Helper();
             $helperInstance->sendMail($param, $data, $template, $subject);
-        } catch(Exception $e) {
+        } catch(AppException $e) {
             Log::error($e);
-            throw new Exception('Erro ao enviar email.');
+            throw new AppException('Erro ao enviar email.');
         }
     }
 
@@ -326,9 +326,9 @@ class User extends Authenticatable {
         try {
             $helperInstance = new Helper();
             $helperInstance->sendMail($param, $data, $template, $subject);
-        } catch(Exception $e) {
+        } catch(AppException $e) {
             Log::error($e);
-            throw new Exception('Erro ao enviar email.');
+            throw new AppException('Erro ao enviar email.');
         }
     }
 }

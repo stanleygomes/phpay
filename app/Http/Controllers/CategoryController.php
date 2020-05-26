@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class CategoryController extends Controller {
             $categories = $categoryInstance->getCategoryList($filter, true);
 
             return view('category.index', compact('categories', 'filter'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -29,7 +29,7 @@ class CategoryController extends Controller {
             $filter = $request->all();
             Session::put('categorySearch', $filter);
             return Redirect::route('app.category.index');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -41,7 +41,7 @@ class CategoryController extends Controller {
             $modeEdit = false;
 
             return view('category.form', compact('modeEdit'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -64,7 +64,7 @@ class CategoryController extends Controller {
 
             return Redirect::route('app.category.index')
                 ->with('status', $category['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -78,7 +78,7 @@ class CategoryController extends Controller {
             $modeEdit = true;
 
             return view('category.form', compact('category', 'modeEdit'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -92,7 +92,7 @@ class CategoryController extends Controller {
 
             return Redirect::route('app.category.index')
                 ->with('status', $category['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -106,7 +106,7 @@ class CategoryController extends Controller {
 
             return Redirect::route('app.category.index')
                 ->with('status', $message);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
                 ->withInput();

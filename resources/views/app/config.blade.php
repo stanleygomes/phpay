@@ -24,7 +24,7 @@
                 Dados da loja
             </div>
             <div class="col-sm-3 text-right">
-                <a href="{{ route('app.user.edit', [ 'id' => 1 ]) }}" class="not-underlined">
+                <a href="{{ route('app.store.edit', [ 'id' => 1 ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Configurar">
                         ATUALIZAR
                     </button>

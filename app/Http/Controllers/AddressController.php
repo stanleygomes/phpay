@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class AddressController extends Controller {
             $addresses = $addressInstance->getAddressList($filter, true);
 
             return view('address.index', compact('addresses', 'filter'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -29,7 +29,7 @@ class AddressController extends Controller {
             $filter = $request->all();
             Session::put('addressSearch', $filter);
             return Redirect::route('app.address.index');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -41,7 +41,7 @@ class AddressController extends Controller {
             $modeEdit = false;
 
             return view('address.form', compact('modeEdit'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -64,7 +64,7 @@ class AddressController extends Controller {
 
             return Redirect::route('app.address.index')
                 ->with('status', $address['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -78,7 +78,7 @@ class AddressController extends Controller {
             $modeEdit = true;
 
             return view('address.form', compact('address', 'modeEdit'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -92,7 +92,7 @@ class AddressController extends Controller {
 
             return Redirect::route('app.address.index')
                 ->with('status', $address['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -106,7 +106,7 @@ class AddressController extends Controller {
 
             return Redirect::route('app.address.index')
                 ->with('status', $message);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
                 ->withInput();

@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Exceptions\AppException;
 
 class Address extends Model {
     protected $table = 'address';
@@ -55,12 +55,14 @@ class Address extends Model {
     public function getAddressList($filter = null, $paginate = false, $limit = 15) {
         $address = Address::orderBy('id', 'desc');
 
-        $filter = [
-            'user_id' => Auth::user()->id
-        ];
+        $address->where('user_id', Auth::user()->id);
 
-        if ($filter != null && $filter['user_id'] != '') {
+        if ($filter != null && isset($filter['user_id']) && $filter['user_id'] != '') {
             $address->where('user_id', $filter['user_id']);
+        }
+
+        if ($filter != null && isset($filter['name']) && $filter['name'] != '') {
+            $address->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
         if ($paginate === true) {
@@ -98,7 +100,7 @@ class Address extends Model {
         $address = Address::getAddressById($id);
 
         if ($address == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $address->name = $request->name;
@@ -122,7 +124,7 @@ class Address extends Model {
         $address = Address::getAddressById($id);
 
         if ($address == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $address->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));

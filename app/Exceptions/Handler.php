@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler {
@@ -15,6 +16,10 @@ class Handler extends ExceptionHandler {
     ];
 
     public function report(Exception $exception) {
+        if ($exception instanceof AppException) {
+            return $exception->render();
+        }
+
         parent::report($exception);
     }
 
