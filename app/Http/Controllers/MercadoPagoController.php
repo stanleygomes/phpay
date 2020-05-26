@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use MercadoPago;
-use Exception;
+use App\Exceptions\AppException;ions\AppAppException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -22,7 +22,7 @@ class MercadoPagoController extends Controller {
             $preference = $this->getPreference($customer, $items, $paymentMethodsAvailable);
             // TODO: criar um pagamento aqui numa tabela do banco e referenciar cliente e $preference->id
 
-        } catch(Exception $e) {
+        } catch(AppException $e) {
             Log::error($e);
             return 'Ocorreu um erro ao gerar a solicitação de pagamento.';
         }
@@ -40,16 +40,16 @@ class MercadoPagoController extends Controller {
             $accesToken = env('PROD_ACCESS_TOKEN');
 
             if ($accesToken == null || $accesToken == '') {
-                throw new Exception('Por favor, informe o PROD_ACCESS_TOKEN no arquivo .env');
+                throw new AppException('Por favor, informe o PROD_ACCESS_TOKEN no arquivo .env');
             }
         } else if ($env === 'SANDBOX') {
             $accesToken = env('TEST_ACCESS_TOKEN');
 
             if ($accesToken == null || $accesToken == '') {
-                throw new Exception('Por favor, informe o TEST_ACCESS_TOKEN no arquivo .env');
+                throw new AppException('Por favor, informe o TEST_ACCESS_TOKEN no arquivo .env');
             }
         } else {
-            throw new Exception('Por favor, informe o MP_ENV no arquivo .env');
+            throw new AppException('Por favor, informe o MP_ENV no arquivo .env');
         }
 
         return $accesToken;
@@ -64,15 +64,15 @@ class MercadoPagoController extends Controller {
             $urlPending = env('PROD_URL_CALLBACK_PENDING');
 
             if ($urlSuccess == null || $urlSuccess == '') {
-                throw new Exception('Por favor, informe o PROD_URL_CALLBACK_SUCCESS no arquivo .env');
+                throw new AppException('Por favor, informe o PROD_URL_CALLBACK_SUCCESS no arquivo .env');
             }
 
             if ($urlFailure == null || $urlFailure == '') {
-                throw new Exception('Por favor, informe o PROD_URL_CALLBACK_FAILURE no arquivo .env');
+                throw new AppException('Por favor, informe o PROD_URL_CALLBACK_FAILURE no arquivo .env');
             }
 
             if ($urlPending == null || $urlPending == '') {
-                throw new Exception('Por favor, informe o PROD_URL_CALLBACK_PENDING no arquivo .env');
+                throw new AppException('Por favor, informe o PROD_URL_CALLBACK_PENDING no arquivo .env');
             }
 
             return [
@@ -86,15 +86,15 @@ class MercadoPagoController extends Controller {
             $urlPending = env('TEST_URL_CALLBACK_PENDING');
 
             if ($urlSuccess == null || $urlSuccess == '') {
-                throw new Exception('Por favor, informe o TEST_URL_CALLBACK_SUCCESS no arquivo .env');
+                throw new AppException('Por favor, informe o TEST_URL_CALLBACK_SUCCESS no arquivo .env');
             }
 
             if ($urlFailure == null || $urlFailure == '') {
-                throw new Exception('Por favor, informe o TEST_URL_CALLBACK_FAILURE no arquivo .env');
+                throw new AppException('Por favor, informe o TEST_URL_CALLBACK_FAILURE no arquivo .env');
             }
 
             if ($urlPending == null || $urlPending == '') {
-                throw new Exception('Por favor, informe o TEST_URL_CALLBACK_PENDING no arquivo .env');
+                throw new AppException('Por favor, informe o TEST_URL_CALLBACK_PENDING no arquivo .env');
             }
 
             return [
@@ -133,7 +133,7 @@ class MercadoPagoController extends Controller {
         $itemsPayment = [];
 
         if (count($items) === 0) {
-            throw new Exception('Por favor, informe ao menos 1 item para pagamento.');
+            throw new AppException('Por favor, informe ao menos 1 item para pagamento.');
         }
 
         for($i = 0; $i < count($items); $i++) {
@@ -171,11 +171,11 @@ class MercadoPagoController extends Controller {
         $mpApp = env('MP_APP');
 
         if ($appDomain == null || $appDomain == '') {
-            throw new Exception('Por favor, informe o APP_DOMAIN no arquivo .env');
+            throw new AppException('Por favor, informe o APP_DOMAIN no arquivo .env');
         }
 
         if ($mpApp == null || $mpApp == '') {
-            throw new Exception('Por favor, informe o MP_APP no arquivo .env');
+            throw new AppException('Por favor, informe o MP_APP no arquivo .env');
         }
 
         $MP = new MercadoPago\SDK();

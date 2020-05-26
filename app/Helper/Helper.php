@@ -3,6 +3,7 @@
 namespace App\Helper;
 
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class Helper {
@@ -65,7 +66,26 @@ class Helper {
         ];
     }
 
-    public function uploadFile() {
+    public function uploadFile($request, $fieldName, $folder) {
         // TODO: move to cloud storage
-    }
+	    if ($request->hasFile($fieldName)) {
+            $yearMonth = date('y/m');
+            $file = $request->file($fieldName);
+            $originalName = $file->getClientOriginalName();
+            $originalExtension = $file->getClientOriginalExtension();
+
+            $fileName = md5(date('YmdHis') . $originalName) . '.' . $originalExtension;
+            $directory = public_path() . '/uploads/' . $folder . '/' . $yearMonth;
+
+            if (is_dir($directory) === false) {
+                File::makeDirectory($directory, 0777, true);
+            }
+
+            $file->move($directory, $fileName);
+
+            return $yearMonth.$fileName;
+        } else {
+            return null;
+        }
+	}
 }

@@ -65,21 +65,6 @@ $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     })
 
-    $('.summernote').summernote({
-        placeholder: '',
-        tabsize: 2,
-        height: 150,
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']],
-            ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-    });
-
     $('.confirmAction').click(function(e) {
         e.preventDefault();
         const message = $(this).attr('data-message') || 'Você tem certeza?';
@@ -112,7 +97,12 @@ $(document).ready(function () {
                     $('#inputState').val(response.uf);
                     $('#inputNumber').focus();
                 } else {
-                    alert('Ocorreu um erro na busca do CEP: ' + zipcode + '.');
+                    $('#inputStreet').val('').focus();
+                    $('#inputDistrict').val('');
+                    $('#inputCity').val('');
+                    $('#inputState').val('');
+
+                    alert('Este CEP (' + zipcode + ') não foi encontrado na base dados, por favor, informe os dados do endereço manualmente.');
                 }
             })
             .catch(error => console.error(error))

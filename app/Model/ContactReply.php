@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -38,7 +38,7 @@ class ContactReply extends Model {
             )
             ->orderBy('id', 'desc');
 
-        if ($filter != null && $filter['contact_id'] != '') {
+        if ($filter != null && isset($filter['contact_id']) && $filter['contact_id'] != '') {
             $contactReply->where('contact_id', $filter['contact_id']);
         }
 
@@ -81,9 +81,9 @@ class ContactReply extends Model {
         try {
             $helperInstance = new Helper();
             $helperInstance->sendMail($param, $data, $template, $subject);
-        } catch(Exception $e) {
+        } catch(AppException $e) {
             Log::error($e);
-            throw new Exception('Erro ao enviar email.');
+            throw new AppException('Erro ao enviar email.');
         }
     }
 }

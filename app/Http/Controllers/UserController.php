@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +39,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.dashboard')
                 ->with('status', '');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()
                 ->withErrors($e->getMessage())
@@ -54,7 +54,7 @@ class UserController extends Controller {
 
             return Redirect::route('auth.login')
                 ->with('status', 'Obrigado por estar conosco.');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -85,7 +85,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.dashboard')
                 ->with('status', 'Sua conta foi criada com sucesso.');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()
                 ->withErrors($e->getMessage())
@@ -105,7 +105,7 @@ class UserController extends Controller {
 
             return Redirect::back()
                 ->with('status', 'Enviamos um email para você. Por favor, verifique sua caixa de entrada para recuperação de senha.');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -125,7 +125,7 @@ class UserController extends Controller {
             }
 
             return view('user.password-reset', compact('token'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('auth.login')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -139,7 +139,7 @@ class UserController extends Controller {
 
             return Redirect::route('auth.login')
                 ->with('status', 'Sua senha foi alterada com sucesso.');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -154,7 +154,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.user.index')
                 ->with('status', $user['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -164,7 +164,7 @@ class UserController extends Controller {
     public function passwordChange() {
         try {
             return view('user.password-change');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -179,7 +179,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.user.passwordChange')
                 ->with('status', $user['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.passwordChange')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -196,7 +196,7 @@ class UserController extends Controller {
             $modeAccount = true;
 
             return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -214,7 +214,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.user.accountUpdate')
                 ->with('status', $user['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.accountUpdate')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -228,7 +228,7 @@ class UserController extends Controller {
             $users = $userInstance->getUserList($filter, true);
 
             return view('user.index', compact('users', 'filter'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -240,7 +240,7 @@ class UserController extends Controller {
             $filter = $request->all();
             Session::put('userSearch', $filter);
             return Redirect::route('app.user.index');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -255,7 +255,7 @@ class UserController extends Controller {
             $modeAccount = false;
 
             return view('user.form', compact('profiles', 'modeEdit', 'modeAccount'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -279,7 +279,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.user.index')
                 ->with('status', $user['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             DB::rollBack();
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
@@ -296,7 +296,7 @@ class UserController extends Controller {
             $modeAccount = false;
 
             return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -310,7 +310,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.user.index')
                 ->with('status', $user['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -324,7 +324,7 @@ class UserController extends Controller {
 
             return Redirect::route('app.user.index')
                 ->with('status', $message);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
                 ->withInput();

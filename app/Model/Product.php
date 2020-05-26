@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Exceptions\AppException;
 
 class Product extends Model {
     protected $table = 'product';
@@ -55,7 +55,7 @@ class Product extends Model {
     public function getAddressList($filter = null, $paginate = false, $limit = 15) {
         $address = Address::orderBy('id', 'desc');
 
-        if ($filter != null && $filter['user_id'] != '') {
+        if ($filter != null && isset($filter['user_id']) && $filter['user_id'] != '') {
             $address->where('user_id', $filter['user_id']);
         }
 
@@ -94,7 +94,7 @@ class Product extends Model {
         $address = Address::getAddressById($id);
 
         if ($address == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $address->name = $request->name;
@@ -118,7 +118,7 @@ class Product extends Model {
         $address = Address::getAddressById($id);
 
         if ($address == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $address->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));

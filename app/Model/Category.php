@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Exception;
+use App\Exceptions\AppException;
 
 class Category extends Model {
     protected $table = 'category';
@@ -35,8 +35,8 @@ class Category extends Model {
     public function getCategoryList($filter = null, $paginate = false, $limit = 15) {
         $category = Category::orderBy('id', 'desc');
 
-        if ($filter != null && $filter['user_id'] != '') {
-            $category->where('user_id', $filter['user_id']);
+        if ($filter != null && isset($filter['name']) && $filter['name'] != '') {
+            $category->where('name', 'like', '%' . $filter['name'] . '%');
         }
 
         if ($paginate === true) {
@@ -66,7 +66,7 @@ class Category extends Model {
         $category = Category::getCategoryById($id);
 
         if ($category == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $category->name = $request->name;
@@ -83,7 +83,7 @@ class Category extends Model {
         $category = Category::getCategoryById($id);
 
         if ($category == null) {
-            throw new Exception('Cadastro [' . $id . '] não encontrado.');
+            throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
         $category->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));

@@ -2,13 +2,30 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
     <title>PHPay - @yield('pageTitle')</title>
 
+    <!-- Meta -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="description" content="PHPay" />
+    <meta name="theme-color" content="#1976d2">
+
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="/img/favicon.png?v={{ env('APP_VERSION') }}" />
+    <link rel="apple-touch-icon" href="/img/favicon.png?v={{ env('APP_VERSION') }}">
+
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Just Do It" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.webmanifest?v={{ env('APP_VERSION') }}">
+
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,800" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" />
 
     <!-- Styles -->
     <link rel="stylesheet" href="/css/bootstrap.min.css?v={{ env('APP_VERSION') }}" />
@@ -24,6 +41,9 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <div class="w-100 text-center">
+                <input class="form-control form-control-dark w-50 align-middle" type="text" placeholder="Search" aria-label="Search">
+            </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -120,6 +140,24 @@
         ga('create', '{{ env("ANALYTICS_CODE") }}', 'auto');
         ga('send', 'pageview');
     </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('Worker registration successful', registration.scope);
+                }, function(err) {
+                    console.log('Worker registration failed', err);
+                }).catch(function(err) {
+                    console.log(err);
+                });
+            });
+        } else {
+            console.log('Service Worker is not supported by browser.');
+        }
+    </script>
+
+    <noscript>Please enable JavaScript to continue using this application.</noscript>
 
 </body>
 

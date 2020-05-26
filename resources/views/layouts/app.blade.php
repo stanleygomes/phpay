@@ -2,10 +2,27 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <title>PHPay - @yield('pageTitle')</title>
+
+    <!-- Meta -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="description" content="PHPay" />
+    <meta name="theme-color" content="#1976d2">
 
-    <title>PHPay - @yield('pageTitle')</title>
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="/img/favicon.png?v={{ env('APP_VERSION') }}" />
+    <link rel="apple-touch-icon" href="/img/favicon.png?v={{ env('APP_VERSION') }}">
+
+    <!-- add to homescreen for ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Just Do It" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.webmanifest?v={{ env('APP_VERSION') }}">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" />
@@ -54,9 +71,10 @@
                         <a href="{{ route('app.category.index') }}" class="list-group-item @yield('sidebarMenuCategoryActive')">Categorias</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
+                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Destaques</a>
 
                         <!-- ADMIN -->
-                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive')">Configurações</a>
+                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive')">Configurações</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                     </div>
                 </div>
@@ -79,6 +97,7 @@
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/summernote.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/admin.js?v={{ env('APP_VERSION') }}"></script>
 
     <script>
         (function(i, s, o, g, r, a, m) {
@@ -96,6 +115,24 @@
         ga('create', '{{ env("ANALYTICS_CODE") }}', 'auto');
         ga('send', 'pageview');
     </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    console.log('Worker registration successful', registration.scope);
+                }, function(err) {
+                    console.log('Worker registration failed', err);
+                }).catch(function(err) {
+                    console.log(err);
+                });
+            });
+        } else {
+            console.log('Service Worker is not supported by browser.');
+        }
+    </script>
+
+    <noscript>Please enable JavaScript to continue using this application.</noscript>
 
 </body>
 

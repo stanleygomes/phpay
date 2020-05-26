@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use App\Model\Contact;
 use App\Model\ContactReply;
 use App\Helper\Helper;
-use Exception;
+use App\Exceptions\AppException;
 
 class ContactController extends Controller {
     public function contact() {
@@ -31,7 +31,7 @@ class ContactController extends Controller {
 
             return Redirect::back()
                 ->with('status', $contact['message']);
-        } catch(Exception $e) {
+        } catch(AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -45,7 +45,7 @@ class ContactController extends Controller {
             $contacts = $contactInstance->getContactList($filter, true, 8);
 
             return view('contact.index', compact('contacts', 'filter'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -64,7 +64,7 @@ class ContactController extends Controller {
             $contactReplies = $contactReplyInstance->getContactReplyList($filter);
 
             return view('contact.form', compact('contact', 'contactReplies', 'filter'));
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -82,7 +82,7 @@ class ContactController extends Controller {
 
             return Redirect::back()
                 ->with('status', $contactReply['message']);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -94,7 +94,7 @@ class ContactController extends Controller {
             $filter = $request->all();
             Session::put('contactSearch', $filter);
             return Redirect::route('app.contact.index');
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
@@ -108,7 +108,7 @@ class ContactController extends Controller {
 
             return Redirect::route('app.contact.index')
                 ->with('status', $message);
-        } catch (Exception $e) {
+        } catch (AppException $e) {
             return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())
                 ->withInput();

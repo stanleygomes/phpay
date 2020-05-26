@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('pageTitle', 'Cadastrar')
+@section('pageTitle', ($modeEdit === true ? 'Editar' : 'Cadastrar'))
 @section('sidebarMenuCategoryActive', 'active')
 
 @section('content')
