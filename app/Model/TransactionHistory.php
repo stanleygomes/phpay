@@ -3,8 +3,11 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TransactionHistory extends Model {
+    use SoftDeletes;
+
     protected $table = 'transaction_history';
     protected $fillable = [
         'transition_id',

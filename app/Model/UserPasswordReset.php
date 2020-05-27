@@ -4,8 +4,11 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserPasswordReset extends Model {
+    use SoftDeletes;
+
     protected $table = 'user_password_reset';
     protected $fillable = [
         'user_id',

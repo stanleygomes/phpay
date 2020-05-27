@@ -39,7 +39,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('website.home') }}">Minha conta</a>
+            <a class="navbar-brand" href="{{ route('app.dashboard') }}">Minha conta</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -72,7 +72,7 @@
                         <a href="{{ route('app.category.index') }}" class="list-group-item @yield('sidebarMenuCategoryActive')">Categorias</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
-                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Destaques</a>
+                        <a href="{{ route('app.featured.index') }}" class="list-group-item @yield('sidebarMenuFeaturedActive')">Destaques</a>
 
                         <!-- ADMIN -->
                         <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Configurações</a>
