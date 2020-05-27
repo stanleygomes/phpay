@@ -5,8 +5,11 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\AppException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model {
+    use SoftDeletes;
+
     protected $table = 'product';
     protected $fillable = [
         'code',

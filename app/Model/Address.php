@@ -5,8 +5,11 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\AppException;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Address extends Model {
+    use SoftDeletes;
+
     protected $table = 'address';
     protected $fillable = [
         'user_id',
