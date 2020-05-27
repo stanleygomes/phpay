@@ -19,13 +19,4 @@ class TransactionHistory extends Model {
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime'
     ];
-
-    public function getTransactionHistory($id) {
-        return TransactionHistory::where('id', $id)
-            ->first();
-    }
-
-    public function getAllTransactionHistory() {
-        return TransactionHistory::get();
-    }
 }

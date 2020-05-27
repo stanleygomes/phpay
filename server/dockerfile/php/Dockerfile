@@ -9,7 +9,8 @@ RUN apt-get -y install --no-install-recommends apt-utils nano wget dialog \
     && rm -rf /var/lib/apt/lists/*
 
 # Install important libraries
-RUN apt-get -y install --no-install-recommends --fix-missing apt-utils build-essential git curl \
+RUN apt-get -y update && apt-get -y install --no-install-recommends --fix-missing apt-utils build-essential git curl \
+    libfreetype6-dev libpng-dev libjpeg62-turbo-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -20,7 +21,8 @@ RUN chmod +x /usr/bin/composer
 
 # PHP Extensions
 RUN docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install mysqli
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install gd
 
 # Install debug
 RUN pecl install xdebug-2.9.1 \

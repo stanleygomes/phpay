@@ -91,7 +91,8 @@ class Product extends Model {
     }
 
     public function updateAddress($request, $id) {
-        $address = Address::getAddressById($id);
+        $addressInstance = new Address();
+        $address = $addressInstance->getAddressById($id);
 
         if ($address == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -115,7 +116,8 @@ class Product extends Model {
     }
 
     public function deleteAddress ($id) {
-        $address = Address::getAddressById($id);
+        $addressInstance = new Address();
+        $address = $addressInstance->getAddressById($id);
 
         if ($address == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');

@@ -75,7 +75,7 @@
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Destaques</a>
 
                         <!-- ADMIN -->
-                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive')">Configurações</a>
+                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Configurações</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                     </div>
                 </div>

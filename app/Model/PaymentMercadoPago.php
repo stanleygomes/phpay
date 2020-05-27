@@ -1,38 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Model;
 
 use MercadoPago;
-use App\Exceptions\AppException;ions\AppAppException;
-use Illuminate\Http\Request;
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Log;
 
-class MercadoPagoController extends Controller {
-    public function preview() {
-        // payment page
-        $customer = null;
-        $items = [1, 2, 3];
-        $paymentMethodsAvailable = [
-            'methods' => ['visa', 'master'],
-            'installments' => 10
-        ];
-
-        try {
-            // criar dados para solicitacao de pagamento
-            $preference = $this->getPreference($customer, $items, $paymentMethodsAvailable);
-            // TODO: criar um pagamento aqui numa tabela do banco e referenciar cliente e $preference->id
-
-        } catch(AppException $e) {
-            Log::error($e);
-            return 'Ocorreu um erro ao gerar a solicitação de pagamento.';
-        }
-
-        $paymentUrl = $preference->init_point;
-
-        return view('mercado-pago.preview', compact('preference', 'paymentUrl'));
-    }
-
-    private function getAccessToken() {
+class PaymentMercadoPago {
+    public function getAccessToken() {
         $accesToken = null;
         $env = env('MP_ENV');
 
@@ -55,7 +30,7 @@ class MercadoPagoController extends Controller {
         return $accesToken;
     }
 
-    private function getBackUrls () {
+    public function getBackUrls() {
         $env = env('MP_ENV');
 
         if ($env === 'PRD') {
@@ -105,7 +80,7 @@ class MercadoPagoController extends Controller {
         }
     }
 
-    private function getPayer ($customer = null) {
+    public function getPayer($customer = null) {
         $payer = new MercadoPago\Payer();
 
         $payer->name = "Joao";
@@ -129,14 +104,14 @@ class MercadoPagoController extends Controller {
         return $payer;
     }
 
-    private function getItems ($items = []) {
+    public function getItems($items = []) {
         $itemsPayment = [];
 
         if (count($items) === 0) {
             throw new AppException('Por favor, informe ao menos 1 item para pagamento.');
         }
 
-        for($i = 0; $i < count($items); $i++) {
+        for ($i = 0; $i < count($items); $i++) {
             $item = $this->getItem($items[$i]);
             array_push($itemsPayment, $item);
         }
@@ -144,7 +119,7 @@ class MercadoPagoController extends Controller {
         return $itemsPayment;
     }
 
-    private function getItem ($item = null) {
+    public function getItem($item = null) {
         $item = new MercadoPago\Item();
         $item->title = 'Meu produto';
         $item->quantity = 1;
@@ -153,7 +128,7 @@ class MercadoPagoController extends Controller {
         return $item;
     }
 
-    private function getPaymentMethods($paymentMethodsAvailable) {
+    public function getPaymentMethods($paymentMethodsAvailable) {
         $excludedPaymentMethods = $this->getExcludedPaymentMethods($paymentMethodsAvailable['methods']);
 
         Log::debug($excludedPaymentMethods);
@@ -194,85 +169,7 @@ class MercadoPagoController extends Controller {
         return $preference;
     }
 
-    public function status (Request $request) {
-        Log::debug('// -------------- start');
-        Log::debug($request);
-
-        $accesToken = $this->getAccessToken();
-        $MP = new MercadoPago\SDK();
-        $MP->setAccessToken($accesToken);
-
-        $merchantOrder = null;
-        $topic = $request->topic;
-        $id = $request->id;
-
-        if ($topic === null || $id === null) {
-            $message = 'Parametros {topic e id} não informados na requisicao.';
-            Log::debug($message);
-            return ['message' => $message];
-        }
-
-        if ($topic === 'payment') {
-            $payment = MercadoPago\Payment::find_by_id($id);
-            if ($payment === null) {
-                $message = 'Pagamento {' . $id . '} não encontrado.';
-                Log::debug($message);
-                return ['message' => $message];
-            } else {
-                $merchantOrderId = $payment->order->id;
-                $merchantOrder = MercadoPago\MerchantOrder::find_by_id($merchantOrderId);
-            }
-        } else if ($topic === 'merchant_order') {
-            $merchantOrder = MercadoPago\MerchantOrder::find_by_id($id);
-        } else {
-            $message = 'Metodo {' . $topic . '} não suportado.';
-            Log::debug($message);
-            return ['message' => $message];
-        }
-
-        if ($merchantOrder === null) {
-            $message = 'Pedido não encontrado.';
-            Log::debug($message);
-            return ['message' => $message];
-        }
-
-        $paidAmount = 0;
-        foreach ($merchantOrder->payments as $payment) {
-            if ($payment['status'] == 'approved') {
-                $paidAmount += $payment['transaction_amount'];
-            }
-        }
-
-        Log::debug('Total pago: ' . $paidAmount);
-
-        if ($paidAmount >= $merchantOrder->total_amount) {
-            if (count($merchantOrder->shipments) > 0) {
-                if ($merchantOrder->shipments[0]->status == 'ready_to_ship') {
-                    Log::debug('Pedido totalmente pago. Preparado para despacho.');
-                }
-            } else {
-                Log::debug('Pedido totalmente pago.');
-                // TODO: enviar email para o cliente informando que foi pago
-            }
-        } else {
-            Log::debug('Pedido ainda pendente.');
-        }
-
-        // TODO: atualizar status de pagamento pelo reference->id
-
-        Log::debug('// -------------- end');
-
-        return ['message' => 'Fim da verificação.'];
-    }
-
-    public function callback (Request $request, $type) {
-        // TODO: salvar essa response na tabela relacionando ao pagamento
-        $callbackData = $request;
-        // TODO: enviar email para o cliente informando o status atual do pedido
-        return view('mercado-pago.callback', compact('type'));
-    }
-
-    public function createCustomerSandbox () {
+    public function createCustomerSandbox() {
         $accesToken = $this->getAccessToken();
         $url = 'https://api.mercadopago.com/users/test_user?access_token=' . $accesToken;
 
@@ -388,7 +285,7 @@ class MercadoPagoController extends Controller {
             ]
         ];
 
-        for($i = 0; $i < count($statusList); $i++) {
+        for ($i = 0; $i < count($statusList); $i++) {
             $statusItem = $statusList[$i];
 
             if ($statusItem['status'] === $status && $statusItem['status'] === $statusDetail) {
@@ -403,11 +300,11 @@ class MercadoPagoController extends Controller {
         $excludedPaymentMethods = [];
         $paymentMethods = $this->getAllPaymentMethods();
 
-        for($i = 0; $i < count($paymentMethods); $i++) {
+        for ($i = 0; $i < count($paymentMethods); $i++) {
             $paymentMethod = $paymentMethods[$i];
             $exists = in_array($paymentMethod['id'], $paymentMethodsAvailable);
 
-            if($exists === false) {
+            if ($exists === false) {
                 $method = [
                     'id' => $paymentMethod['id']
                 ];

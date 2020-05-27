@@ -5,6 +5,7 @@ namespace App\Helper;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class Helper {
     private static $messages = [
@@ -69,7 +70,7 @@ class Helper {
     public function uploadFile($request, $fieldName, $folder) {
         // TODO: move to cloud storage
 	    if ($request->hasFile($fieldName)) {
-            $yearMonth = date('y/m');
+            $yearMonth = date('Y/m/');
             $file = $request->file($fieldName);
             $originalName = $file->getClientOriginalName();
             $originalExtension = $file->getClientOriginalExtension();
@@ -80,6 +81,8 @@ class Helper {
             if (is_dir($directory) === false) {
                 File::makeDirectory($directory, 0777, true);
             }
+
+            // Image::make($request->file($fieldName))->resize(300, 200)->save('foo.jpg');
 
             $file->move($directory, $fileName);
 

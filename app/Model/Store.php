@@ -123,7 +123,7 @@ class Store extends Model {
     }
 
     public function updateStore($request, $id) {
-        $store = Store::getStoreById($id);
+        $store = $this->getStoreById($id);
 
         if ($store == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -159,7 +159,7 @@ class Store extends Model {
     }
 
     public function deleteStore ($id) {
-        $store = Store::getStoreById($id);
+        $store = $this->getStoreById($id);
 
         if ($store == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');

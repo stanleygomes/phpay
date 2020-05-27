@@ -9,10 +9,12 @@
             <h1>
                 <i class="fa fa-frown-open"></i>
                 <div>
-                    Erro 403.
+                    Erro 419.
                 </div>
             </h1>
-            <p>Este endereço não pode ser acessado.</p>
+            <p>Sessão expirada. Será necessário efetuar o login novamente.</p>
+            <br />
+            <a href="{{ route('auth.login') }}">Clique aqui</a>
         </div>
     </div>
 </div>

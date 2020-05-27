@@ -178,6 +178,12 @@
                 <input class="upload-image" name="logo_url" type="file" class="file">
             </div>
         </div>
+        @if($modeEdit === true && $store->logo_url != null)
+        <div class="col-sm-3">
+            <label for="">Imagem atual</label>
+            <img src="{{ '/uploads/store/logo/' . $store->logo_url }}" class="w-100 border" />
+        </div>
+        @endif
     </div>
 
     <div class="row">

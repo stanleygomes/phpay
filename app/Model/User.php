@@ -135,7 +135,7 @@ class User extends Authenticatable {
     }
 
     public function passwordGenerate($id) {
-        $user = User::getUserById($id);
+        $user = $this->getUserById($id);
 
         if ($user == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -158,7 +158,7 @@ class User extends Authenticatable {
     }
 
     public function passwordChange ($request, $id) {
-        $user = User::getUserById($id);
+        $user = $this->getUserById($id);
 
         if ($user == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -246,7 +246,7 @@ class User extends Authenticatable {
     }
 
     public function updateUser ($request, $id) {
-        $user = User::getUserById($id);
+        $user = $this->getUserById($id);
 
         if ($user == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -276,7 +276,7 @@ class User extends Authenticatable {
     }
 
     public function deleteUser ($id) {
-        $user = User::getUserById($id);
+        $user = $this->getUserById($id);
 
         if ($user == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
