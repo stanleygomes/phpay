@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<form class="search-form formulary mt-3" method="post" action="{{ route('app.user.passwordChangePost') }}">
+<form enctype="multipart/form-data" class="search-form formulary mt-3" method="post" action="{{ route('app.user.passwordChangePost') }}">
     {!! csrf_field() !!}
 
     @include('layouts.components.alert-messages')

@@ -4,7 +4,7 @@
 
 <script src="https://www.mercadopago.com/v2/security.js" view="{{ env('APP_DOMAIN') }}"></script>
 
-<form action="{{ route('mercadoPago.preview') }}" method="POST">
+<form enctype="multipart/form-data" action="{{ route('mercadoPago.preview') }}" method="POST">
     <script
         src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
         data-header-color="#c0392b"
