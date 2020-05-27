@@ -45,6 +45,8 @@ services:
       dockerfile: ./server/dockerfile/php/Dockerfile
     container_name: phpay-webserver
     restart: always
+    environment:
+      XDEBUG_CONFIG: "remote_host=127.0.0.1 remote_enable=1"
     ports:
       - 8000:80
       - 443:443
