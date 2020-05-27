@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<form class="search-form formulary mt-3" method="post" action="{{ route('app.contact.reply', [ 'id' => $contact->id ]) }}">
+<form enctype="multipart/form-data" class="search-form formulary mt-3" method="post" action="{{ route('app.contact.reply', [ 'id' => $contact->id ]) }}">
     {!! csrf_field() !!}
 
     @include('layouts.components.alert-messages')

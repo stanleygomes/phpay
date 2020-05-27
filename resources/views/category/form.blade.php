@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<form class="search-form formulary mt-3" method="post" action="{{ $modeEdit === true ? route('app.category.update', [ 'id' => $category->id ]) : route('app.category.store') }}">
+<form enctype="multipart/form-data" class="search-form formulary mt-3" method="post" action="{{ $modeEdit === true ? route('app.category.update', [ 'id' => $category->id ]) : route('app.category.store') }}">
     {!! csrf_field() !!}
 
     @include('layouts.components.alert-messages')

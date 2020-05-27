@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row justify-content-md-center">
         <div class="col-sm-12 col-lg-6">
-            <form class="auth-form formulary" method="post" action="{{ route('website.contact.send') }}">
+            <form enctype="multipart/form-data" class="auth-form formulary" method="post" action="{{ route('website.contact.send') }}">
                 {!! csrf_field() !!}
                 <h1 class="h3 mb-3 font-weight-normal">Deixe-nos uma mensagem abaixo.</h1>
                 <p>Responderemos o mais breve possível!</p>

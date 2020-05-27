@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<form class="search-form formulary" method="post" action="{{ route('app.contact.search') }}">
+<form enctype="multipart/form-data" class="search-form formulary" method="post" action="{{ route('app.contact.search') }}">
     {!! csrf_field() !!}
     <div class="row mt-4">
         <div class="col-sm-9">
