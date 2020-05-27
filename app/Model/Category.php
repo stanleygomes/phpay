@@ -63,7 +63,8 @@ class Category extends Model {
     }
 
     public function updateCategory($request, $id) {
-        $category = Category::getCategoryById($id);
+        $categoryInstance = new Category();
+        $category = $categoryInstance->getCategoryById($id);
 
         if ($category == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -80,7 +81,7 @@ class Category extends Model {
     }
 
     public function deleteCategory ($id) {
-        $category = Category::getCategoryById($id);
+        $category = $this->getCategoryById($id);
 
         if ($category == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');

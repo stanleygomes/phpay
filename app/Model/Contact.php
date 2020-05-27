@@ -77,7 +77,7 @@ class Contact extends Model {
     }
 
     public function deleteContact ($id) {
-        $contact = Contact::getContactById($id);
+        $contact = $this->getContactById($id);
 
         if ($contact == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');

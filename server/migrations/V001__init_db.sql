@@ -25,6 +25,20 @@
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `payment_methods_available` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `gateway` varchar(255) NULL,
+    `method_id` varchar(255) NULL,
+    `method_name` varchar(255) NULL,
+    `method_code` varchar(255) NULL,
+    `method_type` varchar(255) NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
 CREATE TABLE `address` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `user_id` int(10) NOT NULL,

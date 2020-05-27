@@ -1,5 +1,5 @@
 @extends('layouts.website')
-@section('pageTitle', 'Página inicial')
+@section('pageTitle', 'Ocorreu um erro...')
 
 @section('content')
 

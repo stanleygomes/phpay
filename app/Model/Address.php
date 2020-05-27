@@ -97,7 +97,7 @@ class Address extends Model {
     }
 
     public function updateAddress($request, $id) {
-        $address = Address::getAddressById($id);
+        $address = $this->getAddressById($id);
 
         if ($address == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
@@ -121,7 +121,7 @@ class Address extends Model {
     }
 
     public function deleteAddress ($id) {
-        $address = Address::getAddressById($id);
+        $address = $this->getAddressById($id);
 
         if ($address == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
