@@ -86,6 +86,28 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CategoryController@delete']);
     });
 
+    Route::group(['as' => 'product.', 'prefix' => 'product'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ProductController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ProductController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'ProductController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'ProductController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductController@delete']);
+        Route::get('photo/main/{productId}/{photoId}', ['as' => 'photoMain', 'uses' => 'ProductController@photoMain']);
+        Route::get('photo/remove/{photoId}', ['as' => 'photoRemove', 'uses' => 'ProductController@photoRemove']);
+    });
+
+    Route::group(['as' => 'productPhoto.', 'prefix' => 'productPhoto'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ProductPhotoController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ProductPhotoController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'ProductPhotoController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'ProductPhotoController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductPhotoController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductPhotoController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductPhotoController@delete']);
+    });
+
     Route::group(['as' => 'featured.', 'prefix' => 'featured'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'FeaturedController@index']);
         Route::post('search', ['as' => 'search', 'uses' => 'FeaturedController@search']);

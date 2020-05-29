@@ -114,8 +114,11 @@ class Store extends Model {
         $store->twitter_url = $request->twitter_url;
         $store->created_by = Auth::user()->id;
 
-        $fileManagerInstance = new Helper();
-        $store->logo_url = $fileManagerInstance->uploadFile($request, 'logo_url', 'store/logo');
+        if ($request->hasFile('logo_url')) {
+            $file = $request->file('logo_url');
+            $fileManagerInstance = new Helper();
+            $store->logo_url = $fileManagerInstance->uploadFile($file, 'store/logo');
+        }
 
         $store->save();
 
@@ -150,8 +153,11 @@ class Store extends Model {
         $store->youtube_url = $request->youtube_url;
         $store->twitter_url = $request->twitter_url;
 
-        $fileManagerInstance = new Helper();
-        $store->logo_url = $fileManagerInstance->uploadFile($request, 'logo_url', 'store/logo');
+        if ($request->hasFile('logo_url')) {
+            $file = $request->file('logo_url');
+            $fileManagerInstance = new Helper();
+            $store->logo_url = $fileManagerInstance->uploadFile($file, 'store/logo');
+        }
 
         $store->save();
 
