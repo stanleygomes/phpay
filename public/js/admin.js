@@ -21,6 +21,7 @@ $(document).ready(function () {
         msgPlaceholder: 'Arquivo selecionado...',
         browseLabel: 'Escolher',
         allowedFileTypes: 'image',
-        msgInvalidFileType: 'Tipo de arquivo não suportado'
+        msgInvalidFileType: 'Tipo de arquivo não suportado',
+        msgSelected: '{n} imagens selecionadas'
     });
 });

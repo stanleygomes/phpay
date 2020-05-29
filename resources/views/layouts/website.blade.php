@@ -122,6 +122,7 @@
     <script src="/js/popper.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/bootstrap.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
 
     <script>
@@ -142,19 +143,19 @@
     </script>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('Worker registration successful', registration.scope);
-                }, function(err) {
-                    console.log('Worker registration failed', err);
-                }).catch(function(err) {
-                    console.log(err);
-                });
-            });
-        } else {
-            console.log('Service Worker is not supported by browser.');
-        }
+        // if ('serviceWorker' in navigator) {
+        //     window.addEventListener('load', function() {
+        //         navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+        //             console.log('Worker registration successful', registration.scope);
+        //         }, function(err) {
+        //             console.log('Worker registration failed', err);
+        //         }).catch(function(err) {
+        //             console.log(err);
+        //         });
+        //     });
+        // } else {
+        //     console.log('Service Worker is not supported by browser.');
+        // }
     </script>
 
     <noscript>Please enable JavaScript to continue using this application.</noscript>

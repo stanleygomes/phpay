@@ -63,16 +63,18 @@
                     <div class="side-menu list-group">
                         <!-- CUSTOMER -->
                         <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
-                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserAccount1Active')">Minhas compras</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserCartActive')">Minhas compras</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserWishlistActive')">Seus favoritos</a>
                         <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuAddressActive')">Endereços</a>
                         <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
 
                         <!-- COLABORATOR -->
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Pedidos</a>
                         <a href="{{ route('app.category.index') }}" class="list-group-item @yield('sidebarMenuCategoryActive')">Categorias</a>
-                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
+                        <a href="{{ route('app.product.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
                         <a href="{{ route('app.featured.index') }}" class="list-group-item @yield('sidebarMenuFeaturedActive')">Destaques</a>
+                        <a href="{{ route('app.featured.index') }}" class="list-group-item @yield('sidebarMenuProductReviewActive')">Avaliações</a>
 
                         <!-- ADMIN -->
                         <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Configurações</a>
@@ -98,6 +100,7 @@
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/summernote.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/fileinput.min.js?v={{ env('APP_VERSION') }}"></script>
+    <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/admin.js?v={{ env('APP_VERSION') }}"></script>
 
@@ -119,19 +122,19 @@
     </script>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-                    console.log('Worker registration successful', registration.scope);
-                }, function(err) {
-                    console.log('Worker registration failed', err);
-                }).catch(function(err) {
-                    console.log(err);
-                });
-            });
-        } else {
-            console.log('Service Worker is not supported by browser.');
-        }
+        // if ('serviceWorker' in navigator) {
+        //     window.addEventListener('load', function() {
+        //         navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+        //             console.log('Worker registration successful', registration.scope);
+        //         }, function(err) {
+        //             console.log('Worker registration failed', err);
+        //         }).catch(function(err) {
+        //             console.log(err);
+        //         });
+        //     });
+        // } else {
+        //     console.log('Service Worker is not supported by browser.');
+        // }
     </script>
 
     <noscript>Please enable JavaScript to continue using this application.</noscript>

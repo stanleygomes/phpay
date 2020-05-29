@@ -25,6 +25,61 @@
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `product` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `category_id` int(10) NOT NULL,
+    `code` varchar(255) NOT NULL,
+    `title` varchar(255) NOT NULL,
+    `price` float(8,2) NOT NULL,
+    `description` text NULL,
+    `description_short` varchar(255) NOT NULL,
+    `stock_qty` int(10) NOT NULL,
+    `evaluation_rate` float(8,2) NOT NULL DEFAULT 0,
+    `photo_main_url` varchar(255) NULL,
+    `more_details` text NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `product_photo` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `product_id` int(10) NOT NULL,
+    `photo_url` varchar(255) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `product_stock_movement` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `product_id` int(10) NOT NULL,
+    `value` int(10) NOT NULL,
+    `action` varchar(255) NOT NULL, -- ADD, REMOVE
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+CREATE TABLE `product_review` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `product_id` int(10) NOT NULL,
+    `cart_id` int(10) NOT NULL,
+    `evaluation` int(10) NOT NULL,
+    `description` varchar(255) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
 CREATE TABLE `featured` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `title` varchar(255) NULL,
@@ -180,6 +235,10 @@ CREATE TABLE `user_password_reset` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 ALTER TABLE `address` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+ALTER TABLE `product_photo` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `product_review` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `product_stock_movement` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 ALTER TABLE `contact_reply` ADD FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`);
 ALTER TABLE `user_password_reset` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `user_login_history` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);

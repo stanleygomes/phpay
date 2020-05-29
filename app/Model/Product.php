@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\AppException;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Helper\Helper;
 
 class Product extends Model {
     use SoftDeletes;
 
     protected $table = 'product';
     protected $fillable = [
+        'category_id',
         'code',
         'title',
         'price',
@@ -19,7 +21,7 @@ class Product extends Model {
         'description_short',
         'stock_qty',
         'evaluation_rate',
-        'main_photo',
+        'photo_main_url',
         'more_details',
         'created_by'
     ];
@@ -31,103 +33,171 @@ class Product extends Model {
     ];
 
     public $validationRules = [
-        'name' => 'required',
-        'zipcode' => 'required',
-        'street' => 'required',
-        'number' => 'required',
-        'district' => 'required',
-        'city' => 'required',
-        'state' => 'required'
+        'code' => 'required',
+        'title' => 'required',
+        'price' => 'required',
+        'description_short' => 'required'
     ];
 
     public $validationMessages = [
-        'name.required' => 'O campo nome é obrigatório.',
-        'zipcode.required' => 'O campo CEP é obrigatório.',
-        'street.required' => 'O campo logradouro é obrigatório.',
-        'number.required' => 'O campo número é obrigatório.',
-        'district.required' => 'O campo bairro é obrigatório.',
-        'city.required' => 'O campo cidade é obrigatório.',
-        'state.required' => 'O campo estado é obrigatório.'
+        'code.required' => 'O campo código é obrigatório.',
+        'title.required' => 'O campo título é obrigatório.',
+        'price.required' => 'O campo preço é obrigatório.',
+        'description_short.required' => 'O campo descrição curta é obrigatório.',
     ];
 
-    public function getAddressById($id) {
-        return Address::where('id', $id)
+    public function getProductById($id) {
+        return Product::where('id', $id)
             ->first();
     }
 
-    public function getAddressList($filter = null, $paginate = false, $limit = 15) {
-        $address = Address::orderBy('id', 'desc');
+    public function getProductList($filter = null, $paginate = false, $limit = 15) {
+        $product = Product::join('category', 'category.id', '=', 'product.category_id')
+            ->select(
+                'product.id', 'product.category_id', 'product.code', 'product.title', 'product.price', 'product.description',
+                'product.description_short', 'product.stock_qty', 'product.evaluation_rate', 'product.photo_main_url',
+                'product.more_details',
+                'category.name as category_name'
+            )
+            ->orderBy('id', 'desc');
 
-        if ($filter != null && isset($filter['user_id']) && $filter['user_id'] != '') {
-            $address->where('user_id', $filter['user_id']);
+        if ($filter != null && isset($filter['title']) && $filter['title'] != '') {
+            $product->where('title', 'like', '%' . $filter['title'] . '%');
         }
 
         if ($paginate === true) {
-            $address = $address->paginate($limit);
+            $product = $product->paginate($limit);
         } else {
-            $address = $address->get();
+            $product = $product->get();
         }
 
-        return $address;
+        return $product;
     }
 
-    public function storeAddress($request) {
-        $address = new Address();
+    public function storeProduct($request) {
+        $product = new Product();
 
-        $address->user_id = Auth::user()->id;
-        $address->name = $request->name;
-        $address->zipcode = $request->zipcode;
-        $address->street = $request->street;
-        $address->number = $request->number;
-        $address->complement = $request->complement;
-        $address->district = $request->district;
-        $address->city = $request->city;
-        $address->state = $request->state;
-        $address->created_by = Auth::user()->id;
+        $product->category_id = $request->category_id;
+        $product->code = $request->code;
+        $product->title = $request->title;
+        $product->price = Helper::convertMoneyFromBRtoUS($request->price);
+        $product->description = $request->description;
+        $product->description_short = $request->description_short;
+        $product->more_details = $request->more_details;
+        $product->created_by = Auth::user()->id;
+        $product->stock_qty = $request->stock_qty;
 
-        $address->save();
+        // starter rating: 0
+        $product->evaluation_rate = 0;
+
+        $product->save();
+
+        $productId = $product->id;
+        $mainPhoto = null;
+
+        // save photos
+        if ($request->file('photos') != null) {
+            foreach ($request->file('photos') as $key => $file) {
+                $productPhotoInstance = new ProductPhoto();
+                $productPhoto = $productPhotoInstance->storeProductPhoto($file, $productId);
+
+                if ($key === 0) {
+                    $mainPhoto = $productPhoto['data']->photo_url;
+                }
+            }
+        }
+
+        // start stock
+        $productStockMovementInstance = new ProductStockMovement();
+        $productStockMovementInstance->storeProductStockMovement($product->id, $request->stock_qty, 'ADD');
+
+        // main product photo
+        Product::where('id', $product->id)
+            ->update([
+                'photo_main_url' => $mainPhoto
+            ]);
 
         return [
             'message' => 'Cadastro efetuado com sucesso.',
-            'data' => $address
+            'data' => $product
         ];
     }
 
-    public function updateAddress($request, $id) {
-        $addressInstance = new Address();
-        $address = $addressInstance->getAddressById($id);
+    public function updateProduct($request, $id) {
+        $productInstance = new Product();
+        $product = $productInstance->getProductById($id);
 
-        if ($address == null) {
+        if ($product == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
-        $address->name = $request->name;
-        $address->zipcode = $request->zipcode;
-        $address->street = $request->street;
-        $address->number = $request->number;
-        $address->complement = $request->complement;
-        $address->district = $request->district;
-        $address->city = $request->city;
-        $address->state = $request->state;
+        $oldStock = $product->stock_qty;
+        $value = $request->stock_qty - $oldStock;
 
-        $address->save();
+        if ($value !== 0) {
+            $action = $value > 0 ? 'ADD' : 'REMOVE';
+            $productStockMovementInstance = new ProductStockMovement();
+            $productStockMovementInstance->storeProductStockMovement($product->id, $request->stock_qty, $action);
+        }
+
+        $product->category_id = $request->category_id;
+        $product->code = $request->code;
+        $product->stock_qty = $request->stock_qty;
+        $product->title = $request->title;
+        $product->price = Helper::convertMoneyFromBRtoUS($request->price);
+        $product->description = $request->description;
+        $product->description_short = $request->description_short;
+        $product->more_details = $request->more_details;
+
+        // save new photos
+        if ($request->file('photos') != null) {
+            foreach ($request->file('photos') as $key => $file) {
+                $productPhotoInstance = new ProductPhoto();
+                $productPhoto = $productPhotoInstance->storeProductPhoto($file, $product->id);
+
+                if ($key === 0) {
+                    $mainPhoto = $productPhoto['data']->photo_url;
+                }
+            }
+        }
+
+        $product->save();
 
         return [
             'message' => 'Cadastro atualizado com sucesso.',
-            'data' => $address
+            'data' => $product
         ];
     }
 
-    public function deleteAddress ($id) {
-        $addressInstance = new Address();
-        $address = $addressInstance->getAddressById($id);
+    public function setPhotoMain($productId, $photoId) {
+        $productInstance = new Product();
+        $product = $productInstance->getProductById($productId);
 
-        if ($address == null) {
+        if ($product == null) {
+            throw new AppException('Cadastro [' . $productId . '] não encontrado.');
+        }
+
+        $productPhotoInstance = new ProductPhoto();
+        $productPhoto = $productPhotoInstance->getProductPhotoById($photoId);
+
+        $product->photo_main_url = $productPhoto->photo_url;
+        $product->save();
+
+        return [
+            'message' => 'Foto definida como principal com sucesso.'
+        ];
+    }
+
+    public function deleteProduct ($id) {
+        $productInstance = new Product();
+        $product = $productInstance->getProductById($id);
+
+        if ($product == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
-        $address->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $address->save();
+        $product->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $product->save();
 
         return 'Cadastro deletado com sucesso.';
     }

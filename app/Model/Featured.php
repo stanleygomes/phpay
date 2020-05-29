@@ -73,8 +73,11 @@ class Featured extends Model {
         $featured->placement = 'HOME_PAGE';
         $featured->created_by = Auth::user()->id;
 
-        $fileManagerInstance = new Helper();
-        $featured->photo_url = $fileManagerInstance->uploadFile($request, 'photo_url', 'featured');
+        if ($request->hasFile('photo_url')) {
+            $file = $request->file('photo_url');
+            $fileManagerInstance = new Helper();
+            $featured->photo_url = $fileManagerInstance->uploadFile($file, 'featured');
+        }
 
         $featured->save();
 
@@ -96,8 +99,11 @@ class Featured extends Model {
         $featured->position = $request->position;
         $featured->placement = 'HOME_PAGE';
 
-        $fileManagerInstance = new Helper();
-        $featured->photo_url = $fileManagerInstance->uploadFile($request, 'photo_url', 'featured');
+        if ($request->hasFile('photo_url')) {
+            $file = $request->file('photo_url');
+            $fileManagerInstance = new Helper();
+            $featured->photo_url = $fileManagerInstance->uploadFile($file, 'featured');
+        }
 
         $featured->save();
 

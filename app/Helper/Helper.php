@@ -16,7 +16,18 @@ class Helper {
         ]
     ];
 
-    public static function validateRequest ($request, $rules, $messages) {
+    public static function convertMoneyFromBRtoUS($money) {
+        $money = str_replace('.', '', $money);
+        $money = str_replace(',', '.', $money);
+
+        return floatval($money);
+    }
+
+    public static function convertMoneyFromUStoBR($money) {
+        return number_format($money, 2, ',', '.');
+    }
+
+    public static function validateRequest($request, $rules, $messages) {
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
@@ -67,28 +78,23 @@ class Helper {
         ];
     }
 
-    public function uploadFile($request, $fieldName, $folder) {
+    public function uploadFile($file, $folder) {
         // TODO: move to cloud storage
-	    if ($request->hasFile($fieldName)) {
-            $yearMonth = date('Y/m/');
-            $file = $request->file($fieldName);
-            $originalName = $file->getClientOriginalName();
-            $originalExtension = $file->getClientOriginalExtension();
+        $yearMonth = date('Y/m/');
+        $originalName = $file->getClientOriginalName();
+        $originalExtension = $file->getClientOriginalExtension();
 
-            $fileName = md5(date('YmdHis') . $originalName) . '.' . $originalExtension;
-            $directory = public_path() . '/uploads/' . $folder . '/' . $yearMonth;
+        $fileName = md5(date('YmdHis') . $originalName) . '.' . $originalExtension;
+        $directory = public_path() . '/uploads/' . $folder . '/' . $yearMonth;
 
-            if (is_dir($directory) === false) {
-                File::makeDirectory($directory, 0777, true);
-            }
-
-            // Image::make($request->file($fieldName))->resize(300, 200)->save('foo.jpg');
-
-            $file->move($directory, $fileName);
-
-            return $yearMonth.$fileName;
-        } else {
-            return null;
+        if (is_dir($directory) === false) {
+            File::makeDirectory($directory, 0777, true);
         }
+
+        // Image::make($request->file($fieldName))->resize(300, 200)->save('foo.jpg');
+
+        $file->move($directory, $fileName);
+
+        return $yearMonth.$fileName;
 	}
 }
