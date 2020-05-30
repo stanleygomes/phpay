@@ -100,6 +100,15 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('photo/remove/{photoId}', ['as' => 'photoRemove', 'uses' => 'ProductController@photoRemove']);
     });
 
+    Route::group(['as' => 'productQuestion.', 'prefix' => 'productQuestion'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ProductQuestionController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ProductQuestionController@search']);
+        Route::post('store', ['as' => 'store', 'uses' => 'ProductQuestionController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductQuestionController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductQuestionController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductQuestionController@delete']);
+    });
+
     Route::group(['as' => 'wishlistItem.', 'prefix' => 'wishlistItem'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'WishlistItemController@index']);
         Route::get('create/{id}', ['as' => 'create', 'uses' => 'WishlistItemController@create']);

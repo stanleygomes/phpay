@@ -18,7 +18,7 @@
 </div>
 
 <div class="col-sm-12">
-    <div class="row shadow p-3 mb-3 bg-white rounded">
+    <div class="row p-3 mb-3 border rounded">
         <div class="col-sm-3">
             {{ $contact->name }}
         </div>
@@ -71,7 +71,7 @@
 
     <div class="col-sm-12">
         @foreach($contactReplies as $key => $reply)
-        <div class="row shadow p-3 mb-3 bg-white rounded">
+        <div class="row p-3 mb-3 border rounded">
             <div class="col-sm-6">
                 Data: {{ $reply->created_at->format('d/m/Y') }} br
             </div>

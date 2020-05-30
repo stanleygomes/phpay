@@ -56,7 +56,7 @@
         </div>
 
         @foreach($contacts as $key => $contact)
-        <div class="row shadow p-3 mb-3 bg-white rounded">
+        <div class="row p-3 mb-1 border rounded mb-2">
             <div class="col-sm-3">
                 {{ $contact->name }}
             </div>

@@ -37,14 +37,12 @@
                     <span class="text-dark carousel-control-icon shadow rounded-circle bg-white py-3 px-4">
                         <i class="fa fa-chevron-left"></i>
                     </span>
-                    <!-- <span class="carousel-control-prev-icon carousel-control-icon" aria-hidden="true"></span> -->
                     <span class="sr-only">Próximo</span>
                 </a>
                 <a class="carousel-control-next" href="#carouselFeatured" role="button" data-slide="next">
                     <span class="text-dark carousel-control-icon shadow rounded-circle bg-white py-3 px-4">
                         <i class="fa fa-chevron-right"></i>
                     </span>
-                    <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
                     <span class="sr-only">Anterior</span>
                 </a>
                 <div class="carousel-indicators carousel-thumbnails">
@@ -63,47 +61,44 @@
             <p class="card-text">
                 {{ $product->description_short }}
             </p>
-            @if($product->stock_qty < 5) <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p>
-                @endif
-                <!--
-            <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
-            4.0 stars
-            Formas de pagamento
-            Parcelamentos
-            -->
-                <div class="row">
-                    <div class="col-sm-6">
-                        @if($wishlistItem != null)
-                        <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
-                            <button type="button" class="btn btn-sm mt-2 btn-danger">
-                                <i class="fa fa-heart"></i>
-                                Remover dos favoritos
-                            </button>
-                        </a>
-                        @else
-                        <a href="{{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
-                            <button type="button" class="btn btn-sm mt-2 btn-outline-danger">
-                                <i class="fa fa-heart"></i>
-                                Adicionar aos favoritos
-                            </button>
-                        </a>
-                        @endif
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <a href="">
-                            <button type="button" class="btn btn-lg btn-success">
-                                <i class="fa fa-shopping-cart"></i>
-                                Comprar
-                            </button>
-                        </a>
-                    </div>
+            @if($product->stock_qty < 5)
+            <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p>
+            @endif
+            <div class="row">
+                <div class="col-sm-6">
+                    @if($wishlistItem != null)
+                    <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
+                        <button type="button" class="btn btn-sm mt-2 btn-danger">
+                            <i class="fa fa-heart"></i>
+                            Remover dos favoritos
+                        </button>
+                    </a>
+                    @else
+                    <a href="{{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
+                        <button type="button" class="btn btn-sm mt-2 btn-outline-danger">
+                            <i class="fa fa-heart"></i>
+                            Adicionar aos favoritos
+                        </button>
+                    </a>
+                    @endif
                 </div>
+                <div class="col-sm-6 text-right">
+                    <a href="">
+                        <button type="button" class="btn btn-lg btn-success">
+                            <i class="fa fa-shopping-cart"></i>
+                            Comprar
+                        </button>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="card card-outline-secondary my-5 border-0 shadow rounded">
         <div class="card-header py-3 border-0">
-            <strong>Descrição completa</strong>
+            <h3>
+                <strong>Descrição completa</strong>
+            </h3>
         </div>
         <div class="card-body">
             {!! $product->description !!}
@@ -132,7 +127,6 @@
                             <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                         </h5>
                         <button type="button" class="btn btn-sm btn-outline-warning mt-3">
-                            <!-- <i class="fa fa-shopping-cart"></i> -->
                             Visualizar
                         </button>
                     </div>
@@ -145,7 +139,9 @@
 
     <div class="card card-outline-secondary my-5 border-0 shadow rounded">
         <div class="card-header py-3 border-0">
-            <strong>Dúvidas sobre o produto</strong>
+            <h3>
+                <strong>Perguntas sobre o produto</strong>
+            </h3>
         </div>
         <div class="card-body">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
@@ -157,24 +153,26 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
             <small class="text-muted">Posted by Anonymous on 3/1/17</small>
             <hr>
-            <form enctype="multipart/form-data" class="formulary mt-5" method="post" action="{{ route('website.contact.send') }}">
+            <form enctype="multipart/form-data" class="formulary mt-5" method="post" action="{{ route('app.productQuestion.store') }}">
                 {!! csrf_field() !!}
                 <h3>
                     <strong>Ficou alguma dúvida?</strong>
                 </h3>
 
+                <input type="hidden" name="product_id" value="{{ $product->id }}" />
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for="inputMessage">Escreva aqui*</label>
-                            <textarea name="message" id="inputMessage" name="message" class="form-control" rows="5" required>{{ old('message') }}</textarea>
+                            <label for="inputQuestion">Escreva aqui*</label>
+                            <textarea name="question" id="inputQuestion" name="question" class="form-control" rows="5" required>{{ old('question') }}</textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-3">
-                        <button type="submit" class="btn btn-lg btn-primary btn-block">Deixe uma pergunta</button>
+                        <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Enviando pergunta...">Deixe uma pergunta</button>
                     </div>
                 </div>
             </form>
