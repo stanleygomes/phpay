@@ -25,7 +25,11 @@ class ProductQuestionController extends Controller {
             $productQuestionInstance = new ProductQuestion();
             $productQuestions = $productQuestionInstance->getProductQuestionList($filter, true);
 
-            return view('productQuestion.index', compact('productQuestions', 'filter', 'loggedUser'));
+            return view('productQuestion.index', [
+                'productQuestions' => $productQuestions,
+                'filter' => $filter,
+                'loggedUser' => $loggedUser
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -78,7 +82,10 @@ class ProductQuestionController extends Controller {
             $userInstance = new User();
             $user = $userInstance->getUserById($productQuestion->user_id);
 
-            return view('productQuestion.form', compact('productQuestion', 'user'));
+            return view('productQuestion.form', [
+                'productQuestion' => $productQuestion,
+                'user' => $user
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.productQuestion.index')
                 ->withErrors($e->getMessage())

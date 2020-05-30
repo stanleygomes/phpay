@@ -123,7 +123,9 @@ class UserController extends Controller {
                     ->with('status', 'Essa solicitação de recuperação de senha expirou, por favor tente novamente.');
             }
 
-            return view('user.password-reset', compact('token'));
+            return view('user.password-reset', [
+                'token' => $token
+            ]);
         } catch (AppException $e) {
             return Redirect::route('auth.login')
                 ->withErrors($e->getMessage())
@@ -194,7 +196,12 @@ class UserController extends Controller {
             $modeEdit = true;
             $modeAccount = true;
 
-            return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
+            return view('user.form', [
+                'user' => $user,
+                'profiles' => $profiles,
+                'modeEdit' => $modeEdit,
+                'modeAccount' => $modeAccount
+            ]);
         } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())
@@ -226,7 +233,10 @@ class UserController extends Controller {
             $userInstance = new User();
             $users = $userInstance->getUserList($filter, true);
 
-            return view('user.index', compact('users', 'filter'));
+            return view('user.index', [
+                'users' => $users,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -253,7 +263,11 @@ class UserController extends Controller {
             $modeEdit = false;
             $modeAccount = false;
 
-            return view('user.form', compact('profiles', 'modeEdit', 'modeAccount'));
+            return view('user.form', [
+                'profiles' => $profiles,
+                'modeEdit' => $modeEdit,
+                'modeAccount' => $modeAccount
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())
@@ -294,7 +308,12 @@ class UserController extends Controller {
             $modeEdit = true;
             $modeAccount = false;
 
-            return view('user.form', compact('user', 'profiles', 'modeEdit', 'modeAccount'));
+            return view('user.form', [
+                'user' => $user,
+                'profiles' => $profiles,
+                'modeEdit' => $modeEdit,
+                'modeAccount' => $modeAccount
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())

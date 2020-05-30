@@ -44,7 +44,10 @@ class ContactController extends Controller {
             $contactInstance = new Contact();
             $contacts = $contactInstance->getContactList($filter, true, 8);
 
-            return view('contact.index', compact('contacts', 'filter'));
+            return view('contact.index', [
+                'contacts' => $contacts,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -63,7 +66,11 @@ class ContactController extends Controller {
             $contactReplyInstance = new ContactReply();
             $contactReplies = $contactReplyInstance->getContactReplyList($filter);
 
-            return view('contact.form', compact('contact', 'contactReplies', 'filter'));
+            return view('contact.form', [
+                'contact' => $contact,
+                'contactReplies' => $contactReplies,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())

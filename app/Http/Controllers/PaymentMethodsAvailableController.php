@@ -16,7 +16,10 @@ class PaymentMethodsAvailableController extends Controller {
             $paymentMethodsAvailableInstance = new PaymentMethodsAvailable();
             $paymentMethodsAvailables = $paymentMethodsAvailableInstance->getPaymentMethodsAvailableList($filter, true);
 
-            return view('paymentMethodsAvailable.index', compact('paymentMethodsAvailables', 'filter'));
+            return view('paymentMethodsAvailable.index', [
+                'paymentMethodsAvailables' => $paymentMethodsAvailables,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -42,7 +45,10 @@ class PaymentMethodsAvailableController extends Controller {
             $paymentMethodsAvailableInstance = new PaymentMethodsAvailable();
             $paymentGatewayMethodsList = $paymentMethodsAvailableInstance->getGatewaysMethods();
 
-            return view('paymentMethodsAvailable.form', compact('modeEdit', 'paymentGatewayMethodsList'));
+            return view('paymentMethodsAvailable.form', [
+                'modeEdit' => $modeEdit,
+                'paymentGatewayMethodsList' => $paymentGatewayMethodsList
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.paymentMethodsAvailable.index')
                 ->withErrors($e->getMessage())
@@ -79,7 +85,11 @@ class PaymentMethodsAvailableController extends Controller {
             $modeEdit = true;
             $paymentGatewayMethodsList = $paymentMethodsAvailableInstance->getGatewaysMethods();
 
-            return view('paymentMethodsAvailable.form', compact('paymentMethodsAvailable', 'modeEdit', 'paymentGatewayMethodsList'));
+            return view('paymentMethodsAvailable.form', [
+                'paymentMethodsAvailable' => $paymentMethodsAvailable,
+                'modeEdit' => $modeEdit,
+                'paymentGatewayMethodsList' => $paymentGatewayMethodsList
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.paymentMethodsAvailable.index')
                 ->withErrors($e->getMessage())

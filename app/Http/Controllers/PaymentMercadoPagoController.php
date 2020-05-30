@@ -28,7 +28,10 @@ class PaymentMercadoPagoController extends Controller {
 
         $paymentUrl = $preference->init_point;
 
-        return view('mercado-pago.preview', compact('preference', 'paymentUrl'));
+        return view('mercado-pago.preview', [
+            'preference' => $preference,
+            'paymentUrl' => $paymentUrl
+        ]);
     }
 
 
@@ -36,7 +39,9 @@ class PaymentMercadoPagoController extends Controller {
         // TODO: salvar essa response na tabela relacionando ao pagamento
         $callbackData = $request;
         // TODO: enviar email para o cliente informando o status atual do pedido
-        return view('mercado-pago.callback', compact('type'));
+        return view('mercado-pago.callback', [
+            'type' => $type
+        ]);
     }
 
     public function status(Request $request) {

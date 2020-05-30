@@ -144,15 +144,14 @@
             </h3>
         </div>
         <div class="card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+            @foreach($productQuestions as $key => $productQuestion)
+            <p>
+                <strong>{{ $productQuestion->question }}</strong>
+            </p>
+            <p>{{ $productQuestion->answer }}.</p>
+            <small class="text-muted">Posted by {{ $productQuestion->user_name }} on {{ $productQuestion->created_at->format('d/m/Y H:i') }}</small>
             <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-            <hr>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
-            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
-            <hr>
+            @endforeach
             <form enctype="multipart/form-data" class="formulary mt-5" method="post" action="{{ route('app.productQuestion.store') }}">
                 {!! csrf_field() !!}
                 <h3>
