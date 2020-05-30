@@ -40,19 +40,15 @@ class ProductController extends Controller {
 
     public function webSearch(Request $request, $categoryId = 0) {
         try {
-            $filterRequest = $request->all();
-            $filterSession = Session::get('productWebSearch');
+            $filter = $request->all();
 
-            if ($filterSession == null) {
-                $filterSession = [];
+            if ($filter == null) {
+                $filter = [];
             }
 
             if ($categoryId > 0) {
-                $filterSession['category_id'] = intval($categoryId);
+                $filter['category_id'] = $categoryId;
             }
-
-            $filter = array_merge($filterSession, $filterRequest);
-            Session::put('productWebSearch', $filter);
 
             $categoryInstance = new Category();
             $categories = $categoryInstance->getCategoryList(null, false);

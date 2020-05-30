@@ -82,7 +82,7 @@
                         <h5 class="text-dark mt-2">
                             <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                         </h5>
-                        <button type="button" class="btn btn-sm btn-outline-warning mt-3">
+                        <button type="button" class="btn btn-sm btn-outline-primary mt-3">
                             <!-- <i class="fa fa-shopping-cart"></i> -->
                             Visualizar
                         </button>
