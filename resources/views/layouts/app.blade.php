@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>PHPay - @yield('pageTitle')</title>
+    <title>@yield('pageTitle') - {{ env('APP_NAME') }}</title>
 
     <!-- Meta -->
     <meta charset="utf-8" />

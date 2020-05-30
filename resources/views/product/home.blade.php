@@ -5,6 +5,9 @@
 
 <div class="container">
     <div class="row">
+
+        @include('layouts.components.alert-messages')
+
         <div class="col-sm-3">
             @include('layouts.components.category-sidebar')
         </div>
@@ -62,8 +65,8 @@
                                     </h4>
                                     <div class="text-dark">{{ $product->category_name }}</div>
                                     <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
-                                    <button type="button" class="btn btn-sm btn-outline-primary mt-3">
-                                        <i class="fa fa-shopping-cart"></i>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary mt-3">
+                                        <!-- <i class="fa fa-shopping-cart"></i> -->
                                         Visualizar
                                     </button>
                                 </div>
