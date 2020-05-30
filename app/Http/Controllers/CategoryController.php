@@ -59,7 +59,6 @@ class CategoryController extends Controller {
                     ->withInput();
             }
 
-            $categoryInstance = new Category();
             $category = $categoryInstance->storeCategory($request);
 
             return Redirect::route('app.category.index')
@@ -102,10 +101,10 @@ class CategoryController extends Controller {
     public function delete($id) {
         try {
             $categoryInstance = new Category();
-            $message = $categoryInstance->deleteCategory($id);
+            $delete = $categoryInstance->deleteCategory($id);
 
             return Redirect::route('app.category.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())

@@ -72,7 +72,7 @@
                         <i class="fa fa-envelope"></i>
                     </button>
                 </a>
-                <a href="{{ route('app.contact.delete', [ 'id' => $contact->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar a mensagem de {{ $contact->name }}?">
+                <a href="{{ route('app.contact.delete', [ 'id' => $contact->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
                     </button>

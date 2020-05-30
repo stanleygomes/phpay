@@ -11,6 +11,7 @@ use App\Helper\Helper;
 use App\Model\Product;
 use App\Model\ProductPhoto;
 use App\Model\Category;
+use App\Model\WishlistItem;
 
 class ProductController extends Controller {
     public function home() {
@@ -84,7 +85,10 @@ class ProductController extends Controller {
 
             $relatedProducts = $productInstance->getProductList($filterProduct, false);
 
-            return view('product.show', compact('product', 'category', 'productPhotos', 'relatedProducts'));
+            $wishlistItemInstance = new WishlistItem();
+            $wishlistItem = $wishlistItemInstance->getWishlistItemByProductId($id);
+
+            return view('product.show', compact('product', 'category', 'productPhotos', 'relatedProducts', 'wishlistItem'));
         } catch (AppException $e) {
             return Redirect::route('website.product.home')
                 ->withErrors($e->getMessage())
@@ -145,7 +149,6 @@ class ProductController extends Controller {
                     ->withInput();
             }
 
-            $productInstance = new Product();
             $product = $productInstance->storeProduct($request);
 
             return Redirect::route('app.product.index')
@@ -223,10 +226,10 @@ class ProductController extends Controller {
     public function delete($id) {
         try {
             $productInstance = new Product();
-            $message = $productInstance->deleteProduct($id);
+            $delete = $productInstance->deleteProduct($id);
 
             return Redirect::route('app.product.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.product.index')
                 ->withErrors($e->getMessage())

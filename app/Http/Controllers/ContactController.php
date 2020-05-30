@@ -104,10 +104,10 @@ class ContactController extends Controller {
     public function delete($id) {
         try {
             $contactInstance = new Contact();
-            $message = $contactInstance->deleteContact($id);
+            $delete = $contactInstance->deleteContact($id);
 
             return Redirect::route('app.contact.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.contact.index')
                 ->withErrors($e->getMessage())

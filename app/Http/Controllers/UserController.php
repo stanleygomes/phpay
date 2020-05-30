@@ -77,7 +77,6 @@ class UserController extends Controller {
             }
 
             DB::beginTransaction();
-            $userInstance = new User();
             $user = $userInstance->storeUser($request);
             $userInstance->sendMailCredentials($user['data']);
             $userInstance->login($request);
@@ -320,10 +319,10 @@ class UserController extends Controller {
     public function delete($id) {
         try {
             $userInstance = new User();
-            $message = $userInstance->deleteUser($id);
+            $delete = $userInstance->deleteUser($id);
 
             return Redirect::route('app.user.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.user.index')
                 ->withErrors($e->getMessage())

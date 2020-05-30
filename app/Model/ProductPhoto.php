@@ -100,6 +100,8 @@ class ProductPhoto extends Model {
         $productPhoto->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $productPhoto->save();
 
-        return 'Cadastro deletado com sucesso.';
+        return [
+            'message' => 'Cadastro deletado com sucesso.'
+        ];
     }
 }

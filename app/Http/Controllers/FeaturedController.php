@@ -59,7 +59,6 @@ class FeaturedController extends Controller {
                     ->withInput();
             }
 
-            $featuredInstance = new Featured();
             $featured = $featuredInstance->storeFeatured($request);
 
             return Redirect::route('app.featured.index')
@@ -102,10 +101,10 @@ class FeaturedController extends Controller {
     public function delete($id) {
         try {
             $featuredInstance = new Featured();
-            $message = $featuredInstance->deleteFeatured($id);
+            $delete = $featuredInstance->deleteFeatured($id);
 
             return Redirect::route('app.featured.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.featured.index')
                 ->withErrors($e->getMessage())

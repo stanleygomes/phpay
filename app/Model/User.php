@@ -285,7 +285,9 @@ class User extends Authenticatable {
         $user->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $user->save();
 
-        return 'Cadastro deletado com sucesso.';
+        return [
+            'message' => 'Cadastro deletado com sucesso.'
+        ];
     }
 
     public function logout() {
