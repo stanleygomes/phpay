@@ -32,7 +32,7 @@
 
 @include('layouts.components.alert-messages')
 
-@if(count($categories) == 0)
+@if(count($products) == 0)
 <div class="text-center mt-5">
     <h1>
         <div class="mb-3">
@@ -45,31 +45,42 @@
 <div class="col-sm-12">
     <div class="mt-3">
         <div class="row p-3 mb-1 border-top border-bottom">
+            <div class="col-sm-2">
+                <strong>Código</strong>
+            </div>
             <div class="col-sm-3">
                 <strong>Título</strong>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <strong>Preço</strong>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <strong>Categoria</strong>
             </div>
             <div class="col-sm-3 text-center">
                 <strong>Opções</strong>
             </div>
         </div>
-        @foreach($categories as $key => $product)
+        @foreach($products as $key => $product)
         <div class="row p-3 mb-1 border-bottom">
+            <div class="col-sm-2">
+                {{ $product->code }}
+            </div>
             <div class="col-sm-3">
                 {{ $product->title }}
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 {{ $product->category_name }}
             </div>
             <div class="col-sm-3 text-right">
+                <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined" target="_blank">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar no site">
+                        <i class="fa fa-store-alt"></i>
+                    </button>
+                </a>
                 <a href="{{ route('app.product.edit', [ 'id' => $product->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Editar">
                         <i class="fa fa-pencil-alt"></i>
@@ -85,7 +96,7 @@
         @endforeach
 
         <div class="row mt-5">
-            {{ $categories->links() }}
+            {{ $products->links() }}
         </div>
     </div>
 </div>

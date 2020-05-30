@@ -15,16 +15,48 @@ use App\Model\Category;
 class ProductController extends Controller {
     public function home() {
         try {
-            $filter = [
+            $filterFeatured = [
                 'order_position' => true
             ];
 
             $featuredInstance = new Featured();
-            $featureds = $featuredInstance->getFeaturedList($filter, false);
+            $featureds = $featuredInstance->getFeaturedList($filterFeatured, false);
 
-            return view('product.home', compact('featureds'));
+            $filterProduct = [
+                'order_position' => true,
+                'order_by' => 'id',
+                'featured' => 'YES',
+                'limit' => 6
+            ];
+            $productInstance = new Product();
+            $products = $productInstance->getProductList($filterProduct, false);
+
+            return view('product.home', compact('featureds', 'products'));
         } catch (AppException $e) {
             return Redirect::route('website.contact')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function webSearch(Request $request, $categoryId) {
+        try {
+            return $filter = $request->all();
+            Session::put('productWebSearch', $filter);
+
+            $categoryInstance = new Category();
+            $categories = $categoryInstance->getCategoryList(null, false);
+            $categorySelected = $categoryInstance->getCategoryById($categoryId);
+
+            $filterProduct = [
+                'category_id' => $categoryId
+            ];
+            $productInstance = new Product();
+            $products = $productInstance->getProductList($filterProduct, true, 15);
+
+            return view('product.result', compact('categories', 'filter', 'products', 'categorySelected'));
+        } catch (AppException $e) {
+            return Redirect::route('website.product.home')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
@@ -38,9 +70,9 @@ class ProductController extends Controller {
         try {
             $filter = Session::get('productSearch');
             $productInstance = new Product();
-            $categories = $productInstance->getProductList($filter, true);
+            $products = $productInstance->getProductList($filter, true);
 
-            return view('product.index', compact('categories', 'filter'));
+            return view('product.index', compact('products', 'filter'));
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())

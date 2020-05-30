@@ -61,13 +61,29 @@
                 </select>
             </div>
         </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label for="inputFeatured">
+                    Destaque no site*
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" title="Destaque na página inicial do site. Apenas 6 produtos destacados aparecem"></i>
+                </label>
+                <select name="featured" id="inputFeatured" required class="form-control">
+                    <option value="NO" {{ $modeEdit === true ? ($product->featured === 'NO' ? 'selected' : '') : (old('featured') === 'NO' ? 'selected' : '') }}>
+                        Não
+                    </option>
+                    <option value="YES" {{ $modeEdit === true ? ($product->featured === 'YES' ? 'selected' : '') : (old('featured') === 'YES' ? 'selected' : '') }}>
+                        Sim
+                    </option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div class="row">
         <div class="col-sm-12">
             <div class="form-group">
                 <label for="inputDescriptionShort">Descrição curta*</label>
-                <textarea id="inputDescriptionShort" name="description_short" class="form-control" rows="5" required>{{ $modeEdit === true ? $product->description_short : old('description_short') }}</textarea>
+                <textarea id="inputDescriptionShort" name="description_short" class="form-control" maxlength="250" rows="5" required>{{ $modeEdit === true ? $product->description_short : old('description_short') }}</textarea>
             </div>
         </div>
     </div>
@@ -89,10 +105,10 @@
             </div>
         </div>
         @if($modeEdit === true && $product->photo_main_url != null)
-        <div class="col-sm-3">
+        <!-- <div class="col-sm-3">
             <label for="">Foto principal</label>
             <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="w-100 border" />
-        </div>
+        </div> -->
         @endif
     </div>
 
@@ -108,12 +124,17 @@
     </div>
     <div class="row p-3">
         @foreach($productPhotos as $key => $productPhoto)
-        <div class="col-sm-3 border-left border-bottom">
+        <div class="col-sm-4 py-2 my-2 shadow-sm rounded @if($productPhoto->photo_url === $product->photo_main_url) bg-dark text-light border-0 @endif">
             <div class="row">
-                <div class="col-sm-12">
-                    <img src="{{ '/uploads/product/' . $productPhoto->photo_url }}" class="w-100 border" />
+                <div class="col-sm-12 text-center">
+                    <img src="{{ '/uploads/product/' . $productPhoto->photo_url }}" class="border width-max-100 height-max-200" />
                 </div>
-                <div class="col-sm-12 py-2 text-right">
+                <div class="col-sm-7 py-2">
+                    @if($productPhoto->photo_url === $product->photo_main_url)
+                    <strong>Esta é a imagem principal</strong>
+                    @endif
+                </div>
+                <div class="col-sm-5 py-2 text-right">
                     <a href="{{ route('app.product.photoMain', [ 'productId' => $product->id, 'photoId' => $productPhoto->id ]) }}" class="not-underlined confirmAction" data-message="Deseja definir essa imagem como principal do produto?">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Definir como imagem principal do produto">
                             <i class="fa fa-image"></i>

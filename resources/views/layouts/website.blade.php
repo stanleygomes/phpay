@@ -42,7 +42,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="w-100 text-center">
-                <input class="form-control form-control-dark w-50 align-middle" type="text" placeholder="Search" aria-label="Search">
+                <form enctype="multipart/form-data" class="search-form formulary" method="get" action="{{ route('website.product.search') }}">
+                    {!! csrf_field() !!}
+                    <input class="form-control form-control-dark w-50 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search">
+                </form>
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
@@ -122,7 +125,7 @@
     <script src="/js/popper.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/bootstrap.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
-    <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script>
+    <!-- <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script> -->
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
 
     <script>

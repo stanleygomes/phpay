@@ -9,7 +9,7 @@
             @include('layouts.components.category-sidebar')
         </div>
         <div class="col-sm-9">
-            <div id="carouselFeatured" class="carousel slide" data-ride="carousel">
+            <div id="carouselFeatured" class="carousel slide bg-light bg-loading" data-ride="carousel">
                 <ol class="carousel-indicators">
                     @foreach($featureds as $key => $featured)
                     <li data-target="#carouselFeatured" data-slide-to="{{ $key }}" class="{{ $key === 0 ? 'active' : '' }}"></li>
@@ -23,38 +23,54 @@
                     @endforeach
                 </div>
                 <a class="carousel-control-prev" href="#carouselFeatured" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
+                    <span class="text-dark carousel-control-icon shadow rounded-circle bg-white py-3 px-4">
+                        <i class="fa fa-chevron-left"></i>
+                    </span>
+                    <!-- <span class="carousel-control-prev-icon carousel-control-icon" aria-hidden="true"></span> -->
+                    <span class="sr-only">Próximo</span>
                 </a>
                 <a class="carousel-control-next" href="#carouselFeatured" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
+                    <span class="text-dark carousel-control-icon shadow rounded-circle bg-white py-3 px-4">
+                        <i class="fa fa-chevron-right"></i>
+                    </span>
+                    <!-- <span class="carousel-control-next-icon" aria-hidden="true"></span> -->
+                    <span class="sr-only">Anterior</span>
                 </a>
             </div>
 
-            <div class="album py-2 mt-5 bg-light">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card mb-4 shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                                    <title>Placeholder</title>
-                                    <rect width="100%" height="100%" fill="#55595c" />
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
-                                <div class="card-body">
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                        </div>
-                                        <small class="text-muted">9 mins</small>
-                                    </div>
+            <div class="mt-5 mb-5">
+                @if(count($products) > 0)
+                <div class="row mb-3">
+                    <div class="col-sm-12">
+                        <h2>
+                            <strong>Produtos em destaque</strong>
+                        </h2>
+                    </div>
+                </div>
+                @endif
+                <div class="row">
+                    @foreach($products as $key => $product)
+                    <div class="col-md-4">
+                        <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined">
+                            <div class="card mb-4 border-0 shadow">
+                                <div class="w-100 bg-loading bg-light align-middle text-center card-image-container">
+                                    <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="image align-middle" />
+                                </div>
+                                <div class="card-body color">
+                                    <h4 class="text-dark">
+                                        <strong>{{ $product->title }}</strong>
+                                    </h4>
+                                    <div class="text-dark">{{ $product->category_name }}</div>
+                                    <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
+                                    <button type="button" class="btn btn-sm btn-outline-primary mt-3">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        Visualizar
+                                    </button>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
+                    @endforeach
                 </div>
             </div>
         </div>

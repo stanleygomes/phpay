@@ -28,8 +28,10 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     });
 
     Route::group(['as' => 'product.', 'prefix' => 'product'], function () {
-        Route::get('', ['as' => 'send', 'uses' => 'ProductController@home']);
-        Route::get('detail/{id}', ['as' => 'send', 'uses' => 'ProductController@show']);
+        Route::get('', ['as' => 'home', 'uses' => 'ProductController@home']);
+        Route::get('search', ['as' => 'search', 'uses' => 'ProductController@webSearch']);
+        Route::get('category/{id}/{slug?}', ['as' => 'byCategory', 'uses' => 'ProductController@webSearch']);
+        Route::get('show/{id}/{slug?}', ['as' => 'show', 'uses' => 'ProductController@show']);
     });
 });
 
