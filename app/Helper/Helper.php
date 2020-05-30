@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Model\Category;
+use App\Model\Store;
 
 class Helper {
     private static $messages = [
@@ -18,6 +19,15 @@ class Helper {
         'en' => [
         ]
     ];
+
+    public static function getStoreData() {
+        $storeId = 1;
+        $storeInstance = new Store();
+        $store = $storeInstance->getStoreById($storeId);
+        $store->formatAddress = $store->street . ', '. $store->number . ($store->complement != null ? ' - ' . $store->complement : '') . ' - ' . $store->district . ' - ' . $store->city . '/' . $store->state;
+
+        return $store;
+    }
 
     public static function truncateText($text, $limit) {
         $count = strlen($text);
