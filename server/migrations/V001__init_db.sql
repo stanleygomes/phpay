@@ -69,12 +69,13 @@ CREATE TABLE `product_stock_movement` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
-CREATE TABLE `product_review` (
+CREATE TABLE `product_question` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
+    `user_id` int(10) NOT NULL,
     `product_id` int(10) NOT NULL,
-    `cart_id` int(10) NOT NULL,
-    `evaluation` int(10) NOT NULL,
-    `description` varchar(255) NOT NULL,
+    `question` text NOT NULL,
+    `answer` text NULL,
+    `answered_by` int(10) NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     `deleted_at` timestamp NULL DEFAULT NULL,
@@ -172,17 +173,6 @@ CREATE TABLE `contact_reply` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
-CREATE TABLE `product` (
-    `id` int(10) NOT NULL AUTO_INCREMENT,
-    `title` varchar(255) NOT NULL,
-    `price` float(8,2) NOT NULL,
-    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    `created_by` int(10) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1;
-
 CREATE TABLE `transaction` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `customer_id` int(10) NOT NULL,
@@ -247,17 +237,49 @@ CREATE TABLE `user_password_reset` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+-- CREATE TABLE `product_review` (
+--     `id` int(10) NOT NULL AUTO_INCREMENT,
+--     `product_id` int(10) NOT NULL,
+--     `cart_id` int(10) NOT NULL,
+--     `evaluation` int(10) NOT NULL,
+--     `description` varchar(255) NOT NULL,
+--     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+--     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+--     `deleted_at` timestamp NULL DEFAULT NULL,
+--     `created_by` int(10) NOT NULL,
+--     PRIMARY KEY (`id`)
+-- ) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+-- ALTER TABLE `product_review` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+
 ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `category` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `address` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `address` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `product` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 ALTER TABLE `product_photo` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
-ALTER TABLE `product_review` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `product_photo` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `product_stock_movement` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `product_stock_movement` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `product_question` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `product_question` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `product_question` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `product_question` ADD FOREIGN KEY (`answered_by`) REFERENCES `user` (`id`);
 ALTER TABLE `contact_reply` ADD FOREIGN KEY (`contact_id`) REFERENCES `contact` (`id`);
+ALTER TABLE `featured` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `payment_methods_available` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `user_password_reset` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `user_password_reset` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `user_login_history` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `user_login_history` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `user` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `transaction_history` ADD FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`);
 ALTER TABLE `transaction` ADD FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`);
+ALTER TABLE `store` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `contact` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `contact_reply` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 
 CREATE UNIQUE INDEX user_email_unique ON `user` (`email`);
