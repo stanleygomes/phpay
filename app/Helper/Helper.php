@@ -2,10 +2,13 @@
 
 namespace App\Helper;
 
+use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\Model\Category;
 
 class Helper {
     private static $messages = [
@@ -15,6 +18,25 @@ class Helper {
         'en' => [
         ]
     ];
+
+    public static function truncateText($text, $limit) {
+        $count = strlen($text);
+
+        if ($count > $limit) {
+            return substr($text, 0, $limit) . '...';
+        }
+
+        return $text;
+    }
+
+    public static function getCategoryList() {
+        try {
+            $categoryInstance = new Category();
+            return $categoryInstance->getCategoryList(null, false);
+        } catch (AppException $e) {
+            Log::error($e);
+        }
+    }
 
     public static function convertMoneyFromBRtoUS($money) {
         $money = str_replace('.', '', $money);

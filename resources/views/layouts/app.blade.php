@@ -100,7 +100,7 @@
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/summernote.min.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/fileinput.min.js?v={{ env('APP_VERSION') }}"></script>
-    <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script>
+    <!-- <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script> -->
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
     <script src="/js/admin.js?v={{ env('APP_VERSION') }}"></script>
 

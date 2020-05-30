@@ -77,14 +77,18 @@ $(document).ready(function () {
     });
 
     // lazy loading images
-    $('.lazy').lazy({
-        scrollDirection: 'vertical',
-        effect: 'fadeIn',
-        visibleOnly: true,
-        onError: function (element) {
-            console.log('error loading ' + element.data('src'));
-        }
-    });
+    // $('.lazy').lazy({
+    //     scrollDirection: 'vertical',
+    //     effect: 'fadeIn',
+    //     visibleOnly: true,
+    //     onError: function (element) {
+    //         console.log('error loading ' + element.data('src'));
+    //     }
+    // });
+
+    $('.onchange-submit').change(function() {
+        this.form.submit();
+    })
 
     // busca cep
     $('#inputZipcode').blur(function () {

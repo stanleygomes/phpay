@@ -1,3 +1,9 @@
+/* vars */
+/*
+    Primary Color: #e36933
+
+*/
+
 html, body {
     background-color: #fff;
     color: #636b6f;
@@ -41,6 +47,10 @@ section {
   font-size: 16px;
 }
 
+.btn {
+    cursor: pointer;
+}
+
 .hidden {
     display: none;
 }
@@ -49,8 +59,32 @@ a.not-underlined:hover {
     text-decoration: none;
 }
 
+.width-max-100 {
+    max-width: 100%;
+}
+
+.height-max-200 {
+    max-height: 200px;
+}
+
 .side-menu .list-group-item:hover, .side-menu .list-group-item.active {
     color: #555;
     text-decoration: none;
     background: #eee;
+}
+
+.bg-loading {
+    min-height: 50px;
+    background-image: url('../img/loading.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.card .card-image-container {
+    height: 200px;
+}
+
+.card .card-image-container .image {
+    max-height: 200px;
+    max-width: 100%;
 }

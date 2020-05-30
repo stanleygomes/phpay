@@ -29,6 +29,8 @@ CREATE TABLE `product` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `category_id` int(10) NOT NULL,
     `code` varchar(255) NOT NULL,
+    `featured` varchar(255) NOT NULL,
+    `slug` varchar(255) NOT NULL,
     `title` varchar(255) NOT NULL,
     `price` float(8,2) NOT NULL,
     `description` text NULL,

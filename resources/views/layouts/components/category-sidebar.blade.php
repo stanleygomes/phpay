@@ -1,5 +1,5 @@
 <div class="side-menu list-group">
-    @foreach([1,2,3,4,5,6,7,8] as $item)
-    <a href="{{ route('website.home') }}" class="list-group-item @yield('categoryX')">Categoria X</a>
+    @foreach(\App\Helper\Helper::getCategoryList() as $key => $category)
+    <a href="{{ route('website.product.byCategory', [ 'id' => $category->id, 'slug' => \App\Helper\Helper::slugify($category->name) ]) }}" class="list-group-item @yield('categoryX')">{{ $category->name }}</a>
     @endforeach
 </div>

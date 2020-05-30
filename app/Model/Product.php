@@ -15,6 +15,8 @@ class Product extends Model {
     protected $fillable = [
         'category_id',
         'code',
+        'featured',
+        'slug',
         'title',
         'price',
         'description',
@@ -55,14 +57,35 @@ class Product extends Model {
         $product = Product::join('category', 'category.id', '=', 'product.category_id')
             ->select(
                 'product.id', 'product.category_id', 'product.code', 'product.title', 'product.price', 'product.description',
-                'product.description_short', 'product.stock_qty', 'product.evaluation_rate', 'product.photo_main_url',
+                'product.description_short', 'product.slug', 'product.stock_qty', 'product.evaluation_rate', 'product.photo_main_url',
                 'product.more_details',
                 'category.name as category_name'
-            )
-            ->orderBy('id', 'desc');
+            );
 
         if ($filter != null && isset($filter['title']) && $filter['title'] != '') {
             $product->where('title', 'like', '%' . $filter['title'] . '%');
+        }
+
+        if ($filter != null && isset($filter['order_by']) && $filter['order_by'] > 0) {
+            if (isset($filter['order_by_direction']) == null) {
+                $filter['order_by_direction'] = 'desc';
+            }
+
+            $product->orderBy($filter['order_by'], $filter['order_by_direction']);
+        } else {
+            $product->orderBy('id', 'desc');
+        }
+
+        if ($filter != null && isset($filter['limit']) && $filter['limit'] > 0) {
+            $product->limit($filter['limit']);
+        }
+
+        if ($filter != null && isset($filter['featured']) && $filter['featured'] != '') {
+            $product->where('featured', $filter['featured']);
+        }
+
+        if ($filter != null && isset($filter['category_id']) && $filter['category_id'] != '') {
+            $product->where('category_id', $filter['category_id']);
         }
 
         if ($paginate === true) {
@@ -79,8 +102,10 @@ class Product extends Model {
 
         $product->category_id = $request->category_id;
         $product->code = $request->code;
+        $product->featured = $request->featured;
         $product->title = $request->title;
         $product->price = Helper::convertMoneyFromBRtoUS($request->price);
+        $product->slug = Helper::slugify($request->title);
         $product->description = $request->description;
         $product->description_short = $request->description_short;
         $product->more_details = $request->more_details;
@@ -142,9 +167,11 @@ class Product extends Model {
 
         $product->category_id = $request->category_id;
         $product->code = $request->code;
+        $product->featured = $request->featured;
         $product->stock_qty = $request->stock_qty;
         $product->title = $request->title;
         $product->price = Helper::convertMoneyFromBRtoUS($request->price);
+        $product->slug = Helper::slugify($request->title);
         $product->description = $request->description;
         $product->description_short = $request->description_short;
         $product->more_details = $request->more_details;
@@ -153,11 +180,7 @@ class Product extends Model {
         if ($request->file('photos') != null) {
             foreach ($request->file('photos') as $key => $file) {
                 $productPhotoInstance = new ProductPhoto();
-                $productPhoto = $productPhotoInstance->storeProductPhoto($file, $product->id);
-
-                if ($key === 0) {
-                    $mainPhoto = $productPhoto['data']->photo_url;
-                }
+                $productPhotoInstance->storeProductPhoto($file, $product->id);
             }
         }
 
