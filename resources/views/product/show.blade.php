@@ -83,19 +83,51 @@
         </div>
     </div>
 
-    <div class="card card-outline-secondary my-4">
-        <div class="card-header">
-            Descrição completa
+    <div class="card card-outline-secondary my-5 border-0 shadow rounded">
+        <div class="card-header py-3 border-0">
+            <strong>Descrição completa</strong>
         </div>
         <div class="card-body">
             {!! $product->description !!}
         </div>
     </div>
 
+    @if (count($relatedProducts) > 0)
+    <div class="row mt-3 mb-3">
+        <div class="col-sm-12 mb-2">
+            <h3>
+                <strong>Produtos relacionados</strong>
+            </h3>
+        </div>
+        @foreach($relatedProducts as $key => $product)
+        <div class="col-md-3">
+            <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined">
+                <div class="card mb-4 border-0 shadow">
+                    <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="w-100 border bg-loading" />
+                    <div class="card-body color">
+                        <div class="text-dark">
+                            <strong>{{ $product->title }}</strong>
+                        </div>
+                        <div class="text-dark">{{ $product->category_name }}</div>
+                        <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
+                        <h5 class="text-dark mt-2">
+                            <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
+                        </h5>
+                        <button type="button" class="btn btn-sm btn-outline-warning mt-3">
+                            <!-- <i class="fa fa-shopping-cart"></i> -->
+                            Visualizar
+                        </button>
+                    </div>
+                </div>
+            </a>
+        </div>
+        @endforeach
+    </div>
+    @endif
 
-    <div class="card card-outline-secondary my-4">
-        <div class="card-header">
-            Dúvidas sobre o produto
+    <div class="card card-outline-secondary my-5 border-0 shadow rounded">
+        <div class="card-header py-3 border-0">
+            <strong>Dúvidas sobre o produto</strong>
         </div>
         <div class="card-body">
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
@@ -132,7 +164,6 @@
             </form>
         </div>
     </div>
-
 
 </div>
 

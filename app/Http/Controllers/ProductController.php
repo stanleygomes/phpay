@@ -70,17 +70,25 @@ class ProductController extends Controller {
 
     public function show($id, $slug = null) {
         try {
+            $filterCategory = [
+                'product_id' => $id
+            ];
+
             $productInstance = new Product();
             $product = $productInstance->getProductById($id);
             $productPhotoInstance = new ProductPhoto();
-            $filter = [
-                'product_id' => $id
-            ];
-            $productPhotos = $productPhotoInstance->getProductPhotoList($filter, false);
+            $productPhotos = $productPhotoInstance->getProductPhotoList($filterCategory, false);
             $categoryInstance = new Category();
             $category = $categoryInstance->getCategoryById($product->category_id);
 
-            return view('product.show', compact('product', 'category', 'productPhotos'));
+            $filterProduct = [
+                'category_id' => $product->category_id,
+                'limit' => 4
+            ];
+
+            $relatedProducts = $productInstance->getProductList($filterProduct, false);
+
+            return view('product.show', compact('product', 'category', 'productPhotos', 'relatedProducts'));
         } catch (AppException $e) {
             return Redirect::route('website.product.home')
                 ->withErrors($e->getMessage())
