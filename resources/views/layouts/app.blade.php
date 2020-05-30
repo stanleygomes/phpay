@@ -37,19 +37,25 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="main-menu navbar navbar-expand-lg navbar-dark bg-white border-bottom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('app.dashboard') }}">Minha conta</a>
+            <a class="navbar-brand" href="{{ route('app.dashboard') }}">
+                <img src="/uploads/store/logo/{{ App\Helper\Helper::getStoreData()->logo_url }}" class="logo mr-3" />
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageAboutActive')" href="{{ route('website.home') }}">Voltar à loja</a>
+                        <a class="nav-link @yield('pageAboutActive')" href="{{ route('website.home') }}">
+                            <span class="btn btn-sm btn-primary">Voltar à loja</span>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.logout') }}">Sair</a>
+                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.logout') }}">
+                            <span class="btn btn-sm btn-outline-primary">Sair</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -91,7 +97,7 @@
 
     <footer class="py-5">
         <div class="container">
-            <p class="m-0 text-center">Copyright &copy; PHPay {{ date('Y') }}</p>
+            <p class="m-0 text-center">Copyright &copy; {{ App\Helper\Helper::getStoreData()->name }} {{ date('Y') }}</p>
         </div>
     </footer>
 

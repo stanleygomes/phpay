@@ -74,19 +74,20 @@
         @foreach($products as $key => $product)
         <div class="col-md-3">
             <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined">
-                <div class="card mb-4 border-0 shadow">
-                    <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="w-100 border bg-loading" />
+                <div class="card mb-4 border rounded">
+                    <div class="w-100 bg-loading bg-light align-middle text-center card-image-container rounded">
+                        <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="image align-middle" />
+                    </div>
                     <div class="card-body color">
-                        <div class="text-dark">
+                        <h4 class="text-dark">
                             <strong>{{ $product->title }}</strong>
-                        </div>
-                        <div class="text-dark">{{ $product->category_name }}</div>
-                        <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
+                        </h4>
+                        <div class="text-dark"><em>{{ $product->category_name }}</em></div>
+                        <div class="text-dark mt-2">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
                         <h5 class="text-dark mt-2">
                             <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                         </h5>
                         <button type="button" class="btn btn-sm btn-outline-primary mt-3">
-                            <!-- <i class="fa fa-shopping-cart"></i> -->
                             Visualizar
                         </button>
                     </div>

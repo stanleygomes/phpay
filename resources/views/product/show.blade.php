@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <div class="card card-outline-secondary my-5 border-0 shadow rounded">
+    <div class="card card-outline-secondary my-5 border rounded">
         <div class="card-header py-3 border-0">
             <h3>
                 <strong>Descrição completa</strong>
@@ -115,18 +115,20 @@
         @foreach($relatedProducts as $key => $product)
         <div class="col-md-3">
             <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined">
-                <div class="card mb-4 border-0 shadow">
-                    <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="w-100 border bg-loading" />
+                <div class="card mb-4 border rounded">
+                    <div class="w-100 bg-loading bg-light align-middle text-center card-image-container rounded">
+                        <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="image align-middle" />
+                    </div>
                     <div class="card-body color">
-                        <div class="text-dark">
+                        <h4 class="text-dark">
                             <strong>{{ $product->title }}</strong>
-                        </div>
-                        <div class="text-dark">{{ $product->category_name }}</div>
-                        <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
+                        </h4>
+                        <div class="text-dark"><em>{{ $product->category_name }}</em></div>
+                        <div class="text-dark mt-2">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
                         <h5 class="text-dark mt-2">
                             <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                         </h5>
-                        <button type="button" class="btn btn-sm btn-outline-warning mt-3">
+                        <button type="button" class="btn btn-sm btn-outline-primary mt-3">
                             Visualizar
                         </button>
                     </div>
@@ -137,7 +139,7 @@
     </div>
     @endif
 
-    <div class="card card-outline-secondary my-5 border-0 shadow rounded">
+    <div class="card card-outline-secondary my-5 border rounded">
         <div class="card-header py-3 border-0">
             <h3>
                 <strong>Perguntas sobre o produto</strong>
@@ -148,8 +150,8 @@
             <p>
                 <strong>{{ $productQuestion->question }}</strong>
             </p>
-            <p>{{ $productQuestion->answer }}.</p>
-            <small class="text-muted">Posted by {{ $productQuestion->user_name }} on {{ $productQuestion->created_at->format('d/m/Y H:i') }}</small>
+            <p>{{ $productQuestion->answer }}</p>
+            <small class="text-muted">{{ $productQuestion->user_name }} em {{ $productQuestion->created_at->format('d/m/Y H:i') }}</small>
             <hr>
             @endforeach
             <form enctype="multipart/form-data" class="formulary mt-5" method="post" action="{{ route('app.productQuestion.store') }}">
@@ -170,7 +172,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 mb-3">
                         <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Enviando pergunta...">Deixe uma pergunta</button>
                     </div>
                 </div>

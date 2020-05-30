@@ -67,10 +67,36 @@ a.not-underlined:hover {
     max-height: 200px;
 }
 
-.side-menu .list-group-item:hover, .side-menu .list-group-item.active {
+.main-menu .logo {
+    max-height: 50px;
+}
+
+.main-menu .button-icon {
+    font-size: 25px;
+    color: #777;
+}
+
+.main-menu .button-icon:hover {
+    color: #007bff;
+}
+
+.main-menu .button-link {
+    padding: 5px 10px;
+}
+
+.side-menu .list-group-item {
     color: #555;
+}
+
+.side-menu .list-group-item:hover {
+    color: #007bff;
     text-decoration: none;
     background: #eee;
+}
+
+.side-menu .list-group-item.active {
+    color: #fff;
+    background-color: #007bff;
 }
 
 .bg-loading {

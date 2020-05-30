@@ -35,9 +35,11 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="main-menu navbar navbar-expand-lg bg-white border-bottom fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('website.home') }}">Minha Loja</a>
+            <a class="navbar-brand" href="{{ route('website.home') }}">
+                <img src="/uploads/store/logo/{{ App\Helper\Helper::getStoreData()->logo_url }}" class="logo mr-3" />
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -46,20 +48,33 @@
                     {!! csrf_field() !!}
                     <input type="hidden" name="category_id" value="{{ isset($filter) && isset($filter['category_id']) ? $filter['category_id'] : '' }}" />
                     <input type="hidden" name="order_by" value="{{ isset($filter) && isset($filter['order_by']) ? $filter['order_by'] : '' }}" />
-                    <input class="form-control form-control-dark w-50 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search" value="{{ isset($filter) && isset($filter['title']) ? $filter['title'] : '' }}" />
+                    <input class="form-control w-100 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search" value="{{ isset($filter) && isset($filter['title']) ? $filter['title'] : '' }}" />
                 </form>
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto px-3">
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageCartActive')" href="{{ route('website.about') }}">Carrinho</a>
+                        <a class="nav-link ml-4" href="{{ route('website.about') }}">
+                            <i class="fa fa-heart button-icon"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageLoginActive')" href="{{ route('auth.login') }}">Login</a>
+                        <a class="nav-link mr-4" href="{{ route('website.about') }}">
+                            <i class="fa fa-shopping-cart button-icon"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">Cadastrar</a>
+                        <a class="nav-link @yield('pageLoginActive')" href="{{ route('auth.login') }}">
+                            <span class="btn btn-sm btn-success">Minha&nbsp;conta</span>
+                        </a>
                     </li>
+                    @if(Auth::user() == null)
+                    <li class="nav-item">
+                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">
+                            <span class="btn btn-sm btn-outline-primary">Cadastrar</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -75,10 +90,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div>
-                        <strong>Minha loja LTDA</strong>
+                        <strong>{{ App\Helper\Helper::getStoreData()->name }}</strong>
                     </div>
                     <div>
-                        <span>CNPJ: 17.000.000/0001-10</span>
+                        <span>CNPJ: {{ App\Helper\Helper::getStoreData()->cpf_cnpj }}</span>
                     </div>
                     <div class="mt-2">
                         <a href="{{ route('website.about') }}">
@@ -87,8 +102,7 @@
                     </div>
                     <hr />
                     <div class="mt-1">
-                        Rua Fulano de tal, 200 - Sala 10 <br />
-                        Centro - Uberlandia/MG
+                        {{ App\Helper\Helper::getStoreData()->formatAddress }}
                     </div>
                     <div class="mt-2">
                         <a href="{{ route('website.privacy') }}">
@@ -119,7 +133,7 @@
                     </div>
                 </div>
             </div>
-            <p class="m-0 text-center">Copyright &copy; PHPay {{ date('Y') }}</p>
+            <p class="m-0 text-center">Copyright &copy; {{ App\Helper\Helper::getStoreData()->name }} {{ date('Y') }}</p>
         </div>
     </footer>
 
