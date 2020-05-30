@@ -52,6 +52,7 @@ class Address extends Model {
 
     public function getAddressById($id) {
         return Address::where('id', $id)
+            ->where('user_id', Auth::user()->id)
             ->first();
     }
 
@@ -133,6 +134,8 @@ class Address extends Model {
         $address->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $address->save();
 
-        return 'Cadastro deletado com sucesso.';
+        return [
+            'message' => 'Cadastro deletado com sucesso.'
+        ];
     }
 }

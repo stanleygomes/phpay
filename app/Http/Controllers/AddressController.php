@@ -59,7 +59,6 @@ class AddressController extends Controller {
                     ->withInput();
             }
 
-            $addressInstance = new Address();
             $address = $addressInstance->storeAddress($request);
 
             return Redirect::route('app.address.index')
@@ -102,10 +101,10 @@ class AddressController extends Controller {
     public function delete($id) {
         try {
             $addressInstance = new Address();
-            $message = $addressInstance->deleteAddress($id);
+            $delete = $addressInstance->deleteAddress($id);
 
             return Redirect::route('app.address.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())

@@ -63,7 +63,7 @@
                         <i class="fa fa-pencil-alt"></i>
                     </button>
                 </a>
-                <a href="{{ route('app.store.delete', [ 'id' => $store->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar o endereço {{ $store->name }}?">
+                <a href="{{ route('app.store.delete', [ 'id' => $store->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
                     </button>

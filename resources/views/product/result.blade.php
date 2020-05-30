@@ -5,9 +5,12 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-sm-12">
+            @include('layouts.components.alert-messages')
+        </div>
+    </div>
 
-        @include('layouts.components.alert-messages')
-
+    <div class="row">
         <div class="col-sm-6">
             <h2 class="mt-2">
                 <strong>Resultados</strong>

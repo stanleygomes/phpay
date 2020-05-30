@@ -4,6 +4,13 @@
 @section('content')
 
 <div class="container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            @include('layouts.components.alert-messages')
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-sm-6">
             <nav aria-label="breadcrumb">
@@ -66,10 +73,21 @@
             -->
                 <div class="row">
                     <div class="col-sm-6">
-                        <button type="button" class="btn btn-sm mt-2 btn-outline-danger">
-                            <i class="fa fa-heart"></i>
-                            Favorito
-                        </button>
+                        @if($wishlistItem != null)
+                        <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
+                            <button type="button" class="btn btn-sm mt-2 btn-danger">
+                                <i class="fa fa-heart"></i>
+                                Remover dos favoritos
+                            </button>
+                        </a>
+                        @else
+                        <a href="{{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
+                            <button type="button" class="btn btn-sm mt-2 btn-outline-danger">
+                                <i class="fa fa-heart"></i>
+                                Adicionar aos favoritos
+                            </button>
+                        </a>
+                        @endif
                     </div>
                     <div class="col-sm-6 text-right">
                         <a href="">
@@ -144,8 +162,6 @@
                 <h3>
                     <strong>Ficou alguma dúvida?</strong>
                 </h3>
-
-                @include('layouts.components.alert-messages')
 
                 <div class="row">
                     <div class="col-sm-12">

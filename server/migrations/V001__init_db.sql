@@ -82,6 +82,17 @@ CREATE TABLE `product_review` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `wishlist_item` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `user_id` int(10) NOT NULL,
+    `product_id` int(10) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
 CREATE TABLE `featured` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `title` varchar(255) NULL,
@@ -236,6 +247,8 @@ CREATE TABLE `user_password_reset` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 ALTER TABLE `address` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `product` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 ALTER TABLE `product_photo` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);

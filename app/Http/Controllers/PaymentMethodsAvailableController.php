@@ -61,7 +61,6 @@ class PaymentMethodsAvailableController extends Controller {
                     ->withInput();
             }
 
-            $paymentMethodsAvailableInstance = new PaymentMethodsAvailable();
             $paymentMethodsAvailable = $paymentMethodsAvailableInstance->storePaymentMethodsAvailable($request);
 
             return Redirect::route('app.paymentMethodsAvailable.index')
@@ -105,10 +104,10 @@ class PaymentMethodsAvailableController extends Controller {
     public function delete($id) {
         try {
             $paymentMethodsAvailableInstance = new PaymentMethodsAvailable();
-            $message = $paymentMethodsAvailableInstance->deletePaymentMethodsAvailable($id);
+            $delete = $paymentMethodsAvailableInstance->deletePaymentMethodsAvailable($id);
 
             return Redirect::route('app.paymentMethodsAvailable.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.paymentMethodsAvailable.index')
                 ->withErrors($e->getMessage())

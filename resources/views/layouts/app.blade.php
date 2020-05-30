@@ -64,7 +64,7 @@
                         <!-- CUSTOMER -->
                         <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserCartActive')">Minhas compras</a>
-                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserWishlistActive')">Seus favoritos</a>
+                        <a href="{{ route('app.wishlistItem.index') }}" class="list-group-item @yield('sidebarMenuWishlistItemActive')">Seus favoritos</a>
                         <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuAddressActive')">Endereços</a>
                         <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
 

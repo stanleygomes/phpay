@@ -71,25 +71,6 @@ class ProductStockMovement extends Model {
         ];
     }
 
-    public function updateProductStockMovement($request, $id) {
-        $productReviewInstance = new ProductStockMovement();
-        $productReview = $productReviewInstance->getProductStockMovementById($id);
-
-        if ($productReview == null) {
-            throw new AppException('Cadastro [' . $id . '] não encontrado.');
-        }
-
-        $productReview->value = $request->value;
-        $productReview->action = $request->action;
-
-        $productReview->save();
-
-        return [
-            'message' => 'Cadastro atualizado com sucesso.',
-            'data' => $productReview
-        ];
-    }
-
     public function deleteProductStockMovement ($id) {
         $productReviewInstance = new ProductStockMovement();
         $productReview = $productReviewInstance->getProductStockMovementById($id);
@@ -101,6 +82,8 @@ class ProductStockMovement extends Model {
         $productReview->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $productReview->save();
 
-        return 'Cadastro deletado com sucesso.';
+        return [
+            'message' => 'Cadastro deletado com sucesso.'
+        ];
     }
 }

@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 // website routes
 Route::group(['as' => 'website.', 'prefix' => ''], function () {
     Route::get('', ['as' => 'home', 'uses' => 'ProductController@home']);
-    Route::get('about', ['as' => 'about', 'uses' => 'WebsiteController@about']);
-    Route::get('privacy', ['as' => 'privacy', 'uses' => 'WebsiteController@privacy']);
-    Route::get('delivery', ['as' => 'delivery', 'uses' => 'WebsiteController@delivery']);
-    Route::get('faq', ['as' => 'faq', 'uses' => 'WebsiteController@faq']);
-    Route::get('returning', ['as' => 'returning', 'uses' => 'WebsiteController@returning']);
+    Route::get('about', ['as' => 'about', 'uses' => 'AppController@pageAbout']);
+    Route::get('privacy', ['as' => 'privacy', 'uses' => 'AppController@pagePrivacy']);
+    Route::get('delivery', ['as' => 'delivery', 'uses' => 'AppController@pageDelivery']);
+    Route::get('faq', ['as' => 'faq', 'uses' => 'AppController@pageFaq']);
+    Route::get('returning', ['as' => 'returning', 'uses' => 'AppController@pageReturning']);
 
     Route::group(['as' => 'contact.', 'prefix' => 'contact'], function () {
         Route::get('', ['as' => 'form', 'uses' => 'ContactController@contact']);
@@ -98,6 +98,13 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductController@delete']);
         Route::get('photo/main/{productId}/{photoId}', ['as' => 'photoMain', 'uses' => 'ProductController@photoMain']);
         Route::get('photo/remove/{photoId}', ['as' => 'photoRemove', 'uses' => 'ProductController@photoRemove']);
+    });
+
+    Route::group(['as' => 'wishlistItem.', 'prefix' => 'wishlistItem'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'WishlistItemController@index']);
+        Route::get('create/{id}', ['as' => 'create', 'uses' => 'WishlistItemController@create']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'WishlistItemController@delete']);
+        Route::get('deleteByProductId/{id}', ['as' => 'deleteByProductId', 'uses' => 'WishlistItemController@deleteByProductId']);
     });
 
     Route::group(['as' => 'productPhoto.', 'prefix' => 'productPhoto'], function () {

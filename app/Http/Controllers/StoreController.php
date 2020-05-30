@@ -60,7 +60,6 @@ class StoreController extends Controller {
                     ->withInput();
             }
 
-            $storeInstance = new Store();
             $store = $storeInstance->storeStore($request);
 
             return Redirect::route('app.store.index')
@@ -118,10 +117,10 @@ class StoreController extends Controller {
     public function delete($id) {
         try {
             $storeInstance = new Store();
-            $message = $storeInstance->deleteStore($id);
+            $delete = $storeInstance->deleteStore($id);
 
             return Redirect::route('app.store.index')
-                ->with('status', $message);
+                ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.store.index')
                 ->withErrors($e->getMessage())
