@@ -12,22 +12,23 @@
             <h2 class="mt-2">
                 <strong>Resultados</strong>
             </h2>
-            @if($categorySelected != null)
-            <p>Produtos da categoria: <strong>{{ $categorySelected->name }}</strong></p>
+            @if($filter != null && isset($filter['title']))
+            <p>Você buscou por: <strong>{{ $filter['title'] }}</strong></p>
             @endif
         </div>
         <div class="col-sm-6">
             <form enctype="multipart/form-data" class="search-form formulary" method="get" action="{{ route('website.product.search') }}">
                 {!! csrf_field() !!}
                 <div class="row">
+                    <input type="hidden" name="title" value="{{ $filter != null && isset($filter['title']) ? $filter['title'] : '' }}" />
                     <div class="col-sm-6">
                         <div class="form-group">
                             <select name="category_id" id="inputCategory" required class="form-control onchange-submit">
-                                <option value="" {{ old('category_id') === '' ? 'selected' : '' }}>
+                                <option value="" {{ $filter == null || !isset($filter['category_id']) ? 'selected 1' : '' }}>
                                     Escolher categoria
                                 </option>
                                 @foreach($categories as $key => $category)
-                                <option value="{{ $category->id }}" {{ $categorySelected != null ? ($categorySelected->id === $category->id ? 'selected' : '') : (old('category_id') === $category->id ? 'selected' : '') }}>
+                                <option value="{{ $category->id }}" {{ $filter != null && isset($filter['category_id']) && $filter['category_id'] == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
                                 </option>
                                 @endforeach
@@ -39,14 +40,32 @@
                             <option value="" {{ old('featured') === '' ? 'selected' : '' }}>
                                 Ordenar resultados
                             </option>
-                            <option value="YES" {{ old('featured') === '' ? 'selected' : '' }}>
+                            <option value="title#asc" {{ $filter != null && isset($filter['order_by']) && $filter['order_by'] == 'title#asc' ? 'selected' : '' }}>
+                                Alfabética
+                            </option>
+                            <option value="price#asc" {{ $filter != null && isset($filter['order_by']) && $filter['order_by'] == 'price#asc' ? 'selected' : '' }}>
                                 Menor preço
+                            </option>
+                            <option value="price#desc" {{ $filter != null && isset($filter['order_by']) && $filter['order_by'] == 'price#desc' ? 'selected' : '' }}>
+                                Maior preço
                             </option>
                         </select>
                     </div>
                 </div>
             </form>
         </div>
+    </div>
+    <div class="row text-center">
+        @if(count($products) === 0)
+        <div class="col-sm-12 text-center mt-5">
+            <h1>
+                <div class="mb-3">
+                    <i class="fa fa-search"></i>
+                </div>
+                Não foram encontrados resultados.
+            </h1>
+        </div>
+        @endif
     </div>
     <div class="row mt-3 mb-3">
         @foreach($products as $key => $product)
@@ -55,13 +74,16 @@
                 <div class="card mb-4 border-0 shadow">
                     <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="w-100 border bg-loading" />
                     <div class="card-body color">
-                        <h4 class="text-dark">
+                        <div class="text-dark">
                             <strong>{{ $product->title }}</strong>
-                        </h4>
+                        </div>
                         <div class="text-dark">{{ $product->category_name }}</div>
                         <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-3">
-                            <i class="fa fa-shopping-cart"></i>
+                        <h5 class="text-dark mt-2">
+                            <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
+                        </h5>
+                        <button type="button" class="btn btn-sm btn-outline-secondary mt-3">
+                            <!-- <i class="fa fa-shopping-cart"></i> -->
                             Visualizar
                         </button>
                     </div>
@@ -69,6 +91,12 @@
             </a>
         </div>
         @endforeach
+
+    </div>
+    <div class="row mt-3 mb-3">
+        <div class="col-sm-12">
+            {{ $products->links() }}
+        </div>
     </div>
 </div>
 

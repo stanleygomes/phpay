@@ -23,8 +23,7 @@ class ProductController extends Controller {
             $featureds = $featuredInstance->getFeaturedList($filterFeatured, false);
 
             $filterProduct = [
-                'order_position' => true,
-                'order_by' => 'id',
+                'order_by' => 'id#desc',
                 'featured' => 'YES',
                 'limit' => 6
             ];
@@ -39,22 +38,29 @@ class ProductController extends Controller {
         }
     }
 
-    public function webSearch(Request $request, $categoryId) {
+    public function webSearch(Request $request, $categoryId = 0) {
         try {
-            return $filter = $request->all();
+            $filterRequest = $request->all();
+            $filterSession = Session::get('productWebSearch');
+
+            if ($filterSession == null) {
+                $filterSession = [];
+            }
+
+            if ($categoryId > 0) {
+                $filterSession['category_id'] = intval($categoryId);
+            }
+
+            $filter = array_merge($filterSession, $filterRequest);
             Session::put('productWebSearch', $filter);
 
             $categoryInstance = new Category();
             $categories = $categoryInstance->getCategoryList(null, false);
-            $categorySelected = $categoryInstance->getCategoryById($categoryId);
 
-            $filterProduct = [
-                'category_id' => $categoryId
-            ];
             $productInstance = new Product();
-            $products = $productInstance->getProductList($filterProduct, true, 15);
+            $products = $productInstance->getProductList($filter, true, 15);
 
-            return view('product.result', compact('categories', 'filter', 'products', 'categorySelected'));
+            return view('product.result', compact('categories', 'filter', 'products'));
         } catch (AppException $e) {
             return Redirect::route('website.product.home')
                 ->withErrors($e->getMessage())
@@ -62,7 +68,24 @@ class ProductController extends Controller {
         }
     }
 
-    public function show() {
+    public function show($id, $slug = null) {
+        try {
+            $productInstance = new Product();
+            $product = $productInstance->getProductById($id);
+            $productPhotoInstance = new ProductPhoto();
+            $filter = [
+                'product_id' => $id
+            ];
+            $productPhotos = $productPhotoInstance->getProductPhotoList($filter, false);
+            $categoryInstance = new Category();
+            $category = $categoryInstance->getCategoryById($product->category_id);
+
+            return view('product.show', compact('product', 'category', 'productPhotos'));
+        } catch (AppException $e) {
+            return Redirect::route('website.product.home')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
         return view('product.show');
     }
 

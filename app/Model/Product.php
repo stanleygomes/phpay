@@ -66,12 +66,12 @@ class Product extends Model {
             $product->where('title', 'like', '%' . $filter['title'] . '%');
         }
 
-        if ($filter != null && isset($filter['order_by']) && $filter['order_by'] > 0) {
-            if (isset($filter['order_by_direction']) == null) {
-                $filter['order_by_direction'] = 'desc';
-            }
+        if ($filter != null && isset($filter['order_by']) && $filter['order_by'] != '') {
+            $args = explode('#', $filter['order_by']);
+            $column = $args[0];
+            $direction = $args[1];
 
-            $product->orderBy($filter['order_by'], $filter['order_by_direction']);
+            $product->orderBy($column, $direction);
         } else {
             $product->orderBy('id', 'desc');
         }

@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>PHPay - @yield('pageTitle')</title>
+    <title>@yield('pageTitle') - {{ env('APP_NAME') }}</title>
 
     <!-- Meta -->
     <meta charset="utf-8" />
@@ -44,7 +44,7 @@
             <div class="w-100 text-center">
                 <form enctype="multipart/form-data" class="search-form formulary" method="get" action="{{ route('website.product.search') }}">
                     {!! csrf_field() !!}
-                    <input class="form-control form-control-dark w-50 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search">
+                    <input class="form-control form-control-dark w-50 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search" value="{{ isset($filter) && isset($filter['title']) ? $filter['title'] : '' }}" />
                 </form>
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
