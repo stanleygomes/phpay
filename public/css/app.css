@@ -1,7 +1,7 @@
 /* vars */
 /*
-    Primary Color: #e36933
-
+    Primary color: #007bff
+    Secondary color: #007bff
 */
 
 html, body {
@@ -80,6 +80,7 @@ a.not-underlined:hover {
     background-repeat: no-repeat;
 }
 
+/* Bootstrap components */
 .card .card-image-container {
     height: 200px;
 }
@@ -87,4 +88,16 @@ a.not-underlined:hover {
 .card .card-image-container .image {
     max-height: 200px;
     max-width: 100%;
+}
+
+.carousel .carousel-thumbnails .carousel-thumbnail {
+    width: auto;
+    height: auto;
+    max-width: 70px;
+    max-height: 70px;
+    cursor: pointer;
+}
+
+.carousel .carousel-thumbnails .carousel-thumbnail.active {
+    border: 3px solid #007bff;
 }
