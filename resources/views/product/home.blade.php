@@ -40,7 +40,6 @@
                     <span class="sr-only">Anterior</span>
                 </a>
             </div>
-
             <div class="mt-5 mb-5">
                 @if(count($products) > 0)
                 <div class="row mb-3">
@@ -65,7 +64,10 @@
                                     </h4>
                                     <div class="text-dark">{{ $product->category_name }}</div>
                                     <div class="text-dark">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary mt-3">
+                                    <h5 class="text-dark mt-2">
+                                        <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
+                                    </h5>
+                                    <button type="button" class="btn btn-sm btn-outline-warning mt-3">
                                         <!-- <i class="fa fa-shopping-cart"></i> -->
                                         Visualizar
                                     </button>
