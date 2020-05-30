@@ -44,6 +44,8 @@
             <div class="w-100 text-center">
                 <form enctype="multipart/form-data" class="search-form formulary" method="get" action="{{ route('website.product.search') }}">
                     {!! csrf_field() !!}
+                    <input type="hidden" name="category_id" value="{{ isset($filter) && isset($filter['category_id']) ? $filter['category_id'] : '' }}" />
+                    <input type="hidden" name="order_by" value="{{ isset($filter) && isset($filter['order_by']) ? $filter['order_by'] : '' }}" />
                     <input class="form-control form-control-dark w-50 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search" value="{{ isset($filter) && isset($filter['title']) ? $filter['title'] : '' }}" />
                 </form>
             </div>
