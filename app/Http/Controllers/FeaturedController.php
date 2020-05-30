@@ -16,7 +16,10 @@ class FeaturedController extends Controller {
             $featuredInstance = new Featured();
             $featureds = $featuredInstance->getFeaturedList($filter, true);
 
-            return view('featured.index', compact('featureds', 'filter'));
+            return view('featured.index', [
+                'featureds' => $featureds,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -40,7 +43,9 @@ class FeaturedController extends Controller {
         try {
             $modeEdit = false;
 
-            return view('featured.form', compact('modeEdit'));
+            return view('featured.form', [
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.featured.index')
                 ->withErrors($e->getMessage())
@@ -76,7 +81,10 @@ class FeaturedController extends Controller {
             $featured = $featuredInstance->getFeaturedById($id);
             $modeEdit = true;
 
-            return view('featured.form', compact('featured', 'modeEdit'));
+            return view('featured.form', [
+                'featured' => $featured,
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.featured.index')
                 ->withErrors($e->getMessage())

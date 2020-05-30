@@ -14,7 +14,9 @@ class WishlistItemController extends Controller {
             $wishlistItemInstance = new WishlistItem();
             $wishlistItems = $wishlistItemInstance->getWishlistItemList(null, true);
 
-            return view('wishlistItem.index', compact('wishlistItems'));
+            return view('wishlistItem.index', [
+                'wishlistItems' => $wishlistItems
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())

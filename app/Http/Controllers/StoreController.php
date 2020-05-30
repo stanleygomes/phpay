@@ -16,7 +16,10 @@ class StoreController extends Controller {
             $storeInstance = new Store();
             $stores = $storeInstance->getStoreList($filter, true);
 
-            return view('store.index', compact('stores', 'filter'));
+            return view('store.index', [
+                'stores' => $stores,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -41,7 +44,9 @@ class StoreController extends Controller {
         try {
             $modeEdit = false;
 
-            return view('store.form', compact('modeEdit'));
+            return view('store.form', [
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.store.index')
                 ->withErrors($e->getMessage())
@@ -83,7 +88,10 @@ class StoreController extends Controller {
                     ->withInput();
             }
 
-            return view('store.form', compact('store', 'modeEdit'));
+            return view('store.form', [
+                'store' => $store,
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::back()
                 ->withErrors($e->getMessage())

@@ -63,6 +63,10 @@ class ProductQuestion extends Model {
             $productQuestion->where('product_id', $filter['product_id']);
         }
 
+        if ($filter != null && isset($filter['answered']) && $filter['answered'] != '') {
+            $productQuestion->whereNotNull('answer');
+        }
+
         if ($filter != null && isset($filter['user_id']) && $filter['user_id'] != '') {
             $productQuestion->where('user_id', $filter['user_id']);
         }

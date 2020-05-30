@@ -16,7 +16,10 @@ class AddressController extends Controller {
             $addressInstance = new Address();
             $addresses = $addressInstance->getAddressList($filter, true);
 
-            return view('address.index', compact('addresses', 'filter'));
+            return view('address.index', [
+                'addresses' => $addresses,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -40,7 +43,9 @@ class AddressController extends Controller {
         try {
             $modeEdit = false;
 
-            return view('address.form', compact('modeEdit'));
+            return view('address.form', [
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())
@@ -76,7 +81,10 @@ class AddressController extends Controller {
             $address = $addressInstance->getAddressById($id);
             $modeEdit = true;
 
-            return view('address.form', compact('address', 'modeEdit'));
+            return view('address.form', [
+                'address' => $address,
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.address.index')
                 ->withErrors($e->getMessage())

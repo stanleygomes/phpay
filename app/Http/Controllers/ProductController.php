@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Helper\Helper;
 use App\Model\Product;
 use App\Model\ProductPhoto;
+use App\Model\ProductQuestion;
 use App\Model\Category;
 use App\Model\WishlistItem;
 
@@ -31,7 +32,10 @@ class ProductController extends Controller {
             $productInstance = new Product();
             $products = $productInstance->getProductList($filterProduct, false);
 
-            return view('product.home', compact('featureds', 'products'));
+            return view('product.home', [
+                'featureds' => $featureds,
+                'products' => $products
+            ]);
         } catch (AppException $e) {
             return Redirect::route('website.contact')
                 ->withErrors($e->getMessage())
@@ -57,7 +61,11 @@ class ProductController extends Controller {
             $productInstance = new Product();
             $products = $productInstance->getProductList($filter, true, 15);
 
-            return view('product.result', compact('categories', 'filter', 'products'));
+            return view('product.result', [
+                'categories' => $categories,
+                'filter' => $filter,
+                'products' => $products
+            ]);
         } catch (AppException $e) {
             return Redirect::route('website.product.home')
                 ->withErrors($e->getMessage())
@@ -88,7 +96,22 @@ class ProductController extends Controller {
             $wishlistItemInstance = new WishlistItem();
             $wishlistItem = $wishlistItemInstance->getWishlistItemByProductId($id);
 
-            return view('product.show', compact('product', 'category', 'productPhotos', 'relatedProducts', 'wishlistItem'));
+            $filterProductQuestion = [
+                'product_id' => $id,
+                'answered' => true
+            ];
+
+            $productQuestionInstance = new ProductQuestion();
+            $productQuestions = $productQuestionInstance->getProductQuestionList($filterProductQuestion, false);
+
+            return view('product.show', [
+                'product' => $product,
+                'category' => $category,
+                'productPhotos' => $productPhotos,
+                'relatedProducts' => $relatedProducts,
+                'wishlistItem' => $wishlistItem,
+                'productQuestions' => $productQuestions
+            ]);
         } catch (AppException $e) {
             return Redirect::route('website.product.home')
                 ->withErrors($e->getMessage())
@@ -103,7 +126,10 @@ class ProductController extends Controller {
             $productInstance = new Product();
             $products = $productInstance->getProductList($filter, true);
 
-            return view('product.index', compact('products', 'filter'));
+            return view('product.index', [
+                'products' => $products,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -130,7 +156,11 @@ class ProductController extends Controller {
             $categories = $categoryInstance->getCategoryList(null, false);
             $productPhotos = [];
 
-            return view('product.form', compact('modeEdit', 'categories', 'productPhotos'));
+            return view('product.form', [
+                'modeEdit' => $modeEdit,
+                'categories' => $categories,
+                'productPhotos' => $productPhotos
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.product.index')
                 ->withErrors($e->getMessage())
@@ -173,7 +203,12 @@ class ProductController extends Controller {
             $categories = $categoryInstance->getCategoryList(null, false);
             $modeEdit = true;
 
-            return view('product.form', compact('product', 'modeEdit', 'categories', 'productPhotos'));
+            return view('product.form', [
+                'product' => $product,
+                'modeEdit' => $modeEdit,
+                'categories' => $categories,
+                'productPhotos' => $productPhotos
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.product.index')
                 ->withErrors($e->getMessage())

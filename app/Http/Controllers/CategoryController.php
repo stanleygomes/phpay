@@ -16,7 +16,10 @@ class CategoryController extends Controller {
             $categoryInstance = new Category();
             $categories = $categoryInstance->getCategoryList($filter, true);
 
-            return view('category.index', compact('categories', 'filter'));
+            return view('category.index', [
+                'categories' => $categories,
+                'filter' => $filter
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.dashboard')
                 ->withErrors($e->getMessage())
@@ -40,7 +43,9 @@ class CategoryController extends Controller {
         try {
             $modeEdit = false;
 
-            return view('category.form', compact('modeEdit'));
+            return view('category.form', [
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
@@ -76,7 +81,10 @@ class CategoryController extends Controller {
             $category = $categoryInstance->getCategoryById($id);
             $modeEdit = true;
 
-            return view('category.form', compact('category', 'modeEdit'));
+            return view('category.form', [
+                'category' => $category,
+                'modeEdit' => $modeEdit
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.category.index')
                 ->withErrors($e->getMessage())
