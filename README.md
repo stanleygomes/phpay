@@ -25,11 +25,51 @@ Step by step to get this up and running
 git clone https://github.com/stanleygomes/phpay.git && cd phpay
 ```
 
-### Install dependencies
+### Start via docker compose
+
+First, copy enviroment variables for your application
+
+```bash
+cp .env.template .env
+```
+
+Then, start containers (this command will start database and run migrations)
+
+```bash
+docker-compose up
+```
+
+Verify if the containers are up and running
+
+```bash
+docker container ls
+```
+
+Now, access the webserver container
+
+```
+docker container exec -it phpay-webserver /bin/bash
+```
+
+At this point, your are connected to webserver container. Install composer dependencies
 
 ```bash
 composer install
 ```
+
+After this step is finished, you can exit the container:
+
+```bash
+exit
+```
+
+Since you are back to your terminal, you may need to change some folder permissions
+
+```bash
+sudo chmod -R 0775 bootstrap storage vendor
+```
+
+Finally, go to: `http://localhost:8000` to see your app online
 
 ### Great vscode extension
 
@@ -40,28 +80,6 @@ We recomend use of [VS Code](https://code.visualstudio.com) and [PHP Intelephens
 - Pagseguro API: https://github.com/pagseguro/pagseguro-php-sdk
 - Mercado Pago API: https://github.com/mercadopago/dx-php
 - PagarMe API: https://github.com/pagarme/pagarme-php
-
-### Start server
-
-Copy enviroment variables template
-
-```bash
-cp .env.template .env
-```
-
-Via docker-compose (start database, run migrations and start server)
-
-```bash
-docker-compose up
-```
-
-Access container via terminal
-
-```
-docker container exec -it phpay-webserver /bin/bash
-```
-
-To test it on the browser, simply go to: `http://localhost:8000`
 
 <div id='gitflow'/>
 
