@@ -54,7 +54,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto px-3">
                     <li class="nav-item">
-                        <a class="nav-link ml-4" href="{{ route('website.about') }}">
+                        <a class="nav-link ml-4" href="{{ route('app.wishlistItem.index') }}">
                             <i class="fa fa-heart button-icon"></i>
                         </a>
                     </li>
@@ -65,7 +65,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @yield('pageLoginActive')" href="{{ route('auth.login') }}">
-                            <span class="btn btn-sm btn-success">Minha&nbsp;conta</span>
+                            <span class="btn btn-sm btn-primary">Minha&nbsp;conta</span>
                         </a>
                     </li>
                     @if(Auth::user() == null)
@@ -84,7 +84,7 @@
         @yield('content')
     </div>
 
-    <footer class="py-5 bg-light">
+    <footer class="py-5 bg-light main-footer">
         <div class="container">
             <hr />
             <div class="row">
@@ -111,6 +111,28 @@
                     </div>
                 </div>
                 <div class="col-sm-6 text-right">
+                    <div class="mt-2">
+                        @if(App\Helper\Helper::getStoreData()->instagram_url != null)
+                        <a href="{{ App\Helper\Helper::getStoreData()->instagram_url }}">
+                            <i class="social-icon ml-2 fab fa-instagram text-dark"></i>
+                        </a>
+                        @endif
+                        @if(App\Helper\Helper::getStoreData()->facebook_url != null)
+                        <a href="{{ App\Helper\Helper::getStoreData()->facebook_url }}">
+                            <i class="social-icon ml-2 fab fa-facebook-square text-dark"></i>
+                        </a>
+                        @endif
+                        @if(App\Helper\Helper::getStoreData()->youtube_url != null)
+                        <a href="{{ App\Helper\Helper::getStoreData()->youtube_url }}">
+                            <i class="social-icon ml-2 fab fa-youtube-square text-dark"></i>
+                        </a>
+                        @endif
+                        @if(App\Helper\Helper::getStoreData()->twitter_url != null)
+                        <a href="{{ App\Helper\Helper::getStoreData()->twitter_url }}">
+                            <i class="social-icon ml-2 fab fa-twitter-square text-dark"></i>
+                        </a>
+                        @endif
+                    </div>
                     <div class="mt-2">
                         <a href="{{ route('website.delivery') }}">
                             Entregas

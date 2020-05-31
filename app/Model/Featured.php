@@ -14,6 +14,7 @@ class Featured extends Model {
     protected $table = 'featured';
     protected $fillable = [
         'title',
+        'link',
         'photo_url',
         'position',
         'placement',
@@ -69,6 +70,7 @@ class Featured extends Model {
         $featured = new Featured();
 
         $featured->title = $request->title;
+        $featured->link = $request->link;
         $featured->position = $request->position;
         $featured->placement = 'HOME_PAGE';
         $featured->created_by = Auth::user()->id;
@@ -97,6 +99,7 @@ class Featured extends Model {
 
         $featured->title = $request->title;
         $featured->position = $request->position;
+        $featured->link = $request->link;
         $featured->placement = 'HOME_PAGE';
 
         if ($request->hasFile('photo_url')) {

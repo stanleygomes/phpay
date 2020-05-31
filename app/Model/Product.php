@@ -88,6 +88,10 @@ class Product extends Model {
             $product->where('category_id', $filter['category_id']);
         }
 
+        if ($filter != null && isset($filter['category_exists']) && $filter['category_exists'] != '') {
+            $product->whereNull('category.deleted_at');
+        }
+
         if ($paginate === true) {
             $product = $product->paginate($limit);
         } else {

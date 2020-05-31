@@ -6,6 +6,7 @@ use App\Model\Featured;
 use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Helper\Helper;
 use App\Model\Product;
@@ -27,6 +28,7 @@ class ProductController extends Controller {
             $filterProduct = [
                 'order_by' => 'id#desc',
                 'featured' => 'YES',
+                'category_exists' => true,
                 'limit' => 6
             ];
             $productInstance = new Product();
@@ -94,7 +96,11 @@ class ProductController extends Controller {
             $relatedProducts = $productInstance->getProductList($filterProduct, false);
 
             $wishlistItemInstance = new WishlistItem();
-            $wishlistItem = $wishlistItemInstance->getWishlistItemByProductId($id);
+            $wishlistItem = null;
+
+            if (Auth::user()) {
+                $wishlistItem = $wishlistItemInstance->getWishlistItemByProductId($id);
+            }
 
             $filterProductQuestion = [
                 'product_id' => $id,
