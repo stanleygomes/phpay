@@ -25,6 +25,16 @@
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+-- CART (clone customer, clone address, )
+-- CART ITEM (clone product, clone category, qty)
+-- CART STATUS (history)
+
+
+
+
+
+
+
 CREATE TABLE `product` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `category_id` int(10) NOT NULL,
