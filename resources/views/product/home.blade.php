@@ -9,7 +9,15 @@
         @include('layouts.components.alert-messages')
 
         <div class="col-sm-3">
-            @include('layouts.components.category-sidebar')
+            <div class="col-sm-12">
+                <h4>
+                    <strong>Categorias</strong>
+                </h4>
+            </div>
+
+            <div class="mt-3">
+                @include('layouts.components.category-sidebar')
+            </div>
         </div>
         <div class="col-sm-9">
             <div id="carouselFeatured" class="carousel slide bg-light bg-loading" data-ride="carousel">
@@ -21,7 +29,9 @@
                 <div class="carousel-inner">
                     @foreach($featureds as $key => $featured)
                     <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                        <img src="{{ '/uploads/featured/' . $featured->photo_url }}" class="w-100 d-block shadow bg-white rounded-lg" />
+                        <a href="{{ $featured->link }}">
+                            <img src="{{ '/uploads/featured/' . $featured->photo_url }}" class="w-100 d-block shadow bg-white rounded-lg" />
+                        </a>
                     </div>
                     @endforeach
                 </div>

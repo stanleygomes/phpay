@@ -61,9 +61,7 @@
             <p class="card-text">
                 {{ $product->description_short }}
             </p>
-            @if($product->stock_qty < 5)
-            <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p>
-            @endif
+            @if($product->stock_qty < 5) <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p> @endif
             <div class="row">
                 <div class="col-sm-6">
                     @if($wishlistItem != null)
@@ -105,40 +103,6 @@
         </div>
     </div>
 
-    @if (count($relatedProducts) > 0)
-    <div class="row mt-3 mb-3">
-        <div class="col-sm-12 mb-2">
-            <h3>
-                <strong>Produtos relacionados</strong>
-            </h3>
-        </div>
-        @foreach($relatedProducts as $key => $product)
-        <div class="col-md-3">
-            <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined">
-                <div class="card mb-4 border rounded">
-                    <div class="w-100 bg-loading bg-light align-middle text-center card-image-container rounded">
-                        <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="image align-middle" />
-                    </div>
-                    <div class="card-body color">
-                        <h4 class="text-dark">
-                            <strong>{{ $product->title }}</strong>
-                        </h4>
-                        <div class="text-dark"><em>{{ $product->category_name }}</em></div>
-                        <div class="text-dark mt-2">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
-                        <h5 class="text-dark mt-2">
-                            <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
-                        </h5>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-3">
-                            Visualizar
-                        </button>
-                    </div>
-                </div>
-            </a>
-        </div>
-        @endforeach
-    </div>
-    @endif
-
     <div class="card card-outline-secondary my-5 border rounded">
         <div class="card-header py-3 border-0">
             <h3>
@@ -179,6 +143,40 @@
             </form>
         </div>
     </div>
+
+    @if (count($relatedProducts) > 0)
+    <div class="row mt-3 mb-3">
+        <div class="col-sm-12 mb-2">
+            <h3>
+                <strong>Produtos relacionados</strong>
+            </h3>
+        </div>
+        @foreach($relatedProducts as $key => $product)
+        <div class="col-md-3">
+            <a href="{{ route('website.product.show', [ 'id' => $product->id, 'slug' => $product->slug ]) }}" class="not-underlined">
+                <div class="card mb-4 border rounded">
+                    <div class="w-100 bg-loading bg-light align-middle text-center card-image-container rounded">
+                        <img src="{{ '/uploads/product/' . $product->photo_main_url }}" class="image align-middle" />
+                    </div>
+                    <div class="card-body color">
+                        <h4 class="text-dark">
+                            <strong>{{ $product->title }}</strong>
+                        </h4>
+                        <div class="text-dark"><em>{{ $product->category_name }}</em></div>
+                        <div class="text-dark mt-2">{{ \App\Helper\Helper::truncateText($product->description_short, 50) }}</div>
+                        <h5 class="text-dark mt-2">
+                            <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
+                        </h5>
+                        <button type="button" class="btn btn-sm btn-outline-primary mt-3">
+                            Visualizar
+                        </button>
+                    </div>
+                </div>
+            </a>
+        </div>
+        @endforeach
+    </div>
+    @endif
 
 </div>
 

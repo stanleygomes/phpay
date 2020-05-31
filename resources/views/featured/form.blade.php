@@ -37,6 +37,15 @@
     </div>
 
     <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="inputLink">Link</label>
+                <input type="url" id="inputLink" name="link" class="form-control" placeholder="Link" value="{{ $modeEdit === true ? $featured->link : old('link') }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="inputPhoto">Imagem de destaque (tamanho ideal: 850px / 320px)</label>
