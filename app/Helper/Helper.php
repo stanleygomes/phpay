@@ -12,14 +12,6 @@ use App\Model\Category;
 use App\Model\Store;
 
 class Helper {
-    private static $messages = [
-        'pb-br' => [
-            'USER_LIST_ERROR' => 'Erro ao listar usuários',
-        ],
-        'en' => [
-        ]
-    ];
-
     public static function getStoreData() {
         $storeId = 1;
         $storeInstance = new Store();
@@ -67,11 +59,6 @@ class Helper {
         }
 
         return null;
-    }
-
-    public static function getMessage($key) {
-        $defaultLocale = env('APP_LOCALE');
-        return $this->messages[$defaultLocale][$key];
     }
 
     public function sendMail($param, $data, $template, $subject) {

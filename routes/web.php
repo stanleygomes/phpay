@@ -33,6 +33,13 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
         Route::get('category/{id}/{slug?}', ['as' => 'byCategory', 'uses' => 'ProductController@webSearch']);
         Route::get('show/{id}/{slug?}', ['as' => 'show', 'uses' => 'ProductController@show']);
     });
+
+    Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
+        Route::get('', ['as' => 'cart', 'uses' => 'CartController@cart']);
+        Route::get('product/add/{id}', ['as' => 'addProduct', 'uses' => 'CartController@addProduct']);
+        Route::get('product/update/{id}', ['as' => 'updateProduct', 'uses' => 'CartController@updateProduct']);
+        Route::get('product/delete/{id}', ['as' => 'deleteProduct', 'uses' => 'CartController@deleteProduct']);
+    });
 });
 
 // app routes

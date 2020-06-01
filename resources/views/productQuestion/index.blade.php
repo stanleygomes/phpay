@@ -40,13 +40,13 @@
 <div class="col-sm-12">
     <div class="mt-3">
         <div class="row p-3 mb-2 border-top border-bottom">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <strong>Produto</strong>
             </div>
             <div class="col-sm-3">
                 <strong>Usuário</strong>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <strong>Data</strong>
             </div>
             <div class="col-sm-3 text-center">
@@ -55,13 +55,13 @@
         </div>
         @foreach($productQuestions as $key => $productQuestion)
         <div class="row p-3 mb-1 border rounded mb-2">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 {{ $productQuestion->product_title }}
             </div>
             <div class="col-sm-3">
                 {{ $productQuestion->user_name }}
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 {{ $productQuestion->created_at->format('d/m/Y H:i') }}
             </div>
             <div class="col-sm-3 text-right">

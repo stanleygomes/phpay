@@ -37,12 +37,10 @@ class WishlistItem extends Model {
         $wishlistItem = WishlistItem::where('product_id', $productId);
 
         if (Auth::user()) {
-            $wishlistItem->where('user_id', Auth::user()->id);
+            $wishlistItem = $wishlistItem->where('user_id', Auth::user()->id);
         }
 
-        $wishlistItem->first();
-
-        return $wishlistItem;
+        return $wishlistItem->first();
     }
 
     public function getWishlistItemById($id) {

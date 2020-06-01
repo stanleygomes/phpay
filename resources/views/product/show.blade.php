@@ -81,7 +81,7 @@
                     @endif
                 </div>
                 <div class="col-sm-6 text-right">
-                    <a href="">
+                    <a href="{{ route('website.cart.addProduct', [ 'id' => $product->id]) }}">
                         <button type="button" class="btn btn-lg btn-success">
                             <i class="fa fa-shopping-cart"></i>
                             Comprar
