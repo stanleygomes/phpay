@@ -25,15 +25,60 @@
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
--- CART (clone customer, clone address, )
--- CART ITEM (clone product, clone category, qty)
--- CART STATUS (history)
+CREATE TABLE `cart` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `user_id` int(10) NULL,
+    `user_name` varchar(255) NULL,
+    `user_email` varchar(255) NULL,
+    `user_phone` varchar(255) NULL,
+    `address_id` int(10) NULL,
+    `address_zipcode` varchar(255) NULL,
+    `address_street` varchar(255) NULL,
+    `address_number` int(11) NULL,
+    `address_complement` varchar(255) NULL,
+    `address_district` varchar(255) NULL,
+    `address_city` varchar(255) NULL,
+    `address_state` varchar(255) NULL,
+    `payment_methods_available_id` int(10) NULL,
+    `price_total` float(8, 2) NOT NULL,
+    `last_status` varchar(255) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `cart_history` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `cart_id` int(10) NOT NULL,
+    `description` varchar(255) NULL,
+    `status` varchar(255) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
-
-
-
-
+CREATE TABLE `cart_item` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `cart_id` int(10) NOT NULL,
+    `product_id` int(10) NOT NULL,
+    `product_code` varchar(255) NOT NULL,
+    `product_title` varchar(255) NOT NULL,
+    `product_description_short` varchar(255) NOT NULL,
+    `product_price` float(8, 2) NOT NULL,
+    `product_photo_url` varchar(255) NOT NULL,
+    `category_id` int(10) NOT NULL,
+    `category_name` varchar(255) NOT NULL,
+    `qty` int(10) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 CREATE TABLE `product` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -263,6 +308,16 @@ CREATE TABLE `user_password_reset` (
 
 -- ALTER TABLE `product_review` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
+ALTER TABLE `cart` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+ALTER TABLE `cart` ADD FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+ALTER TABLE `cart` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `cart` ADD FOREIGN KEY (`payment_methods_available_id`) REFERENCES `payment_methods_available` (`id`);
+ALTER TABLE `cart_history` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
+ALTER TABLE `cart_history` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `cart_item` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+ALTER TABLE `cart_item` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+ALTER TABLE `cart_item` ADD FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+ALTER TABLE `cart_item` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
 ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `wishlist_item` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 ALTER TABLE `category` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);

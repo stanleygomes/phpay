@@ -3,7 +3,9 @@ $(document).ready(function () {
     $('.mask-cpfcnpj').keydown(function () {
         try {
             $('.mask-cpfcnpj').unmask();
-        } catch (e) { }
+        } catch (e) {
+            console.log(e);
+        }
 
         const tamanho = $('.mask-cpfcnpj').val().length;
 
@@ -43,7 +45,7 @@ $(document).ready(function () {
     $('.mask-plaque').mask('AAA-0000');
 
     // form validation
-    $('form').submit(function(e) {
+    $('form').submit(function() {
         let message = $(this)
             .find('button:submit')
             .attr('data-message');

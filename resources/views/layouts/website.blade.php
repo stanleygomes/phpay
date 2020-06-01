@@ -54,12 +54,12 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto px-3">
                     <li class="nav-item">
-                        <a class="nav-link ml-4" href="{{ route('app.wishlistItem.index') }}">
+                        <a class="nav-link ml-4 mr-2" href="{{ route('app.wishlistItem.index') }}">
                             <i class="fa fa-heart button-icon"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mr-4" href="{{ route('website.about') }}">
+                        <a class="nav-link mr-4" href="{{ route('website.cart.cart') }}">
                             <i class="fa fa-shopping-cart button-icon"></i>
                         </a>
                     </li>

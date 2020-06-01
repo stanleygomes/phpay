@@ -105,7 +105,7 @@
                             </h4>
                         </div>
 
-                        <a href="{{ route('app.dashboard') }}" class="list-group-item @yield('sidebarMenuDashboardActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Dashboard</a>
+                        <a href="{{ route('app.dashboard') }}" class="list-group-item @yield('sidebarMenuDashboardActive')">Dashboard</a>
                         <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Configurações</a>
                         <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
                         @endif
@@ -150,6 +150,8 @@
         ga('create', '{{ env("ANALYTICS_CODE") }}', 'auto');
         ga('send', 'pageview');
     </script>
+
+    @yield('script')
 
     <script>
         // if ('serviceWorker' in navigator) {
