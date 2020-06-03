@@ -4,8 +4,8 @@
 @section('content')
 
 <div class="container">
-    <div class="row justify-content-md-center">
-        <div class="col-sm-12 col-lg-6">
+    <div class="row">
+        <div class="col-sm-6">
             <form enctype="multipart/form-data" class="auth-form formulary" method="post" action="{{ route('auth.passwordRequestPost') }}">
                 {!! csrf_field() !!}
                 <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
