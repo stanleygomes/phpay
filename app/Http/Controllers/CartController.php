@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Model\Cart;
 use App\Model\CartItem;
+use App\Model\User;
 
 class CartController extends Controller {
-    public function cart() {
+    public function cart($finish = null) {
         try {
             DB::beginTransaction();
             $cartInstance = new Cart();
@@ -24,13 +25,16 @@ class CartController extends Controller {
 
             $cartInstance = new CartItem();
             $cartItems = $cartInstance->getCartItemList($filter, true);
+            $cartItems = $cartInstance->updateCartItemMaxQtyAvailable($cartItems);
 
-            DB::commit();
+            DB::commit();$user = new User();
 
             return view('cart.cart', [
                 'cart' => $cart,
                 'cartItems' => $cartItems,
-                'filter' => $filter
+                'user' => $user,
+                'filter' => $filter,
+                'finish' => $finish
             ]);
         } catch (AppException $e) {
             DB::rollBack();
@@ -94,7 +98,7 @@ class CartController extends Controller {
 
             DB::commit();
 
-            return Redirect::back()
+            return Redirect::route('website.cart.cart')
                 ->with('status', $cartItem['message']);
         } catch (AppException $e) {
             DB::rollBack();
@@ -112,7 +116,6 @@ class CartController extends Controller {
 
             $cartItemInstance = new CartItem();
             $cartItem = $cartItemInstance->updateCartItem($cartId, $productId, $request->qty);
-
             DB::commit();
 
             return Redirect::back()

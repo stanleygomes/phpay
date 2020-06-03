@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Model\Category;
 use App\Model\Store;
+use App\Model\Cart;
+use App\Model\CartItem;
 
 class Helper {
     public static function getStoreData() {
@@ -35,6 +37,18 @@ class Helper {
         try {
             $categoryInstance = new Category();
             return $categoryInstance->getCategoryList(null, false);
+        } catch (AppException $e) {
+            Log::error($e);
+        }
+    }
+
+    public static function getCartItemCount() {
+        try {
+            $cartInstance = new Cart();
+            $cartId = $cartInstance->getSessionCartId();
+
+            $cartItemInstance = new CartItem();
+            return $cartItemInstance->getCartItemCount($cartId);
         } catch (AppException $e) {
             Log::error($e);
         }

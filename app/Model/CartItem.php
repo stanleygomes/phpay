@@ -31,6 +31,8 @@ class CartItem extends Model {
         'deleted_at' => 'datetime'
     ];
 
+    protected $cartItemMaxProd = 10;
+
     public function getCartItemById($id) {
         return CartItem::where('id', $id)
             ->first();
@@ -46,6 +48,23 @@ class CartItem extends Model {
             ->where('cart_item.product_id', $productId)
             ->where('cart_item.cart_id', $cartId)
             ->first();
+    }
+
+    public function getCartItemCount ($cartId) {
+        return CartItem::where('cart_id', $cartId)
+            ->sum('qty');
+    }
+
+    public function updateCartItemMaxQtyAvailable($cartItems) {
+        for($i = 0; $i < count($cartItems); $i++) {
+            $cartItem = $cartItems[$i];
+
+            if ($cartItem->stock_qty > $this->cartItemMaxProd) {
+                $cartItem->stock_qty = $this->cartItemMaxProd;
+            }
+        }
+
+        return $cartItems;
     }
 
     public function getCartItemList($filter = null, $paginate = false, $limit = 15) {
@@ -128,16 +147,16 @@ class CartItem extends Model {
         $cartInstance->updatePriceTotal($cartId);
 
         if ($qty == null) {
-            if ($cartItem->qty < $cartItem->stock_qty) {
+            if ($cartItem->qty < $cartItem->stock_qty && $cartItem->qty < $this->cartItemMaxProd) {
                 $cartItem->qty = $cartItem->qty + 1;
             } else {
-                throw new AppException('Produto sem estoque no momento [' . $productId . '].');
+                throw new AppException('Produto [' . $productId . '] sem estoque no momento.');
             }
         } else {
-            if ($qty < $cartItem->stock_qty) {
+            if ($qty < $cartItem->stock_qty && $qty < $this->cartItemMaxProd) {
                 $cartItem->qty = $qty;
             } else {
-                throw new AppException('Produto sem estoque no momento [' . $productId . '].');
+                throw new AppException('Produto [' . $productId . '] sem estoque no momento.');
             }
         }
 
