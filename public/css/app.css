@@ -72,9 +72,22 @@ a.not-underlined:hover {
 }
 
 .main-menu .button-icon {
-    font-size: 25px;
     color: #777;
 }
+
+.main-menu .badge-cart-item-count {
+    width: 24px;
+    height: 24px;
+    bottom: 0;
+    right: -5px;
+    top: auto;
+    box-sizing: border-box;
+    position: absolute;
+    padding: 3px;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
 
 .main-menu .button-icon:hover {
     color: #007bff;
@@ -103,6 +116,10 @@ a.not-underlined:hover {
     background-color: #007bff;
 }
 
+.icon-30 {
+    font-size: 30px;
+}
+
 .bg-loading {
     min-height: 50px;
     background-image: url('../img/loading.gif');
@@ -120,6 +137,11 @@ a.not-underlined:hover {
     max-width: 100%;
 }
 
+.carousel .carousel-image {
+    width: auto;
+    max-height: 350px;
+}
+
 .carousel .carousel-thumbnails .carousel-thumbnail {
     width: auto;
     height: auto;
@@ -134,5 +156,5 @@ a.not-underlined:hover {
 
 .cart .list-items .thumbnail {
     max-width: 100px;
-    max-height: 100px;
+    max-height: 50px;
 }

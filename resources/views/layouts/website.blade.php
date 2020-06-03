@@ -55,12 +55,13 @@
                 <ul class="navbar-nav ml-auto px-3">
                     <li class="nav-item">
                         <a class="nav-link ml-4 mr-2" href="{{ route('app.wishlistItem.index') }}">
-                            <i class="fa fa-heart button-icon"></i>
+                            <i class="fa fa-heart button-icon icon-30"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mr-4" href="{{ route('website.cart.cart') }}">
-                            <i class="fa fa-shopping-cart button-icon"></i>
+                        <a class="nav-link mr-4 position-relative" href="{{ route('website.cart.cart') }}">
+                            <i class="fa fa-shopping-bag button-icon position-relative icon-30"></i>
+                            <strong class="text-light bg-success text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
                         </a>
                     </li>
                     <li class="nav-item">

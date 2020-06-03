@@ -28,8 +28,8 @@
             <div id="carouselFeatured" class="carousel slide bg-light bg-loading" data-ride="carousel">
                 <div class="carousel-inner">
                     @foreach($productPhotos as $key => $productPhoto)
-                    <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                        <img src="{{ '/uploads/product/' . $productPhoto->photo_url }}" class="w-100 d-block shadow bg-white rounded-lg" />
+                    <div class="carousel-item text-center {{ $key === 0 ? 'active' : '' }}">
+                        <img src="{{ '/uploads/product/' . $productPhoto->photo_url }}" class="bg-white rounded-lg carousel-image" />
                     </div>
                     @endforeach
                 </div>
@@ -62,33 +62,27 @@
                 {{ $product->description_short }}
             </p>
             @if($product->stock_qty < 5) <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p> @endif
-            <div class="row">
-                <div class="col-sm-6">
-                    @if($wishlistItem != null)
-                    <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
-                        <button type="button" class="btn btn-sm mt-2 btn-danger">
-                            <i class="fa fa-heart"></i>
-                            Remover dos favoritos
-                        </button>
-                    </a>
-                    @else
-                    <a href="{{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
-                        <button type="button" class="btn btn-sm mt-2 btn-outline-danger">
-                            <i class="fa fa-heart"></i>
-                            Adicionar aos favoritos
-                        </button>
-                    </a>
-                    @endif
+                <div class="row">
+                    <div class="col-sm-6">
+                        @if($wishlistItem != null)
+                        <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
+                            <i class="fa fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Remover dos favoritos"></i>
+                        </a>
+                        @else
+                        <a href="{{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
+                            <i class="far fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Adicionar aos favoritos"></i>
+                        </a>
+                        @endif
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a href="{{ route('website.cart.addProduct', [ 'id' => $product->id]) }}">
+                            <button type="button" class="btn btn-lg btn-success">
+                                <i class="fa fa-shopping-bag"></i>
+                                Adicionar ao carrinho
+                            </button>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-sm-6 text-right">
-                    <a href="{{ route('website.cart.addProduct', [ 'id' => $product->id]) }}">
-                        <button type="button" class="btn btn-lg btn-success">
-                            <i class="fa fa-shopping-cart"></i>
-                            Comprar
-                        </button>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 
