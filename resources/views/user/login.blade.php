@@ -4,14 +4,17 @@
 @section('content')
 
 <div class="container">
-    <div class="row justify-content-md-center">
-        <div class="col-sm-12 col-lg-6">
+    <div class="row">
+        <div class="col-sm-6">
             <form enctype="multipart/form-data" class="auth-form formulary" method="post" action="{{ route('auth.loginPost') }}">
                 {!! csrf_field() !!}
                 <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Por favor, efetue o login</h1>
 
                 @include('layouts.components.alert-messages')
+
+                <input type="hidden" name="redir" value="{{ $redir }}" />
+                <input type="hidden" name="redirMessage" value="{{ $redirMessage }}" />
 
                 <div class="form-group">
                     <label for="inputEmail">Email</label>
@@ -30,11 +33,21 @@
                         <span>Recuperar senha</span>
                     </a>
                     |
-                    <a href="{{ route('auth.register') }}">
+                    <a href="{{ route('auth.register') }}?redir={{ $redir }}&redirMessage={{ $redir }}">
                         <span>Criar conta</span>
                     </a>
                 </div>
             </form>
+        </div>
+        <div class="col-sm-6 text-center">
+            <img src="/img/login-illustration.png" class="w-100 d-block align-middle" />
+            <div>
+                <h3>Ainda não tem conta?</h3>
+                <p>Clica no botão abaixo.</p>
+                <a href="{{ route('auth.register') }}?redir={{ $redir }}&redirMessage={{ $redir }}">
+                    <button type="submit" class="btn btn-lg btn-success" data-message="Um momento...">Criar uma conta</button>
+                </a>
+            </div>
         </div>
     </div>
 </div>

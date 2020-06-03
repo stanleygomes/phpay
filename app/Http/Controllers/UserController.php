@@ -13,13 +13,16 @@ use App\Model\UserPasswordReset;
 use App\Helper\Helper;
 
 class UserController extends Controller {
-    public function login() {
+    public function login(Request $request) {
         if (Auth::user()) {
             return redirect()
                 ->route('app.dashboard');
         }
 
-        return view('user.login');
+        return view('user.login', [
+            'redir' => $request != null ? $request->redir : null,
+            'redirMessage' => $request != null ? $request->redirMessage : null
+        ]);
     }
 
     public function loginPost(Request $request) {
@@ -37,8 +40,13 @@ class UserController extends Controller {
             $userInstance->login($request);
             DB::commit();
 
-            return Redirect::route('app.dashboard')
-                ->with('status', '');
+            if ($request->redir != null) {
+                return Redirect::to($request->redir)
+                    ->with('status', $request->redirMessage != null ? $request->redirMessage : '');
+            } else {
+                return Redirect::route('app.dashboard')
+                    ->with('status', 'Seja bem vindo!');
+            }
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()
@@ -61,8 +69,16 @@ class UserController extends Controller {
         }
     }
 
-    public function register() {
-        return view('user.register');
+    public function register(Request $request) {
+        if (Auth::user()) {
+            return redirect()
+                ->route('app.dashboard');
+        }
+
+        return view('user.register', [
+            'redir' => $request != null ? $request->redir : null,
+            'redirMessage' => $request != null ? $request->redirMessage : null
+        ]);
     }
 
     public function registerPost(Request $request) {
@@ -82,8 +98,13 @@ class UserController extends Controller {
             $userInstance->login($request);
             DB::commit();
 
-            return Redirect::route('app.dashboard')
-                ->with('status', 'Sua conta foi criada com sucesso.');
+            if ($request->redir != null) {
+                return Redirect::to($request->redir)
+                    ->with('status', $request->redirMessage != null ? $request->redirMessage : '');
+            } else {
+                return Redirect::route('app.dashboard')
+                    ->with('status', 'Sua conta foi criada com sucesso.');
+            }
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()

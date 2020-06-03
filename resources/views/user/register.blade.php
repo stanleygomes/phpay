@@ -4,14 +4,17 @@
 @section('content')
 
 <div class="container">
-    <div class="row justify-content-md-center">
-        <div class="col-sm-12 col-lg-6">
+    <div class="row">
+        <div class="col-sm-6">
             <form enctype="multipart/form-data" class="auth-form formulary" method="post" action="/app/sa">
                 {!! csrf_field() !!}
                 <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 font-weight-normal">Criar conta</h1>
 
                 @include('layouts.components.alert-messages')
+
+                <input type="hidden" name="redir" value="{{ $redir }}" />
+                <input type="hidden" name="redirMessage" value="{{ $redirMessage }}" />
 
                 <div class="form-group">
                     <label for="inputName">Nome</label>
@@ -35,7 +38,7 @@
                         <span>Recuperar senha</span>
                     </a>
                     |
-                    <a href="{{ route('auth.login') }}">
+                    <a href="{{ route('auth.login') }}?redir={{ $redir }}&redirMessage={{ $redir }}">
                         <span>Entrar</span>
                     </a>
                 </div>

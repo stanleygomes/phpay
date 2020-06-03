@@ -35,7 +35,7 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     });
 
     Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
-        Route::get('', ['as' => 'cart', 'uses' => 'CartController@cart']);
+        Route::get('/{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
         Route::get('product/add/{id}', ['as' => 'addProduct', 'uses' => 'CartController@addProduct']);
         Route::get('product/update/{id}', ['as' => 'updateProduct', 'uses' => 'CartController@updateProduct']);
         Route::get('product/delete/{id}', ['as' => 'deleteProduct', 'uses' => 'CartController@deleteProduct']);
