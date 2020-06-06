@@ -21,14 +21,15 @@ class CartController extends Controller {
             $cartInstance = new Cart();
             $cartId = $cartInstance->getSessionCartId();
             $cart = $cartInstance->getCartById($cartId);
+            $cartInstance->updatePriceTotal($cartId);
 
             $filter = [
                 'cart_id' => $cartId
             ];
 
-            $cartInstance = new CartItem();
-            $cartItems = $cartInstance->getCartItemList($filter, true);
-            $cartItems = $cartInstance->updateCartItemMaxQtyAvailable($cartItems);
+            $cartItemInstance = new CartItem();
+            $cartItems = $cartItemInstance->getCartItemList($filter, true);
+            $cartItems = $cartItemInstance->updateCartItemMaxQtyAvailable($cartItems);
 
             DB::commit();
 
