@@ -16,7 +16,7 @@
             <div class="step">
                 <button type="button" class="step-trigger" role="tab" id="stepper2">
                     <span class="bs-stepper-circle {{ $step === 'user' ? 'bg-primary' : '' }}">
-                        <span class="fas fa-map-marked" aria-hidden="true"></span>
+                        <span class="fas fa-user" aria-hidden="true"></span>
                     </span>
                     <span class="bs-stepper-label {{ $step === 'user' ? 'text-primary' : '' }}">Dados pessoais</span>
                 </button>
@@ -38,7 +38,7 @@
             <div class="step">
                 <button type="button" class="step-trigger" role="tab" id="stepper3">
                     <span class="bs-stepper-circle {{ $step === 'finish' ? 'bg-primary' : '' }}">
-                        <span class="fas fa-save" aria-hidden="true"></span>
+                        <span class="fas fa-check" aria-hidden="true"></span>
                     </span>
                     <span class="bs-stepper-label {{ $step === 'finish' ? 'text-primary' : '' }}">Finalizar</span>
                 </button>
