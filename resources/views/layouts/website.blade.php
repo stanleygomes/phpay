@@ -30,6 +30,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/css/bootstrap.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/font-awesome.min.css?v={{ env('APP_VERSION') }}" />
+    <link rel="stylesheet" href="/css/bs-stepper.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/app.css?v={{ env('APP_VERSION') }}" />
 </head>
 

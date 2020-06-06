@@ -179,6 +179,7 @@ CREATE TABLE `payment_methods_available` (
 
 CREATE TABLE `address` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
+    `main` varchar(255) NULL,
     `user_id` int(10) NOT NULL,
     `name` varchar(255) NULL,
     `zipcode` varchar(255) NULL,
