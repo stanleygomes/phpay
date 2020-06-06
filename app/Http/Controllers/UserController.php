@@ -38,15 +38,21 @@ class UserController extends Controller {
             }
 
             DB::beginTransaction();
-            $userInstance->login($request);
+            $user = $userInstance->login($request);
             DB::commit();
 
             if ($request->redir != null) {
                 return Redirect::to($request->redir)
                     ->with('status', $request->redirMessage != null ? $request->redirMessage : '');
             } else {
-                return Redirect::route('app.dashboard')
-                    ->with('status', 'Seja bem vindo!');
+                $userData = $user['data'];
+                if ($userData->profile === 'ADMIN') {
+                    return Redirect::route('app.dashboard')
+                        ->with('status', 'Seja bem vindo!');
+                } else {
+                    return Redirect::route('app.cart.index')
+                        ->with('status', 'Seja bem vindo!');
+                }
             }
         } catch (AppException $e) {
             DB::rollBack();

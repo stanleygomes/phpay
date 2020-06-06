@@ -95,7 +95,10 @@ class User extends Authenticatable {
         $userLoginHistoryInstance = new UserLoginHistory();
         $userLoginHistoryInstance->storeUserLoginHistory($user->id);
 
-        return $user;
+        return [
+            'message' => 'Login efetuado com sucesso.',
+            'data' => $user
+        ];
     }
 
     public function passwordRequest($request) {
