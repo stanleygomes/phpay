@@ -44,6 +44,10 @@ class Helper {
         return $totalPrice;
     }
 
+    public static function formatCartId($cartId) {
+        return str_pad($cartId, 10, '0', STR_PAD_LEFT);
+    }
+
     public static function getCategoryList() {
         try {
             $categoryInstance = new Category();

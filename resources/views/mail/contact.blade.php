@@ -1,7 +1,5 @@
 @extends('layouts.email')
 
-@section('title', 'Contato')
-
 @section('body')
 
 <h3>Mensagem enviada no contato do site</h3>

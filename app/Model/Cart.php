@@ -14,6 +14,7 @@ class Cart extends Model {
     protected $table = 'cart';
     protected $fillable = [
         'user_id',
+        'user_cpf',
         'user_name',
         'user_email',
         'user_phone',
@@ -89,6 +90,7 @@ class Cart extends Model {
         }
 
         $cart->user_id = $user->id;
+        $cart->user_cpf = $user->cpf;
         $cart->user_name = $user->name;
         $cart->user_email = $user->email;
         $cart->user_phone = $user->phone;

@@ -111,6 +111,23 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CategoryController@delete']);
     });
 
+    Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'CartController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'CartController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'CartController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'CartController@store']);
+        Route::get('show/{id}', ['as' => 'show', 'uses' => 'CartController@show']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CartController@delete']);
+    });
+
+    Route::group(['as' => 'cartReview.', 'prefix' => 'cartReview'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'CartReviewController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'CartReviewController@search']);
+        Route::get('create/{cart_id}', ['as' => 'create', 'uses' => 'CartReviewController@create']);
+        Route::post('store/{cart_id}', ['as' => 'store', 'uses' => 'CartReviewController@store']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CartReviewController@delete']);
+    });
+
     Route::group(['as' => 'product.', 'prefix' => 'product'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'ProductController@index']);
         Route::post('search', ['as' => 'search', 'uses' => 'ProductController@search']);
