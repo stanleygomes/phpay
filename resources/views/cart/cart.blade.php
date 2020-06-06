@@ -82,17 +82,20 @@
             </div>
 
             <div class="row mt-4 p-3 border-bottom border-top">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <strong>Produto</strong>
                 </div>
                 <div class="col-sm-2">
                     <strong>Qtd.</strong>
                 </div>
                 <div class="col-sm-2">
-                    <strong>Preço</strong>
+                    <strong>Preço Un.</strong>
+                </div>
+                <div class="col-sm-2">
+                    <strong>Preço total</strong>
                 </div>
                 @if($finish == null)
-                <div class="col-sm-2 text-center">
+                <div class="col-sm-1 text-center">
                     <strong>Opções</strong>
                 </div>
                 @endif
@@ -108,7 +111,7 @@
                 </div>
                 @else
                 @endif
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <a href="{{ route('website.product.show', ['id' => $cartItem->product_id]) }}">
                         <div>
                             <strong>{{ $cartItem->product_title }}</strong>
@@ -142,7 +145,12 @@
                         <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($cartItem->product_price) }}</strong>
                     </h5>
                 </div>
-                <div class="col-sm-2 text-center">
+                <div class="col-sm-2">
+                    <h5>
+                        <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($cartItem->product_price * $cartItem->qty) }}</strong>
+                    </h5>
+                </div>
+                <div class="col-sm-1 text-center">
                     @if($finish == null)
                     <a href="{{ route('website.cart.deleteProduct', ['id' => $cartItem->product_id]) }}" class="not-underlined confirmAction" data-message="Deseja deletar?">
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">

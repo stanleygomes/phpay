@@ -129,6 +129,9 @@ class CartItem extends Model {
 
         $cartItem->save();
 
+        $cartInstance = new Cart();
+        $cartInstance->updatePriceTotal($cartId);
+
         return [
             'message' => 'Produto adicionado no carrinho.',
             'data' => $cartItem
@@ -178,6 +181,9 @@ class CartItem extends Model {
         $cartItem->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $cartItem->save();
 
+        $cartInstance = new Cart();
+        $cartInstance->updatePriceTotal($cartId);
+
         return [
             'message' => 'Cadastro deletado com sucesso.'
         ];
@@ -192,6 +198,9 @@ class CartItem extends Model {
 
         $cartItem->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $cartItem->save();
+
+        $cartInstance = new Cart();
+        $cartInstance->updatePriceTotal($cartItem->cart_id);
 
         return [
             'message' => 'Cadastro deletado com sucesso.'

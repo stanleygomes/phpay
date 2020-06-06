@@ -33,6 +33,7 @@
                     </div>
                     @endforeach
                 </div>
+                @if(isset($productPhotos) && count($productPhotos) > 1)
                 <a class="carousel-control-prev" href="#carouselFeatured" role="button" data-slide="prev">
                     <span class="text-dark carousel-control-icon shadow rounded-circle bg-white py-3 px-4">
                         <i class="fa fa-chevron-left"></i>
@@ -45,6 +46,7 @@
                     </span>
                     <span class="sr-only">Anterior</span>
                 </a>
+                @endif
                 <div class="carousel-indicators carousel-thumbnails">
                     @foreach($productPhotos as $key => $productPhoto)
                     <img src="{{ '/uploads/product/' . $productPhoto->photo_url }}" class="shadow mr-2 bg-white rounded-lg carousel-thumbnail {{ $key === 0 ? 'active' : '' }}" data-target="#carouselFeatured" data-slide-to="{{ $key }}" />
