@@ -35,10 +35,26 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     });
 
     Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
-        Route::get('/{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
-        Route::get('product/add/{id}', ['as' => 'addProduct', 'uses' => 'CartController@addProduct']);
-        Route::get('product/update/{id}', ['as' => 'updateProduct', 'uses' => 'CartController@updateProduct']);
-        Route::get('product/delete/{id}', ['as' => 'deleteProduct', 'uses' => 'CartController@deleteProduct']);
+        Route::get('{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
+        Route::group(['as' => '', 'prefix' => 'user'], function () {
+            Route::get('edit', ['as' => 'userEdit', 'uses' => 'UserController@cartUserEdit']);
+            Route::post('update', ['as' => 'userUpdate', 'uses' => 'UserController@cartUserUpdate']);
+        });
+
+        Route::group(['as' => '', 'prefix' => 'address'], function () {
+            Route::get('address', ['as' => 'address', 'uses' => 'AddressController@cartAddressIndex']);
+            Route::get('create', ['as' => 'addressCreate', 'uses' => 'AddressController@cartAddressCreate']);
+            Route::post('addressStore', ['as' => 'addressStore', 'uses' => 'AddressController@cartAddressStore']);
+            Route::get('edit/{id}', ['as' => 'addressEdit', 'uses' => 'AddressController@cartAddressEdit']);
+            Route::post('addressUpdate/{id}', ['as' => 'addressUpdate', 'uses' => 'AddressController@cartAddressUpdate']);
+            Route::get('confirm/{id}', ['as' => 'addressConfirm', 'uses' => 'CartController@addressConfirm']);
+        });
+
+        Route::group(['as' => '', 'prefix' => 'product'], function () {
+            Route::get('add/{id}', ['as' => 'addProduct', 'uses' => 'CartController@addProduct']);
+            Route::get('update/{id}', ['as' => 'updateProduct', 'uses' => 'CartController@updateProduct']);
+            Route::get('delete/{id}', ['as' => 'deleteProduct', 'uses' => 'CartController@deleteProduct']);
+        });
     });
 });
 

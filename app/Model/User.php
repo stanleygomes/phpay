@@ -254,18 +254,19 @@ class User extends Authenticatable {
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->profile = $request->profile;
-
         $user->cpf = $request->cpf;
+        $user->sex = $request->sex;
+        $user->phone = $request->phone;
+
+        if ($request->profile != null) {
+            $user->profile = $request->profile;
+        }
 
         if ($request->born_at != null) {
             $user->born_at = date_create_from_format('d/m/Y H:i:s', $request->born_at . ' 00:00:00');
         } else {
             $user->born_at = null;
         }
-
-        $user->sex = $request->sex;
-        $user->phone = $request->phone;
 
         $user->save();
 

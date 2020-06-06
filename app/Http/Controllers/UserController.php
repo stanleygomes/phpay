@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use App\Model\Cart;
 use App\Model\User;
 use App\Model\UserPasswordReset;
 use App\Helper\Helper;
@@ -365,6 +366,52 @@ class UserController extends Controller {
                 ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.user.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartUserEdit() {
+        try {
+            $userLogged = Auth::user();
+
+            if ($userLogged == null) {
+                return Redirect::route('auth.login', ['redir' => '/cart/user']);
+            }
+
+            $userInstance = new User();
+            $user = $userInstance->getUserById($userLogged->id);
+
+            return view('user.cart-user', [
+                'user' => $user
+            ]);
+        } catch (AppException $e) {
+            return Redirect::route('website.cart.cart')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartUserUpdate(Request $request) {
+        try {
+            DB::beginTransaction();
+            $userLogged = Auth::user();
+
+            if ($userLogged == null) {
+                return Redirect::route('auth.login', ['redir' => '/cart/user']);
+            }
+
+            $userInstance = new User();
+            $user = $userInstance->updateUser($request, $userLogged->id);
+
+            $cartInstance = new Cart();
+            $cartInstance->setUser($user['data']);
+            DB::commit();
+
+            return Redirect::route('website.cart.address');
+        } catch (AppException $e) {
+            DB::rollback();
+            return Redirect::route('website.cart.user')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

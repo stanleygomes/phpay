@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\AppException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -115,6 +116,94 @@ class AddressController extends Controller {
                 ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.address.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartAddressIndex() {
+        try {
+            $userLogged = Auth::user();
+
+            if ($userLogged == null) {
+                return Redirect::route('auth.login', ['redir' => '/cart/address']);
+            }
+
+            $addressInstance = new Address();
+            $addresses = $addressInstance->getAddressList(null, false);
+
+            return view('address.cart-index', [
+                'addresses' => $addresses
+            ]);
+        } catch (AppException $e) {
+            return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartAddressCreate() {
+        try {
+            $modeEdit = false;
+
+            return view('address.cart-form', [
+                'modeEdit' => $modeEdit
+            ]);
+        } catch (AppException $e) {
+            return Redirect::route('website.cart.cart')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartAddressStore(Request $request) {
+        try {
+            $addressInstance = new Address();
+            $validateRequest = Helper::validateRequest($request, $addressInstance->validationRules, $addressInstance->validationMessages);
+
+            if ($validateRequest != null) {
+                return Redirect::back()
+                    ->withErrors($validateRequest)
+                    ->withInput();
+            }
+
+            $address = $addressInstance->storeAddress($request);
+
+            return Redirect::route('website.cart.address')
+                ->with('status', $address['message']);
+        } catch (AppException $e) {
+            return Redirect::route('website.cart.address')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartAddressEdit($id) {
+        try {
+            $addressInstance = new Address();
+            $address = $addressInstance->getAddressById($id);
+            $modeEdit = true;
+
+            return view('address.cart-form', [
+                'address' => $address,
+                'modeEdit' => $modeEdit
+            ]);
+        } catch (AppException $e) {
+            return Redirect::route('website.cart.address')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function cartAddressUpdate(Request $request, $id) {
+        try {
+            $addressInstance = new Address();
+            $address = $addressInstance->updateAddress($request, $id);
+
+            return Redirect::route('website.cart.address')
+                ->with('status', $address['message']);
+        } catch (AppException $e) {
+            return Redirect::route('website.cart.address')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
