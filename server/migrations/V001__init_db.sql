@@ -32,6 +32,7 @@ CREATE TABLE `cart` (
     `user_email` varchar(255) NULL,
     `user_phone` varchar(255) NULL,
     `address_id` int(10) NULL,
+    `address_name` varchar(255) NULL,
     `address_zipcode` varchar(255) NULL,
     `address_street` varchar(255) NULL,
     `address_number` int(11) NULL,

@@ -61,9 +61,9 @@ class Address extends Model {
 
         $address->where('user_id', Auth::user()->id);
 
-        if ($filter != null && isset($filter['user_id']) && $filter['user_id'] != '') {
-            $address->where('user_id', $filter['user_id']);
-        }
+        // if ($filter != null && isset($filter['user_id']) && $filter['user_id'] != '') {
+        //     $address->where('user_id', $filter['user_id']);
+        // }
 
         if ($filter != null && isset($filter['name']) && $filter['name'] != '') {
             $address->where('name', 'like', '%' . $filter['name'] . '%');

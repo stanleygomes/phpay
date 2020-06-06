@@ -1,5 +1,5 @@
 <div class="mb-2 py-2">
-    <div id="stepper2" class="bs-stepper">
+    <div id="stepper2" class="bs-stepper border rounded">
         <div class="bs-stepper-header" role="tablist">
 
             <div class="step">
@@ -18,7 +18,7 @@
                     <span class="bs-stepper-circle {{ $step === 'user' ? 'bg-primary' : '' }}">
                         <span class="fas fa-map-marked" aria-hidden="true"></span>
                     </span>
-                    <span class="bs-stepper-label {{ $step === 'user' ? 'bg-primary' : '' }}">Dados pessoais</span>
+                    <span class="bs-stepper-label {{ $step === 'user' ? 'text-primary' : '' }}">Dados pessoais</span>
                 </button>
             </div>
 
@@ -29,7 +29,7 @@
                     <span class="bs-stepper-circle {{ $step === 'address' ? 'bg-primary' : '' }}">
                         <span class="fas fa-map-marked" aria-hidden="true"></span>
                     </span>
-                    <span class="bs-stepper-label {{ $step === 'address' ? 'bg-primary' : '' }}">Endereço</span>
+                    <span class="bs-stepper-label {{ $step === 'address' ? 'text-primary' : '' }}">Endereço</span>
                 </button>
             </div>
 
@@ -40,7 +40,7 @@
                     <span class="bs-stepper-circle {{ $step === 'finish' ? 'bg-primary' : '' }}">
                         <span class="fas fa-save" aria-hidden="true"></span>
                     </span>
-                    <span class="bs-stepper-label {{ $step === 'finish' ? 'bg-primary' : '' }}">Finalizar</span>
+                    <span class="bs-stepper-label {{ $step === 'finish' ? 'text-primary' : '' }}">Finalizar</span>
                 </button>
             </div>
 

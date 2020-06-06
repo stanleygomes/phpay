@@ -11,9 +11,7 @@
         </div>
     </div>
 
-    @include('layouts.components.cart-stepper', [
-    'step' => 'cart'
-    ])
+    @include('layouts.components.cart-stepper', ['step' => 'cart'])
 
     <div class="row mb-5">
         <div class="col-sm-12">
@@ -24,17 +22,39 @@
             @if($finish != null)
             <div class="row mt-4 py-3 border-top">
                 <div class="col-sm-6 border-right">
-                    <h5>
-                        <strong>Dados pessoais</strong>
-                    </h5>
-                    <div class="row">
+                    <div class="col-sm-12">
+                        <h5>
+                            <strong>Dados pessoais</strong>
+                            <hr />
+                        </h5>
+                        <div class="mt-2">
+                            <strong>{{ $cart->user_name }}</strong>
+                            <br />
+                            {{ $cart->user_email }} - {{ $cart->user_phone }}
+                            <div class="mt-2">
+                                <a href="{{ route('website.cart.userEdit', [ 'id' => $cart->user_id ]) }}">
+                                    Editar meus dados
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <h5>
                         <strong>Endereço</strong>
+                        <hr />
                     </h5>
-                    <div class="row">
+                    <div class="mt-2">
+                        <strong>{{ $cart->address_name }}</strong>
+                        <br />
+                        {{ $cart->address_street }}, {{ $cart->address_number }} {{ $cart->address_complement != null ? ' - ' . $cart->address_complement : '' }}
+                        <br />
+                        {{ $cart->address_district }} - {{ $cart->address_city }} / {{ $cart->address_state }}
+                        <div class="mt-2">
+                            <a href="{{ route('website.cart.addressEdit', [ 'id' => $cart->address_id ]) }}">
+                                Editar este endereço
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,7 +130,16 @@
             @endforeach
 
             <div class="row">
-                <div class="col-sm-6"></div>
+                <div class="col-sm-6">
+                    <div class="col-sm-6">
+                        <a href="{{ route('website.cart.address') }}" class="not-underlined">
+                            <button type="button" class="btn btn-lg btn-outline-primary btn-block mt-5">
+                                <i class="fa fa-chevron-left"></i>
+                                Escolher endereço
+                            </button>
+                        </a>
+                    </div>
+                </div>
                 <div class="col-sm-6">
                     <div class="py-3 border-bottom">
                         <strong>Total</strong>
@@ -120,7 +149,7 @@
                     </div>
                     <div class="py-3 text-right">
                         @if($finish == null)
-                        <a href="{{ route('website.cart.cart', ['finish' => 'finish']) }}">
+                        <a href="{{ route('website.cart.userEdit') }}">
                             <button type="button" class="btn btn-lg btn-primary">
                                 Continuar
                             </button>

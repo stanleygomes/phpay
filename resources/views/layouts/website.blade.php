@@ -62,7 +62,7 @@
                     <li class="nav-item">
                         <a class="nav-link mr-4 position-relative" href="{{ route('website.cart.cart') }}">
                             <i class="fa fa-shopping-bag button-icon position-relative icon-30"></i>
-                            <strong class="text-light bg-success text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
+                            <strong class="text-dark bg-warning text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
                         </a>
                     </li>
                     <li class="nav-item">

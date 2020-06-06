@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\AppException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Model\Address;
 use App\Model\Cart;
 use App\Model\CartItem;
 use App\Model\User;
@@ -42,6 +44,29 @@ class CartController extends Controller {
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::route('app.dashboard')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function addressConfirm($id) {
+        try {
+            $userLogged = Auth::user();
+
+            if ($userLogged == null) {
+                return Redirect::route('auth.login', ['redir' => '/cart/address']);
+            }
+
+            $addressInstance = new Address();
+            $address = $addressInstance->getAddressById($id);
+
+            $cartInstance = new Cart();
+            $cart = $cartInstance->setAddress($address);
+
+            return Redirect::route('website.cart.cart', ['finish' => 'finish'])
+                ->with('status', $cart['message']);
+        } catch (AppException $e) {
+            return Redirect::route('website.cart.cart')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

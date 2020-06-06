@@ -18,6 +18,7 @@ class Cart extends Model {
         'user_email',
         'user_phone',
         'address_id',
+        'address_name',
         'address_zipcode',
         'address_street',
         'address_number',
@@ -68,7 +69,7 @@ class Cart extends Model {
     public function getSessionCartId() {
         $cartSessionId = Session::get('cart_id');
 
-        if ($cartSessionId === null) {
+        if ($cartSessionId == null) {
             $cart = $this->storeCart();
             $cartId = $cart['data']->id;
 
@@ -77,6 +78,55 @@ class Cart extends Model {
         }
 
         return $cartSessionId;
+    }
+
+    public function setUser($user) {
+        $cartId = $this->getSessionCartId();
+        $cart = $this->getCartById($cartId);
+
+        if ($cart == null) {
+            throw new AppException('Cadastro [' . $cartId . '] não encontrado.');
+        }
+
+        $cart->user_id = $user->id;
+        $cart->user_name = $user->name;
+        $cart->user_email = $user->email;
+        $cart->user_phone = $user->phone;
+
+        $cart->save();
+
+        return [
+            'message' => 'Usuário atualizado.',
+            'data' => $cart
+        ];
+
+    }
+
+    public function setAddress($address) {
+        $cartId = $this->getSessionCartId();
+        $cart = $this->getCartById($cartId);
+
+        if ($cart == null) {
+            throw new AppException('Cadastro [' . $cartId . '] não encontrado.');
+        }
+
+        $cart->address_id = $address->id;
+        $cart->address_name = $address->name;
+        $cart->address_zipcode = $address->zipcode;
+        $cart->address_street = $address->street;
+        $cart->address_number = $address->number;
+        $cart->address_complement = $address->complement;
+        $cart->address_district = $address->district;
+        $cart->address_city = $address->city;
+        $cart->address_state = $address->state;
+
+        $cart->save();
+
+        return [
+            'message' => 'Endereço ' . $address->name . ' selecionado.',
+            'data' => $cart
+        ];
+
     }
 
     public function storeCart() {
