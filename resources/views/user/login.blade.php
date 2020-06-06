@@ -6,10 +6,10 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
-            <form enctype="multipart/form-data" class="auth-form formulary" method="post" action="{{ route('auth.loginPost') }}">
+            <form enctype="multipart/form-data" class="auth-form mb-5 formulary" method="post" action="{{ route('auth.loginPost') }}">
                 {!! csrf_field() !!}
-                <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-                <h1 class="h3 mb-3 font-weight-normal">Por favor, efetue o login</h1>
+                <!-- <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"> -->
+                <h1 class="h3 mt-5 mb-3 font-weight-normal">Por favor, efetue o login</h1>
 
                 @include('layouts.components.alert-messages')
 

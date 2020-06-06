@@ -120,7 +120,7 @@ class Cart extends Model {
 
         for ($i = 0; $i < count($cartItems); $i++) {
             $cartItem = $cartItems[$i];
-            $totalPrice = $totalPrice + $cartItem->product_price;
+            $totalPrice = $totalPrice + ($cartItem->product_price * $cartItem->qty);
         }
 
         $cart = $this->getCartById($cartId);

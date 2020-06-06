@@ -15,6 +15,7 @@ class CartController extends Controller {
     public function cart($finish = null) {
         try {
             DB::beginTransaction();
+
             $cartInstance = new Cart();
             $cartId = $cartInstance->getSessionCartId();
             $cart = $cartInstance->getCartById($cartId);
@@ -27,7 +28,9 @@ class CartController extends Controller {
             $cartItems = $cartInstance->getCartItemList($filter, true);
             $cartItems = $cartInstance->updateCartItemMaxQtyAvailable($cartItems);
 
-            DB::commit();$user = new User();
+            DB::commit();
+
+            $user = new User();
 
             return view('cart.cart', [
                 'cart' => $cart,
@@ -136,7 +139,6 @@ class CartController extends Controller {
 
             $cartItemInstance = new CartItem();
             $cartItem = $cartItemInstance->deleteCartItemByProductId($cartId, $productId);
-
             DB::commit();
 
             return Redirect::back()
