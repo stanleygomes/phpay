@@ -1,7 +1,5 @@
 @extends('layouts.email')
 
-@section('title', 'Contato')
-
 @section('body')
 
 <h3>Pergunta sobre produto no site</h3>

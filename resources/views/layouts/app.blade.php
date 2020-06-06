@@ -93,7 +93,7 @@
                         <a href="{{ route('app.product.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
                         <a href="{{ route('app.featured.index') }}" class="list-group-item @yield('sidebarMenuFeaturedActive')">Destaques</a>
-                        <a href="{{ route('app.featured.index') }}" class="list-group-item @yield('sidebarMenuProductReviewActive')">Avaliações</a>
+                        <a href="{{ route('app.cartReview.index') }}" class="list-group-item @yield('sidebarMenuCartReviewActive')">Avaliações</a>
                         <a href="{{ route('app.productQuestion.index') }}" class="list-group-item @yield('sidebarMenuProductQuestionActive')">Perguntas</a>
                         @endif
 
