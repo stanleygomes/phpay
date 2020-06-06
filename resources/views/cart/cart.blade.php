@@ -116,7 +116,7 @@
                         <strong>Total</strong>
                     </div>
                     <div class="py-3 border-bottom">
-                        <h3>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($cart->price_total) }}</h3>
+                        <h3>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR(App\Helper\Helper::sumCartItem($cartItems)) }}</h3>
                     </div>
                     <div class="py-3 text-right">
                         @if($finish == null)

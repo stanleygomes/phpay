@@ -33,6 +33,17 @@ class Helper {
         return $text;
     }
 
+    public static function sumCartItem($cartItems) {
+        $totalPrice = 0;
+
+        for ($i = 0; $i < count($cartItems); $i++) {
+            $cartItem = $cartItems[$i];
+            $totalPrice = $totalPrice + ($cartItem->product_price * $cartItem->qty);
+        }
+
+        return $totalPrice;
+    }
+
     public static function getCategoryList() {
         try {
             $categoryInstance = new Category();
