@@ -85,11 +85,18 @@
                 </a>
                 -->
             </div>
-            <div class="col-sm-12 mt-2 pt-2 border-top">
+            <div class="col-sm-10 pt-2 border-top">
                 <strong>Mais informações</strong>
                 <div>
                     {{ $cartReview->description }}
                 </div>
+            </div>
+            <div class="col-sm-2">
+                <a href="{{ route('app.cart.show', [ 'id' => $cartReview->cart_id ]) }}" class="not-underlined">
+                    <button type="button" class="btn btn-primary btn-sm mt-3" data-toggle="tooltip" data-placement="top" title="Visualizar pedido">
+                        <strong>#{{ App\Helper\Helper::formatCartId($cartReview->cart_id) }}</strong>
+                    </button>
+                </a>
             </div>
         </div>
         @endforeach

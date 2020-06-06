@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+
 class AppController extends Controller {
     public function dashboard() {
+        $userLogged = Auth::user();
+
+        if ($userLogged->profile !== 'ADMIN') {
+            return Redirect::route('app.cart.index');
+        }
+
         return view('app.dashboard');
     }
 

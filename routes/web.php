@@ -114,10 +114,9 @@ Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], functi
     Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
         Route::get('', ['as' => 'index', 'uses' => 'CartController@index']);
         Route::post('search', ['as' => 'search', 'uses' => 'CartController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'CartController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'CartController@store']);
         Route::get('show/{id}', ['as' => 'show', 'uses' => 'CartController@show']);
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CartController@delete']);
+        Route::post('cancel/{id}', ['as' => 'cancel', 'uses' => 'CartController@cancel']);
     });
 
     Route::group(['as' => 'cartReview.', 'prefix' => 'cartReview'], function () {
