@@ -295,25 +295,25 @@ CREATE TABLE `user_password_reset` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
--- CREATE TABLE `product_review` (
---     `id` int(10) NOT NULL AUTO_INCREMENT,
---     `product_id` int(10) NOT NULL,
---     `cart_id` int(10) NOT NULL,
---     `evaluation` int(10) NOT NULL,
---     `description` varchar(255) NOT NULL,
---     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
---     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
---     `deleted_at` timestamp NULL DEFAULT NULL,
---     `created_by` int(10) NOT NULL,
---     PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=1;
-
--- ALTER TABLE `product_review` ADD FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
+CREATE TABLE `cart_review` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `user_id` int(10) NOT NULL,
+    `cart_id` int(10) NOT NULL,
+    `evaluation` int(10) NOT NULL,
+    `description` varchar(255) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
 
 ALTER TABLE `cart` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `cart` ADD FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
 ALTER TABLE `cart` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `cart` ADD FOREIGN KEY (`payment_methods_available_id`) REFERENCES `payment_methods_available` (`id`);
+ALTER TABLE `cart_review` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
+ALTER TABLE `cart_review` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `cart_history` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
 ALTER TABLE `cart_history` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `cart_item` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);

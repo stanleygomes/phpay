@@ -67,22 +67,22 @@
             <div class="row">
                 <div class="col-sm-3">
                     <div class="side-menu list-group">
-                        <!-- CUSTOMER -->
+                        <!-- ADMIN -->
+                        @if(Auth::user()->profile === 'ADMIN')
                         <div class="col-sm-12">
                             <h4>
-                                <strong>Minha conta</strong>
+                                <strong>Administração</strong>
                             </h4>
                         </div>
 
-                        <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
-                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserCartActive')">Minhas compras</a>
-                        <a href="{{ route('app.wishlistItem.index') }}" class="list-group-item @yield('sidebarMenuWishlistItemActive')">Meus favoritos</a>
-                        <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuAddressActive')">Endereços</a>
-                        <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
+                        <a href="{{ route('app.dashboard') }}" class="list-group-item @yield('sidebarMenuDashboardActive')">Dashboard</a>
+                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Configurações</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
+                        @endif
 
                         <!-- COLABORATOR -->
                         @if(Auth::user()->profile === 'ADMIN' || Auth::user()->profile === 'COLABORATOR')
-                        <div class="col-sm-12 mt-3">
+                        <div class="col-sm-12 mt-4">
                             <h4>
                                 <strong>Gerenciar</strong>
                             </h4>
@@ -97,18 +97,18 @@
                         <a href="{{ route('app.productQuestion.index') }}" class="list-group-item @yield('sidebarMenuProductQuestionActive')">Perguntas</a>
                         @endif
 
-                        <!-- ADMIN -->
-                        @if(Auth::user()->profile === 'ADMIN')
-                        <div class="col-sm-12 mt-3">
+                        <!-- CUSTOMER -->
+                        <div class="col-sm-12 mt-4">
                             <h4>
-                                <strong>Administração</strong>
+                                <strong>Minha conta</strong>
                             </h4>
                         </div>
 
-                        <a href="{{ route('app.dashboard') }}" class="list-group-item @yield('sidebarMenuDashboardActive')">Dashboard</a>
-                        <a href="{{ route('app.config.config') }}" class="list-group-item @yield('sidebarMenuConfigActive') @yield('sidebarMenuStoreActive') @yield('sidebarMenuPaymentMethodsAvailableActive')">Configurações</a>
-                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserActive')">Usuários</a>
-                        @endif
+                        <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
+                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserCartActive')">Minhas compras</a>
+                        <a href="{{ route('app.wishlistItem.index') }}" class="list-group-item @yield('sidebarMenuWishlistItemActive')">Meus favoritos</a>
+                        <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuAddressActive')">Endereços</a>
+                        <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>
                     </div>
                 </div>
                 <div class="col-sm-9">
