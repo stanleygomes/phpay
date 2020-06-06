@@ -10,13 +10,13 @@
     </div>
 </div>
 
-<form enctype="multipart/form-data" class="search-form formulary" method="post" action="{{ route('app.category.search') }}">
+<form enctype="multipart/form-data" class="search-form formulary" method="post" action="{{ route('app.cartReview.search') }}">
     {!! csrf_field() !!}
     <div class="row mt-4">
         <div class="col-sm-9">
             <div class="form-group">
                 <label for="inputName">Buscar por nome</label>
-                <input type="text" id="inputName" name="name" class="form-control" placeholder="Nome" value="{{ $filter ? $filter['name'] : old('name') }}">
+                <input type="text" id="inputName" name="user_name" class="form-control" placeholder="Nome" value="{{ $filter ? $filter['user_name'] : old('user_name') }}">
             </div>
         </div>
         <div class="col-sm-3">
@@ -69,7 +69,7 @@
                 {{ $cartReview->user_phone }}
             </div>
             <div class="col-sm-1">
-                {{ $cartReview->evaluation }}
+                <strong>Nota&nbsp;{{ $cartReview->evaluation }}</strong>
             </div>
             <div class="col-sm-2 text-right">
                 <a href="{{ route('app.cart.show', [ 'id' => $cartReview->cart_id ]) }}" class="not-underlined">
@@ -86,7 +86,7 @@
                 -->
             </div>
             <div class="col-sm-12 mt-2 pt-2 border-top">
-                <strong>Mensagem</strong>
+                <strong>Mais informações</strong>
                 <div>
                     {{ $cartReview->description }}
                 </div>

@@ -42,53 +42,53 @@ class CartReview extends Model {
     }
 
     public function getCartReviewList($filter = null, $paginate = false, $limit = 15) {
-        $productReview = CartReview::join('cart', 'cart.id', '=', 'cart_review.cart_id')
+        $cartReview = CartReview::join('cart', 'cart.id', '=', 'cart_review.cart_id')
             ->select(
                 'cart_review.id', 'cart_review.cart_id', 'cart_review.evaluation', 'cart_review.description', 'cart_review.created_at',
                 'cart.user_name', 'cart.user_email', 'cart.user_phone'
             )
             ->orderBy('id', 'desc');
 
-        if ($filter != null && isset($filter['product_id']) && $filter['product_id'] != '') {
-            $productReview->where('product_id', $filter['product_id']);
+        if ($filter != null && isset($filter['user_name']) && $filter['user_name'] != '') {
+            $cartReview->where('cart.user_name', 'like', '%' . $filter['user_name'] . '%');
         }
 
         if ($paginate === true) {
-            $productReview = $productReview->paginate($limit);
+            $cartReview = $cartReview->paginate($limit);
         } else {
-            $productReview = $productReview->get();
+            $cartReview = $cartReview->get();
         }
 
-        return $productReview;
+        return $cartReview;
     }
 
     public function storeCartReview($request) {
-        $productReview = new CartReview();
+        $cartReview = new CartReview();
 
-        $productReview->user_id = Auth::user()->id;
-        $productReview->cart_id = $request->cart_id;
-        $productReview->evaluation = $request->evaluation;
-        $productReview->description = $request->description;
-        $productReview->created_by = Auth::user()->id;
+        $cartReview->user_id = Auth::user()->id;
+        $cartReview->cart_id = $request->cart_id;
+        $cartReview->evaluation = $request->evaluation;
+        $cartReview->description = $request->description;
+        $cartReview->created_by = Auth::user()->id;
 
-        $productReview->save();
+        $cartReview->save();
 
         return [
             'message' => 'Cadastro efetuado com sucesso.',
-            'data' => $productReview
+            'data' => $cartReview
         ];
     }
 
     public function deleteCartReview ($id) {
-        $productReviewInstance = new CartReview();
-        $productReview = $productReviewInstance->getCartReviewById($id);
+        $cartReviewInstance = new CartReview();
+        $cartReview = $cartReviewInstance->getCartReviewById($id);
 
-        if ($productReview == null) {
+        if ($cartReview == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
-        $productReview->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $productReview->save();
+        $cartReview->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $cartReview->save();
 
         return [
             'message' => 'Cadastro deletado com sucesso.'
