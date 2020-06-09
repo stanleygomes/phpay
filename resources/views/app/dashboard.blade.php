@@ -40,15 +40,19 @@
         <h3>Pedidos diários</h3>
         <p>Número de pedidos por dia</p>
     </div>
-    <div class="row p-3 border rounded">
-        <div class="col-sm-12">
+    <div class="row p-3">
+        <div class="col-sm-12 border rounded">
             <canvas id="myChart" width="400" height="150"></canvas>
         </div>
     </div>
 </div>
 
 <div class="container mt-4">
-    <div class="col-sm-12">
+    <div class="">
+        <h3>Últimos pedidos</h3>
+        <p>Os pedidos mais recentes</p>
+    </div>
+    <div class="col-sm-12 py-2">
         <div class="mt-3">
             <div class="row p-3 mb-1 border-top border-bottom">
                 <div class="col-sm-2">
@@ -94,26 +98,6 @@
     </div>
 </div>
 
-<!--
-<div class="container mt-4">
-    <div class="row p-3 border rounded">
-        <div class="col-sm-6">
-            <div class="">
-                <h3>Pedidos por forma de pagamento</h3>
-                <p>Número de pedidos por dia</p>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="">
-                <h3>Pedidos por categoria</h3>
-                <p>Número de pedidos por dia</p>
-            </div>
-            <canvas id="myChart2" width="400" height="250"></canvas>
-        </div>
-    </div>
-</div>
--->
-
 @endsection
 
 @section('script')
@@ -125,17 +109,22 @@
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: [
+                @foreach($cartsByDay['x'] as $x)
+                '{{ App\Helper\Helper::getDayFromDateUS($x) }}',
+                @endforeach
+            ],
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Pedidos / Dia do mês',
+                data: [
+                    @foreach($cartsByDay['y'] as $y)
+                    '{{ $y }}',
+                    @endforeach
+                ],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
+                    @foreach($cartsByDay['y'] as $y)
                     'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    @endforeach
                 ],
                 borderWidth: 1
             }]
@@ -149,34 +138,6 @@
                 }]
             }
         }
-    });
-
-    var ctx2 = document.getElementById('myChart2').getContext('2d');
-
-    // For a pie chart
-    var myPieChart = new Chart(ctx2, {
-        type: 'pie',
-        data: {
-            datasets: [{
-                data: [10, 20, 30],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ]
-            }],
-
-            // These labels appear in the legend and in the tooltips when hovering different arcs
-            labels: [
-                'Red',
-                'Yellow',
-                'Blue'
-            ]
-        },
-        options: {}
     });
 </script>
 

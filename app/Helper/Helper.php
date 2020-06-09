@@ -14,6 +14,15 @@ use App\Model\Cart;
 use App\Model\CartItem;
 
 class Helper {
+    public static function getDayFromDateUS($date) {
+        $dateArray = explode('-', $date);
+        if ($dateArray != null && count($dateArray) === 3) {
+            return $dateArray[2];
+        } else {
+            return null;
+        }
+    }
+
     public static function getMonthByNum($num) {
         $monthList = [
             'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
