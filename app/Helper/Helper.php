@@ -14,6 +14,16 @@ use App\Model\Cart;
 use App\Model\CartItem;
 
 class Helper {
+    public static function getMonthByNum($num) {
+        $monthList = [
+            'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+        ];
+
+        $month = intval($num);
+
+        return $monthList[$month - 1];
+    }
+
     public static function getStoreData() {
         $storeId = 1;
         $storeInstance = new Store();
@@ -44,8 +54,13 @@ class Helper {
         return $totalPrice;
     }
 
+    public static function statusColorCart($status) {
+        $cartInstance = new Cart();
+        return $cartInstance->statusColorCart($status);
+    }
+
     public static function formatCartId($cartId) {
-        return str_pad($cartId, 10, '0', STR_PAD_LEFT);
+        return str_pad($cartId, 6, '0', STR_PAD_LEFT);
     }
 
     public static function getCategoryList() {

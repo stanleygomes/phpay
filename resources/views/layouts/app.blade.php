@@ -88,7 +88,7 @@
                             </h4>
                         </div>
 
-                        <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Pedidos</a>
+                        <a href="{{ route('app.cart.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Pedidos</a>
                         <a href="{{ route('app.category.index') }}" class="list-group-item @yield('sidebarMenuCategoryActive')">Categorias</a>
                         <a href="{{ route('app.product.index') }}" class="list-group-item @yield('sidebarMenuProductActive')">Produtos</a>
                         <a href="{{ route('app.contact.index') }}" class="list-group-item @yield('sidebarMenuContactActive')">Mensagens</a>
@@ -105,7 +105,7 @@
                         </div>
 
                         <a href="{{ route('app.user.accountUpdate') }}" class="list-group-item @yield('sidebarMenuUserAccountActive')">Minha conta</a>
-                        <a href="{{ route('app.user.index') }}" class="list-group-item @yield('sidebarMenuUserCartActive')">Minhas compras</a>
+                        <a href="{{ route('app.cart.index') }}" class="list-group-item @yield('sidebarMenuCartActive')">Minhas compras</a>
                         <a href="{{ route('app.wishlistItem.index') }}" class="list-group-item @yield('sidebarMenuWishlistItemActive')">Meus favoritos</a>
                         <a href="{{ route('app.address.index') }}" class="list-group-item @yield('sidebarMenuAddressActive')">Endereços</a>
                         <a href="{{ route('app.user.passwordChange') }}" class="list-group-item @yield('sidebarMenuUserPasswordActive')">Alterar senha</a>

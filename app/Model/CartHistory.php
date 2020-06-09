@@ -30,52 +30,53 @@ class CartHistory extends Model {
     }
 
     public function getCartHistoryList($filter = null, $paginate = false, $limit = 15) {
-        $cart = CartHistory::orderBy('id', 'desc');
+        $cartHistory = CartHistory::orderBy('id', 'desc');
 
         if ($filter != null && isset($filter['cart_id']) && $filter['cart_id'] != '') {
-            $cart->where('cart_id', $filter['cart_id']);
+            $cartHistory->where('cart_id', $filter['cart_id']);
         }
 
         if ($paginate === true) {
-            $cart = $cart->paginate($limit);
+            $cartHistory = $cartHistory->paginate($limit);
         } else {
-            $cart = $cart->get();
+            $cartHistory = $cartHistory->get();
         }
 
-        return $cart;
+        return $cartHistory;
     }
 
-    public function storeCartHistory($cartId, $status) {
-        $cart = new CartHistory();
+    public function storeCartHistory($cartId, $status, $description = null) {
+        $cartHistory = new CartHistory();
 
-        $cart->cart_id = $cartId;
-        $cart->status = $status;
+        $cartHistory->cart_id = $cartId;
+        $cartHistory->status = $status;
+        $cartHistory->description = $description;
 
         $loggedUser = Auth::user();
 
         if ($loggedUser != null) {
-            $cart->created_by = $loggedUser->id;
+            $cartHistory->created_by = $loggedUser->id;
         } else {
-            $cart->created_by = null;
+            $cartHistory->created_by = null;
         }
 
-        $cart->save();
+        $cartHistory->save();
 
         return [
             'message' => 'Cadastro efetuado com sucesso.',
-            'data' => $cart
+            'data' => $cartHistory
         ];
     }
 
     public function deleteCartHistory ($id) {
-        $cart = $this->getCartHistoryById($id);
+        $cartHistory = $this->getCartHistoryById($id);
 
-        if ($cart == null) {
+        if ($cartHistory == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
         }
 
-        $cart->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $cart->save();
+        $cartHistory->deleted_at = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $cartHistory->save();
 
         return [
             'message' => 'Cadastro deletado com sucesso.'

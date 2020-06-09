@@ -10,7 +10,7 @@ class AuthenticateRole {
 
         if ($userLogged == null) {
             return redirect()
-                ->route('auth.index');
+                ->route('auth.login');
         }
 
         $pattern = '/&/';
@@ -21,13 +21,13 @@ class AuthenticateRole {
         }
 
         foreach ($rolesList as $key => $value) {
-            if ($userLogged->role == $value) {
+            if ($userLogged->profile == $value) {
                 return $next($request);
             }
         }
 
         return redirect()
-            ->route('app.dashboard')
+            ->route('app.cart.index')
             ->withErrors(['Permissão de acesso negada.']);
     }
 }

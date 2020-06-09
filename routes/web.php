@@ -58,142 +58,6 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     });
 });
 
-// app routes
-Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], function () {
-    Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AppController@dashboard']);
-
-    Route::group(['as' => 'config.', 'prefix' => 'config'], function () {
-        Route::get('', ['as' => 'config', 'uses' => 'AppController@config']);
-    });
-
-    Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'UserController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'UserController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'UserController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'UserController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'UserController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'UserController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'UserController@delete']);
-        Route::get('passwordGenerate/{id}', ['as' => 'passwordGenerate', 'uses' => 'UserController@passwordGenerate']);
-        Route::get('passwordChange', ['as' => 'passwordChange', 'uses' => 'UserController@passwordChange']);
-        Route::post('passwordChangePost', ['as' => 'passwordChangePost', 'uses' => 'UserController@passwordChangePost']);
-        Route::get('accountUpdate', ['as' => 'accountUpdate', 'uses' => 'UserController@accountUpdate']);
-        Route::post('accountUpdatePost', ['as' => 'accountUpdatePost', 'uses' => 'UserController@accountUpdatePost']);
-    });
-
-    Route::group(['as' => 'address.', 'prefix' => 'address'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'AddressController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'AddressController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'AddressController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'AddressController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'AddressController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'AddressController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'AddressController@delete']);
-    });
-
-    Route::group(['as' => 'paymentMethodsAvailable.', 'prefix' => 'paymentMethodsAvailable'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'PaymentMethodsAvailableController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'PaymentMethodsAvailableController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'PaymentMethodsAvailableController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'PaymentMethodsAvailableController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'PaymentMethodsAvailableController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'PaymentMethodsAvailableController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'PaymentMethodsAvailableController@delete']);
-    });
-
-    Route::group(['as' => 'category.', 'prefix' => 'category'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'CategoryController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'CategoryController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'CategoryController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'CategoryController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'CategoryController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'CategoryController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CategoryController@delete']);
-    });
-
-    Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'CartController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'CartController@search']);
-        Route::get('show/{id}', ['as' => 'show', 'uses' => 'CartController@show']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CartController@delete']);
-        Route::post('cancel/{id}', ['as' => 'cancel', 'uses' => 'CartController@cancel']);
-    });
-
-    Route::group(['as' => 'cartReview.', 'prefix' => 'cartReview'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'CartReviewController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'CartReviewController@search']);
-        Route::get('create/{cart_id}', ['as' => 'create', 'uses' => 'CartReviewController@create']);
-        Route::post('store/{cart_id}', ['as' => 'store', 'uses' => 'CartReviewController@store']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CartReviewController@delete']);
-    });
-
-    Route::group(['as' => 'product.', 'prefix' => 'product'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'ProductController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'ProductController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'ProductController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'ProductController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductController@delete']);
-        Route::get('photo/main/{productId}/{photoId}', ['as' => 'photoMain', 'uses' => 'ProductController@photoMain']);
-        Route::get('photo/remove/{photoId}', ['as' => 'photoRemove', 'uses' => 'ProductController@photoRemove']);
-    });
-
-    Route::group(['as' => 'productQuestion.', 'prefix' => 'productQuestion'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'ProductQuestionController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'ProductQuestionController@search']);
-        Route::post('store', ['as' => 'store', 'uses' => 'ProductQuestionController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductQuestionController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductQuestionController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductQuestionController@delete']);
-    });
-
-    Route::group(['as' => 'wishlistItem.', 'prefix' => 'wishlistItem'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'WishlistItemController@index']);
-        Route::get('create/{id}', ['as' => 'create', 'uses' => 'WishlistItemController@create']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'WishlistItemController@delete']);
-        Route::get('deleteByProductId/{id}', ['as' => 'deleteByProductId', 'uses' => 'WishlistItemController@deleteByProductId']);
-    });
-
-    Route::group(['as' => 'productPhoto.', 'prefix' => 'productPhoto'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'ProductPhotoController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'ProductPhotoController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'ProductPhotoController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'ProductPhotoController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductPhotoController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductPhotoController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductPhotoController@delete']);
-    });
-
-    Route::group(['as' => 'featured.', 'prefix' => 'featured'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'FeaturedController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'FeaturedController@search']);
-        Route::get('create', ['as' => 'create', 'uses' => 'FeaturedController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'FeaturedController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'FeaturedController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'FeaturedController@update']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'FeaturedController@delete']);
-    });
-
-    Route::group(['as' => 'store.', 'prefix' => 'store'], function () {
-        // Route::get('', ['as' => 'index', 'uses' => 'StoreController@index']);
-        // Route::post('search', ['as' => 'search', 'uses' => 'StoreController@search']);
-        // Route::get('create', ['as' => 'create', 'uses' => 'StoreController@create']);
-        // Route::post('store', ['as' => 'store', 'uses' => 'StoreController@store']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'StoreController@edit']);
-        Route::post('update/{id}', ['as' => 'update', 'uses' => 'StoreController@update']);
-        // Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'StoreController@delete']);
-    });
-
-    Route::group(['as' => 'contact.', 'prefix' => 'contact'], function () {
-        Route::get('', ['as' => 'index', 'uses' => 'ContactController@index']);
-        Route::post('search', ['as' => 'search', 'uses' => 'ContactController@search']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ContactController@delete']);
-        Route::get('reply/{id}', ['as' => 'reply', 'uses' => 'ContactController@reply']);
-        Route::post('reply/{id}', ['as' => 'replyPost', 'uses' => 'ContactController@replyPost']);
-    });
-});
-
 // auth routes
 Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::get('login', ['as' => 'login', 'uses' => 'UserController@login']);
@@ -213,4 +77,147 @@ Route::group(['as' => 'mercadoPago.', 'prefix' => 'mercado-pago'], function () {
     Route::get('create-customer-sandbox', 'MercadoPagoController@createCustomerSandbox')->name('createCustomerSandbox');
     Route::get('status', 'MercadoPagoController@status')->name('status');
     Route::get('callback/{type}', 'MercadoPagoController@callback')->name('callback');
+});
+
+// app routes
+Route::group(['as' => 'app.', 'prefix' => 'app', 'middleware' => 'auth'], function () {
+    // ALL PROFILES
+    Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'AppController@dashboard']);
+
+    Route::group(['as' => 'wishlistItem.', 'prefix' => 'wishlistItem'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'WishlistItemController@index']);
+        Route::get('create/{id}', ['as' => 'create', 'uses' => 'WishlistItemController@create']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'WishlistItemController@delete']);
+        Route::get('deleteByProductId/{id}', ['as' => 'deleteByProductId', 'uses' => 'WishlistItemController@deleteByProductId']);
+    });
+
+    Route::group(['as' => 'address.', 'prefix' => 'address'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'AddressController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'AddressController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'AddressController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'AddressController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'AddressController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'AddressController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'AddressController@delete']);
+    });
+
+    Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'CartController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'CartController@search']);
+        Route::get('show/{id}', ['as' => 'show', 'uses' => 'CartController@show']);
+        Route::get('delete/{id}', ['middleware' => 'role:ADMIN', 'as' => 'delete', 'uses' => 'CartController@delete']);
+        Route::post('cancel/{id}', ['as' => 'cancel', 'uses' => 'CartController@cancel']);
+    });
+
+    // MIXED ADMIN, COLABORATOR & CUSTOMER PROFILES
+
+    Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
+        Route::get('', ['middleware' => 'role:ADMIN', 'as' => 'index', 'uses' => 'UserController@index']);
+        Route::post('search', ['middleware' => 'role:ADMIN', 'as' => 'search', 'uses' => 'UserController@search']);
+        Route::get('create', ['middleware' => 'role:ADMIN', 'as' => 'create', 'uses' => 'UserController@create']);
+        Route::post('store', ['middleware' => 'role:ADMIN', 'as' => 'store', 'uses' => 'UserController@store']);
+        Route::get('edit/{id}', ['middleware' => 'role:ADMIN', 'as' => 'edit', 'uses' => 'UserController@edit']);
+        Route::post('update/{id}', ['middleware' => 'role:ADMIN', 'as' => 'update', 'uses' => 'UserController@update']);
+        Route::get('delete/{id}', ['middleware' => 'role:ADMIN', 'as' => 'delete', 'uses' => 'UserController@delete']);
+        Route::get('passwordGenerate/{id}', ['middleware' => 'role:ADMIN', 'as' => 'passwordGenerate', 'uses' => 'UserController@passwordGenerate']);
+        Route::get('passwordChange', ['as' => 'passwordChange', 'uses' => 'UserController@passwordChange']);
+        Route::post('passwordChangePost', ['as' => 'passwordChangePost', 'uses' => 'UserController@passwordChangePost']);
+        Route::get('accountUpdate', ['as' => 'accountUpdate', 'uses' => 'UserController@accountUpdate']);
+        Route::post('accountUpdatePost', ['as' => 'accountUpdatePost', 'uses' => 'UserController@accountUpdatePost']);
+    });
+
+    Route::group(['as' => 'cartReview.', 'prefix' => 'cartReview'], function () {
+        Route::get('', ['middleware' => 'role:ADMIN&COLABORATOR', 'as' => 'index', 'uses' => 'CartReviewController@index']);
+        Route::post('search', ['middleware' => 'role:ADMIN&COLABORATOR', 'as' => 'search', 'uses' => 'CartReviewController@search']);
+        Route::get('create/{cart_id}', ['as' => 'create', 'uses' => 'CartReviewController@create']);
+        Route::post('store/{cart_id}', ['as' => 'store', 'uses' => 'CartReviewController@store']);
+        Route::get('delete/{id}', ['middleware' => 'role:ADMIN&COLABORATOR', 'as' => 'delete', 'uses' => 'CartReviewController@delete']);
+    });
+
+    // MIXED ADMIN & COLABORATOR PROFILES
+
+    Route::group(['as' => 'category.', 'prefix' => 'category', 'middleware' => 'role:ADMIN&COLABORATOR'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'CategoryController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'CategoryController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'CategoryController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'CategoryController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'CategoryController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'CategoryController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'CategoryController@delete']);
+    });
+
+    Route::group(['as' => 'product.', 'prefix' => 'product', 'middleware' => 'role:ADMIN&COLABORATOR'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ProductController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ProductController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'ProductController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'ProductController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductController@delete']);
+        Route::get('photo/main/{productId}/{photoId}', ['as' => 'photoMain', 'uses' => 'ProductController@photoMain']);
+        Route::get('photo/remove/{photoId}', ['as' => 'photoRemove', 'uses' => 'ProductController@photoRemove']);
+    });
+
+    Route::group(['as' => 'productQuestion.', 'prefix' => 'productQuestion', 'middleware' => 'role:ADMIN&COLABORATOR'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ProductQuestionController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ProductQuestionController@search']);
+        Route::post('store', ['as' => 'store', 'uses' => 'ProductQuestionController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductQuestionController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductQuestionController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductQuestionController@delete']);
+    });
+
+    Route::group(['as' => 'productPhoto.', 'prefix' => 'productPhoto', 'middleware' => 'role:ADMIN&COLABORATOR'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ProductPhotoController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ProductPhotoController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'ProductPhotoController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'ProductPhotoController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductPhotoController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'ProductPhotoController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ProductPhotoController@delete']);
+    });
+
+    Route::group(['as' => 'featured.', 'prefix' => 'featured', 'middleware' => 'role:ADMIN&COLABORATOR'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'FeaturedController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'FeaturedController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'FeaturedController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'FeaturedController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'FeaturedController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'FeaturedController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'FeaturedController@delete']);
+    });
+
+    Route::group(['as' => 'contact.', 'prefix' => 'contact', 'middleware' => 'role:ADMIN&COLABORATOR'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'ContactController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'ContactController@search']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'ContactController@delete']);
+        Route::get('reply/{id}', ['as' => 'reply', 'uses' => 'ContactController@reply']);
+        Route::post('reply/{id}', ['as' => 'replyPost', 'uses' => 'ContactController@replyPost']);
+    });
+
+    // ONLY ADMIN PROFILE
+
+    Route::group(['as' => 'paymentMethodsAvailable.', 'prefix' => 'paymentMethodsAvailable', 'middleware' => 'role:ADMIN'], function () {
+        Route::get('', ['as' => 'index', 'uses' => 'PaymentMethodsAvailableController@index']);
+        Route::post('search', ['as' => 'search', 'uses' => 'PaymentMethodsAvailableController@search']);
+        Route::get('create', ['as' => 'create', 'uses' => 'PaymentMethodsAvailableController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'PaymentMethodsAvailableController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'PaymentMethodsAvailableController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'PaymentMethodsAvailableController@update']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'PaymentMethodsAvailableController@delete']);
+    });
+
+    Route::group(['as' => 'store.', 'prefix' => 'store', 'middleware' => 'role:ADMIN'], function () {
+        // Route::get('', ['as' => 'index', 'uses' => 'StoreController@index']);
+        // Route::post('search', ['as' => 'search', 'uses' => 'StoreController@search']);
+        // Route::get('create', ['as' => 'create', 'uses' => 'StoreController@create']);
+        // Route::post('store', ['as' => 'store', 'uses' => 'StoreController@store']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'StoreController@edit']);
+        Route::post('update/{id}', ['as' => 'update', 'uses' => 'StoreController@update']);
+        // Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'StoreController@delete']);
+    });
+
+    Route::group(['as' => 'config.', 'prefix' => 'config', 'middleware' => 'role:ADMIN'], function () {
+        Route::get('', ['as' => 'config', 'uses' => 'AppController@config']);
+    });
 });
