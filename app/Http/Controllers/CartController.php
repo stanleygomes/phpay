@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Model\Address;
 use App\Model\Cart;
 use App\Model\CartItem;
+use App\Model\CartHistory;
 use App\Model\User;
 
 class CartController extends Controller {
@@ -28,7 +29,7 @@ class CartController extends Controller {
             ];
 
             $cartItemInstance = new CartItem();
-            $cartItems = $cartItemInstance->getCartItemList($filter, true);
+            $cartItems = $cartItemInstance->getCartItemList($filter, false);
             $cartItems = $cartItemInstance->updateCartItemMaxQtyAvailable($cartItems);
 
             DB::commit();
@@ -90,11 +91,26 @@ class CartController extends Controller {
         }
     }
 
-    public function search(Request $request) {
+    public function show($id) {
         try {
-            $filter = $request->all();
-            Session::put('cartSearch', $filter);
-            return Redirect::route('app.cart.index');
+            $cartInstance = new Cart();
+            $cart = $cartInstance->getCartById($id);
+
+            $filter = [
+                'cart_id' => $id
+            ];
+
+            $cartItemInstance = new CartItem();
+            $cartItems = $cartItemInstance->getCartItemList($filter, false);
+
+            $cartHistoryInstance = new CartHistory();
+            $cartHistories = $cartHistoryInstance->getCartHistoryList($filter, false);
+
+            return view('cart.show', [
+                'cart' => $cart,
+                'cartItems' => $cartItems,
+                'cartHistories' => $cartHistories,
+            ]);
         } catch (AppException $e) {
             return Redirect::route('app.cart.index')
                 ->withErrors($e->getMessage())
@@ -102,13 +118,44 @@ class CartController extends Controller {
         }
     }
 
-    public function create() {
+    public function cancel(Request $request, $id) {
         try {
-            $modeEdit = false;
+            DB::beginTransaction();
+            $cartInstance = new Cart();
+            $canceledStatus = $cartInstance->getCartStatusByCode('CANCELED');
 
-            return view('cart.form', [
-                'modeEdit' => $modeEdit
-            ]);
+            $cart = $cartInstance->getCartUserById($id);
+
+            if ($cart == null) {
+                $message = 'Pedido inválido.';
+                return Redirect::back()
+                    ->withErrors('')
+                    ->withInput();
+            }
+
+            $cartHistoryInstance = new CartHistory();
+            $cartHistoryInstance->storeCartHistory($cart->id, $canceledStatus, $request->description);
+
+            $cartInstance->updateCartStatus($cart->id, $canceledStatus);
+            $cartInstance->sendMailCancel($cart, $request);
+            $message = 'Solicitação de cancelamento realizada com sucesso';
+            DB::commit();
+
+            return Redirect::back()
+                ->with('status', $message);
+        } catch (AppException $e) {
+            DB::rollBack();
+            return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function search(Request $request) {
+        try {
+            $filter = $request->all();
+            Session::put('cartSearch', $filter);
+            return Redirect::route('app.cart.index');
         } catch (AppException $e) {
             return Redirect::route('app.cart.index')
                 ->withErrors($e->getMessage())
@@ -172,37 +219,6 @@ class CartController extends Controller {
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()
-                ->withErrors($e->getMessage())
-                ->withInput();
-        }
-    }
-
-    public function edit($id) {
-        try {
-            $cartInstance = new Cart();
-            $cart = $cartInstance->getCartById($id);
-            $modeEdit = true;
-
-            return view('cart.form', [
-                'cart' => $cart,
-                'modeEdit' => $modeEdit
-            ]);
-        } catch (AppException $e) {
-            return Redirect::route('app.cart.index')
-                ->withErrors($e->getMessage())
-                ->withInput();
-        }
-    }
-
-    public function update(Request $request, $id) {
-        try {
-            $cartInstance = new Cart();
-            $cart = $cartInstance->updateCart($request, $id);
-
-            return Redirect::route('app.cart.index')
-                ->with('status', $cart['message']);
-        } catch (AppException $e) {
-            return Redirect::route('app.cart.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

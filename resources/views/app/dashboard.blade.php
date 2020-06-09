@@ -9,36 +9,29 @@
 <div class="container">
     <div class="">
         <h3>Resumo mensal</h3>
-        <p>Dados atualizados em 20/05/2020 10:15. Referente ao mês de <strong>Maio</strong></p>
+        <div class="row">
+            <div class="col-sm-6">
+                <p>Referente ao mês de <strong>{{ $monthName }}</strong></p>
+            </div>
+            <div class="col-sm-6 text-right">
+                <span>{{ $dateStart }}</span>
+                -
+                <span>{{ $dateEnd }}</span>
+            </div>
+        </div>
     </div>
     <div class="row">
+        @foreach($cartsResume as $key => $cartResume)
         <div class="col-sm-4">
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-{{ App\Helper\Helper::statusColorCart($cartResume['last_status']) }}" role="alert">
                 <h4 class="alert-heading">
-                    <strong>R$ 200,00</strong>
+                    <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($cartResume['price_total']) }}</strong>
                 </h4>
                 <hr>
-                <p class="mb-0">EM CAIXA</p>
+                <p class="mb-0">{{ $cartResume['last_status'] }}</p>
             </div>
         </div>
-        <div class="col-sm-4">
-            <div class="alert alert-warning" role="alert">
-                <h4 class="alert-heading">
-                    <strong>R$ 200,00</strong>
-                </h4>
-                <hr>
-                <p class="mb-0">A RECEBER</p>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">
-                    <strong>R$ 200,00</strong>
-                </h4>
-                <hr>
-                <p class="mb-0">CANCELADO</p>
-            </div>
-        </div>
+        @endforeach
     </div>
 </div>
 
@@ -55,50 +48,50 @@
 </div>
 
 <div class="container mt-4">
-    <div class="">
-        <h3>Últimos pedidos</h3>
-        <p>Pedidos ordenados pelo número de pedido</p>
+    <div class="col-sm-12">
+        <div class="mt-3">
+            <div class="row p-3 mb-1 border-top border-bottom">
+                <div class="col-sm-2">
+                    <strong>Cód.</strong>
+                </div>
+                <div class="col-sm-4">
+                    <strong>Nome</strong>
+                </div>
+                <div class="col-sm-2">
+                    <strong>Data</strong>
+                </div>
+                <div class="col-sm-2">
+                    <strong>Status</strong>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <strong>Opções</strong>
+                </div>
+            </div>
+            @foreach($carts as $key => $cart)
+            <div class="row p-3 mb-1 border-bottom">
+                <div class="col-sm-2">
+                    <strong>#{{ App\Helper\Helper::formatCartId($cart->id) }}</strong>
+                </div>
+                <div class="col-sm-4">
+                    {{ $cart->user_name }}
+                </div>
+                <div class="col-sm-2">
+                    {{ $cart->date_order != null ? $cart->date_order->format('d/m/Y H:i') : '' }}
+                </div>
+                <div class="col-sm-2">
+                    <span class="badge badge-{{ App\Helper\Helper::statusColorCart($cart->last_status) }}">{{ $cart->last_status }}</span>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <a href="{{ route('app.cart.show', [ 'id' => $cart->id ]) }}" class="not-underlined">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar pedido">
+                            <i class="fa fa-shopping-bag"></i>
+                        </button>
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
-    <div class="row p-3 border">
-        <div class="col-sm-1">
-            <strong>Cód.</strong>
-        </div>
-        <div class="col-sm-4">
-            <strong>Cliente</strong>
-        </div>
-        <div class="col-sm-2">
-            <strong>Preço</strong>
-        </div>
-        <div class="col-sm-3">
-            <strong>Data da compra</strong>
-        </div>
-        <div class="col-sm-2 text-center">
-            <strong>Opções</strong>
-        </div>
-    </div>
-    @foreach([1,2,3,4,5] as $key => $p)
-    <div class="row p-2 border-bottom border-left border-right">
-        <div class="col-sm-1">
-            <strong>#4556</strong>
-        </div>
-        <div class="col-sm-4">
-            Nome do cliente
-        </div>
-        <div class="col-sm-2">
-            R$ 200,00
-        </div>
-        <div class="col-sm-3">
-            {{ date('d/m/Y H:i') }}
-        </div>
-        <div class="col-sm-2 text-center">
-            <a href="{{ route('website.product.show', [ 'id' => 1, 'slug' => '$product->slug' ]) }}" class="not-underlined" target="_blank">
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar o pedido">
-                    <i class="fa fa-shopping-cart"></i>
-                </button>
-            </a>
-        </div>
-    </div>
-    @endforeach
 </div>
 
 <!--

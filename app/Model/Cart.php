@@ -3,10 +3,13 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Exceptions\AppException;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Helper\Helper;
 
 class Cart extends Model {
     use SoftDeletes;
@@ -41,21 +44,87 @@ class Cart extends Model {
 
     protected $cartStatus = [
         'CREATED' => 'Criado',
-        'PAYMENT_PENDING' => 'Aguardando pagamento',
-        'PAID' => 'Pago',
-        'ENDED' => 'Finalizado'
+        'PAYMENT_PENDING' => 'Pendente',
+        'CANCELED' => 'Cancelado',
+        'PAID' => 'Pago'
     ];
+
+    public function getCartStatusByCode($code) {
+        return $this->cartStatus[$code];
+    }
+
+    public function statusColorCart($status){
+        $status = strtolower($status);
+
+        if ($status === 'cancelado') {
+            return 'danger';
+        } else if ($status === 'pendente') {
+            return 'warning';
+        } else if ($status === 'pago') {
+            return 'success';
+        } else if ($status === 'criado') {
+            return 'primary';
+        } else {
+            return 'secondary';
+        }
+    }
 
     public function getCartById($id) {
         return Cart::where('id', $id)
             ->first();
     }
 
+    public function getCartUserById($id) {
+        $loggedUser = Auth::user();
+        return Cart::where('id', $id)
+            ->where('user_id', $loggedUser->id)
+            ->first();
+    }
+
+    public function getCartsResumeByYearMonth($dateStart, $dateEnd) {
+        $statusList = [
+            $this->cartStatus['PAID'],
+            $this->cartStatus['PAYMENT_PENDING'],
+            $this->cartStatus['CANCELED']
+        ];
+
+        $cartsResume = Cart::whereIn('last_status', $statusList)
+            // ->where('date_order', '>=', $dateStart)
+            // ->where('date_order', '<=', $dateEnd)
+            ->select([DB::raw('SUM(price_total) as price_total'), 'last_status'])
+            ->groupBy('last_status')
+            ->get();
+
+        $resume = [];
+
+        for ($i = 0; $i < count($statusList); $i++) {
+            $status = $statusList[$i];
+            $resume[$i]['last_status'] = $status;
+            $resume[$i]['price_total'] = 0;
+
+            for ($j = 0; $j < count($cartsResume); $j++) {
+                $cartResume = $cartsResume[$j];
+
+                if ($cartResume->last_status === $status) {
+                    $resume[$i]['price_total'] = $cartResume->price_total;
+                }
+            }
+        }
+
+        return $resume;
+    }
+
     public function getCartList($filter = null, $paginate = false, $limit = 15) {
         $cart = Cart::orderBy('id', 'desc');
 
-        if ($filter != null && isset($filter['name']) && $filter['name'] != '') {
-            $cart->where('name', 'like', '%' . $filter['name'] . '%');
+        $loggedUser = Auth::user();
+
+        if ($loggedUser != null && $loggedUser->profile === 'CUSTOMER') {
+            $cart->where('user_id', $loggedUser->id);
+        }
+
+        if ($filter != null && isset($filter['id']) && $filter['id'] != '') {
+            $cart->where('id', intval($filter['id']));
         }
 
         if ($paginate === true) {
@@ -67,15 +136,53 @@ class Cart extends Model {
         return $cart;
     }
 
+    public function updateCartStatus($cartId, $status) {
+        $cart = $this->getCartById($cartId);
+
+        if ($cart == null) {
+            throw new AppException('Cadastro [' . $cartId . '] não encontrado.');
+        }
+
+        $cart->last_status = $status;
+
+        $cart->save();
+
+        return [
+            'message' => 'Status atualizado.',
+            'data' => $cart
+        ];
+    }
+
     public function getSessionCartId() {
         $cartSessionId = Session::get('cart_id');
 
         if ($cartSessionId == null) {
+
+
+
+
+
+            Log::debug('###############');
+            Log::debug('###############');
+            Log::debug('###############');
+            Log::debug($cartSessionId);
             $cart = $this->storeCart();
             $cartId = $cart['data']->id;
+            Log::debug($cart);
+            Log::debug('###############');
+            Log::debug('###############');
+            Log::debug('###############');
 
             Session::put('cart_id', $cartId);
             $cartSessionId = $cartId;
+
+
+            exit();
+
+
+
+
+
         }
 
         return $cartSessionId;
@@ -101,7 +208,6 @@ class Cart extends Model {
             'message' => 'Usuário atualizado.',
             'data' => $cart
         ];
-
     }
 
     public function setAddress($address) {
@@ -216,5 +322,26 @@ class Cart extends Model {
         return [
             'message' => 'Cadastro deletado com sucesso.'
         ];
+    }
+
+    public function sendMailCancel($cart, $request) {
+        $param = [
+            'from_email' => env('MAIL_FROM_ADDRESS'),
+            'from_name' => env('MAIL_FROM_NAME'),
+            'to_email' => env('MAIL_TO_ADDRESS'),
+            'to_name' => env('MAIL_TO_NAME')
+        ];
+        $subject = 'Solicitação de cancelamento no site';
+        $template = 'cart-cancel';
+        $data = $cart;
+        $data->description = $request->description;
+
+        try {
+            $helperInstance = new Helper();
+            $helperInstance->sendMail($param, $data, $template, $subject);
+        } catch(AppException $e) {
+            Log::error($e);
+            throw new AppException('Erro ao enviar email.');
+        }
     }
 }

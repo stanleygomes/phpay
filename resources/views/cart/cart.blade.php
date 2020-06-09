@@ -131,6 +131,7 @@
 
             <div class="row">
                 <div class="col-sm-6">
+                    @if($finish != null)
                     <div class="col-sm-6">
                         <a href="{{ route('website.cart.address') }}" class="not-underlined">
                             <button type="button" class="btn btn-lg btn-outline-primary btn-block mt-5">
@@ -139,6 +140,7 @@
                             </button>
                         </a>
                     </div>
+                    @endif
                 </div>
                 <div class="col-sm-6">
                     <div class="py-3 border-bottom">
