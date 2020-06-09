@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use App\Exceptions\AppException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Helper\Helper;
+use Carbon\Carbon;
 
 class Cart extends Model {
     use SoftDeletes;
@@ -79,6 +80,29 @@ class Cart extends Model {
         return Cart::where('id', $id)
             ->where('user_id', $loggedUser->id)
             ->first();
+    }
+
+    public function getCartsByDayChart($dateStart, $dateEnd) {
+        $cartsResume = Cart::select([DB::raw('DATE(created_at) as date'), DB::raw('count(*) as qty')])
+            // ->where('date_order', '>=', $dateStart)
+            // ->where('date_order', '<=', $dateEnd)
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $x = [];
+        $y = [];
+
+        for ($i = 0; $i < count($cartsResume); $i++) {
+            $item = $cartsResume[$i];
+            array_push($x, $item->date);
+            array_push($y, $item->qty);
+        }
+
+        return [
+            'x' => $x,
+            'y' => $y
+        ];
     }
 
     public function getCartsResumeByYearMonth($dateStart, $dateEnd) {

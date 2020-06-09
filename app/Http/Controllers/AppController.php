@@ -18,13 +18,14 @@ class AppController extends Controller {
         $yearMonth = date('Y-m');
         $dateStart = $yearMonth . '01 00:00:00';
         $dateEnd = $yearMonth . '0' . date('t') . ' 23:59:59';
-        $dateStartShow = '01' . date('/m/Y') . ' 00:00:00';
-        $dateEndShow = date('t/m/Y') . ' 23:59:59';
+        $dateStartShow = '01' . date('/m/Y') . ' 00:00';
+        $dateEndShow = date('t/m/Y') . ' 23:59';
         $monthName = Helper::getMonthByNum(date('m'));
 
         $cartInstance = new Cart();
         $carts = $cartInstance->getCartList(null, true, 5);
         $cartsResume = $cartInstance->getCartsResumeByYearMonth($dateStart, $dateEnd);
+        $cartsByDay = $cartInstance->getCartsByDayChart($dateStart, $dateEnd);
 
         return view('app.dashboard', [
             'carts' => $carts,
@@ -32,6 +33,7 @@ class AppController extends Controller {
             'monthName' => $monthName,
             'dateStart' => $dateStartShow,
             'dateEnd' => $dateEndShow,
+            'cartsByDay' => $cartsByDay
         ]);
     }
 
