@@ -18,6 +18,7 @@
 <div class="row">
     <div class="col-sm-9 mt-4">
         <h2>Pedido #{{ App\Helper\Helper::formatCartId($cart->id) }}</h2>
+        <p>Data: {{ $cart->order_date != null ? $cart->order_date->format('d/m/Y H:i') : '' }}</p>
     </div>
     <div class="col-sm-3 mt-4 text-right">
         <a href="{{ route('app.cartReview.create', [ 'cart_id' => $cart->id ]) }}" class="not-underlined">
@@ -121,37 +122,37 @@
         </div>
     </div>
 
-    <div class="row mt-5">
-        <div class="col-sm-12">
-            <h3>Histórico do pedido</h3>
+    <div class="col-sm-12">
+        <div class="row mt-5">
+            <div class="col-sm-12">
+                <h3>Histórico do pedido</h3>
+            </div>
         </div>
+        <div class="row mt-4 p-3 border-bottom border-top">
+            <div class="col-sm-3">
+                <strong>Data</strong>
+            </div>
+            <div class="col-sm-3">
+                <strong>Histórico</strong>
+            </div>
+            <div class="col-sm-6">
+                <strong>Descrição</strong>
+            </div>
+        </div>
+        @foreach($cartHistories as $key => $cartHistory)
+        <div class="row p-3 border-bottom list-items">
+            <div class="col-sm-3">
+                {{ $cartHistory->created_at != null ? $cartHistory->created_at->format('d/m/Y H:i') : '' }}
+            </div>
+            <div class="col-sm-3">
+                <span class="badge badge-{{ App\Helper\Helper::statusColorCart($cartHistory->status) }}">{{ $cartHistory->status }}</span>
+            </div>
+            <div class="col-sm-6">
+                <span>{{ $cartHistory->description }}</span>
+            </div>
+        </div>
+        @endforeach
     </div>
-
-    <div class="row mt-4 p-3 border-bottom border-top">
-        <div class="col-sm-3">
-            <strong>Data</strong>
-        </div>
-        <div class="col-sm-3">
-            <strong>Histórico</strong>
-        </div>
-        <div class="col-sm-6">
-            <strong>Descrição</strong>
-        </div>
-    </div>
-
-    @foreach($cartHistories as $key => $cartHistory)
-    <div class="row p-3 border-bottom list-items">
-        <div class="col-sm-3">
-            {{ $cartHistory->created_at != null ? $cartHistory->created_at->format('d/m/Y H:i') : '' }}
-        </div>
-        <div class="col-sm-3">
-            <span class="badge badge-{{ App\Helper\Helper::statusColorCart($cartHistory->status) }}">{{ $cartHistory->status }}</span>
-        </div>
-        <div class="col-sm-6">
-            <span>{{ $cartHistory->description }}</span>
-        </div>
-    </div>
-    @endforeach
 </div>
 
 <div class="row mt-5">

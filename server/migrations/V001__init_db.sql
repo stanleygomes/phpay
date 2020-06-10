@@ -43,6 +43,7 @@ CREATE TABLE `cart` (
     `address_state` varchar(255) NULL,
     `payment_methods_available_id` int(10) NULL,
     `price_total` float(8, 2) NOT NULL,
+    `order_date` timestamp NULL DEFAULT NULL,
     `last_status` varchar(255) NOT NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,

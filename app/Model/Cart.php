@@ -34,11 +34,13 @@ class Cart extends Model {
         'payment_methods_available_id',
         'price_total',
         'last_status',
+        'order_date',
         'created_by'
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
+        'order_date' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime'
     ];
@@ -147,6 +149,10 @@ class Cart extends Model {
             $cart->where('user_id', $loggedUser->id);
         }
 
+        if ($filter != null && isset($filter['is_order_date']) && $filter['is_order_date'] === true) {
+            $cart->whereNotNull('order_date');
+        }
+
         if ($filter != null && isset($filter['id']) && $filter['id'] != '') {
             $cart->where('id', intval($filter['id']));
         }
@@ -160,7 +166,7 @@ class Cart extends Model {
         return $cart;
     }
 
-    public function updateCartStatus($cartId, $status) {
+    public function updateCartStatus($cartId, $status, $dateOrder = null) {
         $cart = $this->getCartById($cartId);
 
         if ($cart == null) {
@@ -168,6 +174,10 @@ class Cart extends Model {
         }
 
         $cart->last_status = $status;
+
+        if ($dateOrder === true) {
+            $cart->order_date = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        }
 
         $cart->save();
 
@@ -359,6 +369,28 @@ class Cart extends Model {
         $template = 'cart-cancel';
         $data = $cart;
         $data->description = $request->description;
+
+        try {
+            $helperInstance = new Helper();
+            $helperInstance->sendMail($param, $data, $template, $subject);
+        } catch(AppException $e) {
+            Log::error($e);
+            throw new AppException('Erro ao enviar email.');
+        }
+    }
+
+    public function sendMailCartOrdered($cart) {
+        $param = [
+            'from_email' => env('MAIL_FROM_ADDRESS'),
+            'from_name' => env('MAIL_FROM_NAME'),
+            'cc_email' => env('MAIL_FROM_ADDRESS'),
+            'cc_name' => env('MAIL_FROM_NAME'),
+            'to_email' => $cart->user_email,
+            'to_name' => $cart->user_name
+        ];
+        $subject = 'Seu pedido foi recebido';
+        $template = 'cart-order';
+        $data = $cart;
 
         try {
             $helperInstance = new Helper();

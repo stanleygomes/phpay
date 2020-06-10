@@ -78,6 +78,7 @@ class CartController extends Controller {
         try {
             $filter = Session::get('cartSearch');
             $cartInstance = new Cart();
+            $filter['is_order_date'] = true;
             $carts = $cartInstance->getCartList($filter, true);
 
             return view('cart.index', [
@@ -233,6 +234,35 @@ class CartController extends Controller {
                 ->with('status', $delete['message']);
         } catch (AppException $e) {
             return Redirect::route('app.cart.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function payment() {
+        try {
+            DB::beginTransaction();
+            $cartInstance = new Cart();
+            $cartId = $cartInstance->getSessionCartId();
+            $cart = $cartInstance->getCartById($cartId);
+            $pendingStatus = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
+
+            $cartHistoryInstance = new CartHistory();
+            $cartHistoryInstance->storeCartHistory($cart->id, $pendingStatus, null);
+
+            $cartInstance->updateCartStatus($cart->id, $pendingStatus, true);
+            $cartInstance->sendMailCartOrdered($cart);
+
+            // chamar API mercado pago, enviando os parametros (customer, methods, items)
+            return 1;
+
+            DB::commit();
+
+            return Redirect::back()
+                ->with('status', '');
+        } catch (AppException $e) {
+            DB::rollBack();
+            return Redirect::back()
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

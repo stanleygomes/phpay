@@ -21,7 +21,7 @@
         <div class="col-sm-9">
             <div class="form-group">
                 <label for="inputTitle">Buscar por título</label>
-                <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Tiulo" value="{{ $filter ? $filter['title'] : old('name') }}">
+                <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Tiulo" value="{{ isset($filter['title']) ? $filter['title'] : old('name') }}">
             </div>
         </div>
         <div class="col-sm-3">

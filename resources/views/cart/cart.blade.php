@@ -157,9 +157,9 @@
                             </button>
                         </a>
                         @else
-                        <a href="{{ route('website.cart.cart', ['finish' => 'finish']) }}">
+                        <a href="{{ route('website.cart.payment') }}">
                             <button type="button" class="btn btn-lg btn-success">
-                                Finalizar
+                                Finalizar compra
                             </button>
                         </a>
                         @endif

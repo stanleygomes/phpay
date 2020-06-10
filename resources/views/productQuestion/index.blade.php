@@ -16,7 +16,7 @@
         <div class="col-sm-9">
             <div class="form-group">
                 <label for="inputName">Buscar por produto</label>
-                <input type="text" id="inputName" name="title" class="form-control" placeholder="Nome do produto" value="{{ $filter && isset($filter['title']) ? $filter['title'] : old('title') }}">
+                <input type="text" id="inputName" name="title" class="form-control" placeholder="Nome do produto" value="{{ isset($filter['title']) && isset($filter['title']) ? $filter['title'] : old('title') }}">
             </div>
         </div>
         <div class="col-sm-3">
