@@ -80,7 +80,7 @@
                     {{ $cart->user_name }}
                 </div>
                 <div class="col-sm-2">
-                    {{ $cart->date_order != null ? $cart->date_order->format('d/m/Y H:i') : '' }}
+                    {{ $cart->order_date != null ? $cart->order_date->format('d/m/Y H:i') : '' }}
                 </div>
                 <div class="col-sm-2">
                     <span class="badge badge-{{ App\Helper\Helper::statusColorCart($cart->last_status) }}">{{ $cart->last_status }}</span>

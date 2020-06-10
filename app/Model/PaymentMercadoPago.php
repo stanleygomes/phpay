@@ -12,16 +12,16 @@ class PaymentMercadoPago {
         $env = env('MP_ENV');
 
         if ($env === 'PRD') {
-            $accesToken = env('PROD_ACCESS_TOKEN');
+            $accesToken = env('MP_PROD_ACCESS_TOKEN');
 
             if ($accesToken == null || $accesToken == '') {
-                throw new AppException('Por favor, informe o PROD_ACCESS_TOKEN no arquivo .env');
+                throw new AppException('Por favor, informe o MP_PROD_ACCESS_TOKEN no arquivo .env');
             }
         } else if ($env === 'SANDBOX') {
-            $accesToken = env('TEST_ACCESS_TOKEN');
+            $accesToken = env('MP_TEST_ACCESS_TOKEN');
 
             if ($accesToken == null || $accesToken == '') {
-                throw new AppException('Por favor, informe o TEST_ACCESS_TOKEN no arquivo .env');
+                throw new AppException('Por favor, informe o MP_TEST_ACCESS_TOKEN no arquivo .env');
             }
         } else {
             throw new AppException('Por favor, informe o MP_ENV no arquivo .env');
@@ -34,20 +34,20 @@ class PaymentMercadoPago {
         $env = env('MP_ENV');
 
         if ($env === 'PRD') {
-            $urlSuccess = env('PROD_URL_CALLBACK_SUCCESS');
-            $urlFailure = env('PROD_URL_CALLBACK_FAILURE');
-            $urlPending = env('PROD_URL_CALLBACK_PENDING');
+            $urlSuccess = env('MP_PROD_URL_CALLBACK_SUCCESS');
+            $urlFailure = env('MP_PROD_URL_CALLBACK_FAILURE');
+            $urlPending = env('MP_PROD_URL_CALLBACK_PENDING');
 
             if ($urlSuccess == null || $urlSuccess == '') {
-                throw new AppException('Por favor, informe o PROD_URL_CALLBACK_SUCCESS no arquivo .env');
+                throw new AppException('Por favor, informe o MP_PROD_URL_CALLBACK_SUCCESS no arquivo .env');
             }
 
             if ($urlFailure == null || $urlFailure == '') {
-                throw new AppException('Por favor, informe o PROD_URL_CALLBACK_FAILURE no arquivo .env');
+                throw new AppException('Por favor, informe o MP_PROD_URL_CALLBACK_FAILURE no arquivo .env');
             }
 
             if ($urlPending == null || $urlPending == '') {
-                throw new AppException('Por favor, informe o PROD_URL_CALLBACK_PENDING no arquivo .env');
+                throw new AppException('Por favor, informe o MP_PROD_URL_CALLBACK_PENDING no arquivo .env');
             }
 
             return [
@@ -56,20 +56,20 @@ class PaymentMercadoPago {
                 'pending' => $urlPending
             ];
         } else {
-            $urlSuccess = env('TEST_URL_CALLBACK_SUCCESS');
-            $urlFailure = env('TEST_URL_CALLBACK_FAILURE');
-            $urlPending = env('TEST_URL_CALLBACK_PENDING');
+            $urlSuccess = env('MP_TEST_URL_CALLBACK_SUCCESS');
+            $urlFailure = env('MP_TEST_URL_CALLBACK_FAILURE');
+            $urlPending = env('MP_TEST_URL_CALLBACK_PENDING');
 
             if ($urlSuccess == null || $urlSuccess == '') {
-                throw new AppException('Por favor, informe o TEST_URL_CALLBACK_SUCCESS no arquivo .env');
+                throw new AppException('Por favor, informe o MP_TEST_URL_CALLBACK_SUCCESS no arquivo .env');
             }
 
             if ($urlFailure == null || $urlFailure == '') {
-                throw new AppException('Por favor, informe o TEST_URL_CALLBACK_FAILURE no arquivo .env');
+                throw new AppException('Por favor, informe o MP_TEST_URL_CALLBACK_FAILURE no arquivo .env');
             }
 
             if ($urlPending == null || $urlPending == '') {
-                throw new AppException('Por favor, informe o TEST_URL_CALLBACK_PENDING no arquivo .env');
+                throw new AppException('Por favor, informe o MP_TEST_URL_CALLBACK_PENDING no arquivo .env');
             }
 
             return [

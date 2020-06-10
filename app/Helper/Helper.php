@@ -117,6 +117,11 @@ class Helper {
     public function sendMail($param, $data, $template, $subject) {
         Mail::send('mail.' . $template, ['data' => $data], function ($m) use ($param, $subject) {
             $m->from($param['from_email'], $param['from_name']);
+
+            if(isset($param['cc_email']) && isset($param['cc_name'])) {
+                $m->cc($param['cc_email'], $param['cc_name']);
+            }
+
             $m->to($param['to_email'], $param['to_name'])
                 ->subject($subject . ' - ' . env('APP_NAME'));
         });

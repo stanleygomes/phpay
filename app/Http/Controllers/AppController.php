@@ -23,7 +23,10 @@ class AppController extends Controller {
         $monthName = Helper::getMonthByNum(date('m'));
 
         $cartInstance = new Cart();
-        $carts = $cartInstance->getCartList(null, true, 5);
+        $filter = [
+            'is_order_date' => true
+        ];
+        $carts = $cartInstance->getCartList($filter, true, 5);
         $cartsResume = $cartInstance->getCartsResumeByYearMonth($dateStart, $dateEnd);
         $cartsByDay = $cartInstance->getCartsByDayChart($dateStart, $dateEnd);
 

@@ -27,7 +27,7 @@
         <div class="col-sm-9">
             <div class="form-group">
                 <label for="inputGatewayName">Buscar por nome</label>
-                <input type="text" id="inputGatewayName" name="method_name" class="form-control" placeholder="Nome" value="{{ $filter ? $filter['method_name'] : old('method_name') }}">
+                <input type="text" id="inputGatewayName" name="method_name" class="form-control" placeholder="Nome" value="{{ isset($filter['method_name']) ? $filter['method_name'] : old('method_name') }}">
             </div>
         </div>
         <div class="col-sm-3">

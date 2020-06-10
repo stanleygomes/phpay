@@ -35,7 +35,9 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     });
 
     Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
+        Route::get('payment', ['as' => 'payment', 'uses' => 'CartController@payment']);
         Route::get('{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
+
         Route::group(['as' => '', 'prefix' => 'user'], function () {
             Route::get('edit', ['as' => 'userEdit', 'uses' => 'UserController@cartUserEdit']);
             Route::post('update', ['as' => 'userUpdate', 'uses' => 'UserController@cartUserUpdate']);
