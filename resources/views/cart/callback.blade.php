@@ -12,11 +12,19 @@
                 <strong>PEDIDO #{{ App\Helper\Helper::formatCartId($cart->id) }}</strong>
             </h2>
             <h4>{{ $description }}</h4>
-            <a href="{{ route('app.cart.show', ['id' => $cart->id]) }}">
+            <a href="{{ $routeCartShow }}">
                 <button type="button" class="btn mt-5 btn-lg btn-primary">
                     Mais informações
                 </button>
             </a>
+        </div>
+        <div class="col-sm-6 mt-5">
+            <div class="text-center mt-5">
+                {!! QrCode::size(200)->generate($routeCartShow) !!}
+                <p class="mt-3">
+                    <strong>Acompanhe seu pedido</strong>
+                </p>
+            </div>
         </div>
     </div>
 </div>

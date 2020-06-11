@@ -64,27 +64,27 @@
                 {{ $product->description_short }}
             </p>
             @if($product->stock_qty < 5) <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p> @endif
-                <div class="row">
-                    <div class="col-sm-6">
-                        @if($wishlistItem != null)
-                        <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
-                            <i class="fa fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Remover dos favoritos"></i>
-                        </a>
-                        @else
-                        <a href="{{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
-                            <i class="far fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Adicionar aos favoritos"></i>
-                        </a>
-                        @endif
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        <a href="{{ route('website.cart.addProduct', [ 'id' => $product->id]) }}">
-                            <button type="button" class="btn btn-lg btn-success">
-                                <i class="fa fa-shopping-bag"></i>
-                                Adicionar ao carrinho
-                            </button>
-                        </a>
-                    </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    @if($wishlistItem != null)
+                    <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
+                        <i class="fa fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Remover dos favoritos"></i>
+                    </a>
+                    @else
+                    <a href="{{ route('auth.login') }}?redir={{ route('app.wishlistItem.create', [ 'id' => $product->id ]) }}">
+                        <i class="far fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Adicionar aos favoritos"></i>
+                    </a>
+                    @endif
                 </div>
+                <div class="col-sm-6 text-right">
+                    <a href="{{ route('website.cart.addProduct', [ 'id' => $product->id]) }}">
+                        <button type="button" class="btn btn-lg btn-success">
+                            <i class="fa fa-shopping-bag"></i>
+                            Adicionar ao carrinho
+                        </button>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
