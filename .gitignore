@@ -15,3 +15,9 @@ Homestead.yaml
 server/storage/*
 server/data/*
 server/logs/*
+
+# locaweb
+php.ini
+.gems
+logs
+.bashprofile
