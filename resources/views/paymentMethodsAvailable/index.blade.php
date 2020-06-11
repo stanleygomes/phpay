@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.account')
 @section('pageTitle', 'Métodos de pagamento')
 @section('sidebarMenuPaymentMethodsAvailableActive', 'active')
 
-@section('content')
+@section('accountContent')
 
 <div class="row">
     <div class="col-sm-12 mb-4">

@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.account')
 @section('pageTitle', 'Dashboard')
 @section('sidebarMenuDashboardActive', 'active')
 
-@section('content')
+@section('accountContent')
 
 @include('layouts.components.alert-messages')
 

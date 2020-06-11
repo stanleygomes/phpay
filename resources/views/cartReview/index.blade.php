@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.account')
 @section('pageTitle', 'Avaliações')
 @section('sidebarMenuCartReviewActive', 'active')
 
-@section('content')
+@section('accountContent')
 
 <div class="row">
     <div class="col-sm-12">

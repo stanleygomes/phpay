@@ -32,6 +32,9 @@
     <link rel="stylesheet" href="/css/font-awesome.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/bs-stepper.min.css?v={{ env('APP_VERSION') }}" />
     <link rel="stylesheet" href="/css/app.css?v={{ env('APP_VERSION') }}" />
+
+    @yield('style')
+
 </head>
 
 <body>
@@ -53,7 +56,7 @@
                 </form>
             </div>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto px-3">
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link ml-4 mr-2" href="{{ route('app.wishlistItem.index') }}">
                             <i class="fa fa-heart button-icon icon-30"></i>
@@ -74,6 +77,12 @@
                     <li class="nav-item">
                         <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">
                             <span class="btn btn-sm btn-outline-primary">Cadastrar</span>
+                        </a>
+                    </li>
+                    @else
+                    <li class="nav-item">
+                        <a class="nav-link @yield('pageRegisterActive') pr-0" href="{{ route('auth.logout') }}">
+                            <span class="btn btn-sm btn-outline-primary">Sair</span>
                         </a>
                     </li>
                     @endif
@@ -167,6 +176,8 @@
     <script src="/js/jquery.mask.min.js?v={{ env('APP_VERSION') }}"></script>
     <!-- <script src="/js/lazy.min.js?v={{ env('APP_VERSION') }}"></script> -->
     <script src="/js/app.js?v={{ env('APP_VERSION') }}"></script>
+
+    @yield('script')
 
     <script>
         (function(i, s, o, g, r, a, m) {

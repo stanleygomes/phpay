@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.account')
 @section('pageTitle', 'Cadastrar')
 @section('sidebarMenuAddressActive', 'active')
 
