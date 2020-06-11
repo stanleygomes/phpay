@@ -6,7 +6,9 @@
 <div class="container">
     <div class="row">
 
-        @include('layouts.components.alert-messages')
+        <div class="col-sm-12">
+            @include('layouts.components.alert-messages')
+        </div>
 
         <div class="col-sm-3">
             <div class="col-sm-12">

@@ -43,7 +43,7 @@ class CartController extends Controller {
             if (count($cartItems) > 0) {
                 $view = 'cart.cart';
             } else {
-                $view = 'cart.cart-empty';
+                $view = 'cart.empty';
             }
 
             return view($view, [
@@ -117,10 +117,13 @@ class CartController extends Controller {
             $cartHistoryInstance = new CartHistory();
             $cartHistories = $cartHistoryInstance->getCartHistoryList($filter, false);
 
+            $canceledStatus = $cartInstance->getCartStatusByCode('CANCELED');
+
             return view('cart.show', [
                 'cart' => $cart,
                 'cartItems' => $cartItems,
                 'cartHistories' => $cartHistories,
+                'canceledStatus' => $canceledStatus
             ]);
         } catch (AppException $e) {
             return Redirect::route('app.cart.index')
@@ -140,7 +143,7 @@ class CartController extends Controller {
             if ($cart == null) {
                 $message = 'Pedido inválido.';
                 return Redirect::back()
-                    ->withErrors('')
+                    ->withErrors($message)
                     ->withInput();
             }
 
@@ -295,6 +298,59 @@ class CartController extends Controller {
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function callback(Request $request, $status) {
+        try {
+            DB::beginTransaction();
+            $transactionInstance = new Transaction();
+            $transaction = $transactionInstance->getCartIdByTransaction($request->preference_id);
+            $statusHistory = $transactionInstance->getCartHistoryStatusByPaymentStatus($status);
+
+            if ($transaction === null) {
+                $message = 'Pedido inválido.';
+                return Redirect::route('website.home')
+                    ->withErrors($message)
+                    ->withInput();
+            }
+
+            $cartInstance = new Cart();
+            $cart = $cartInstance->getCartById($transaction->cart_id);
+
+            $cartHistoryInstance = new CartHistory();
+            $cartHistoryInstance->storeCartHistory($cart->id, $statusHistory['status'], $statusHistory['description']);
+
+            $cartInstance->updateCartStatus($cart->id, $statusHistory['status']);
+
+            DB::commit();
+
+            return Redirect::route('website.cart.callbackPage', ['status' => $status, 'cart_id' => $cart->id]);
+        } catch (AppException $e) {
+            DB::rollBack();
+            return Redirect::route('app.cart.index')
+                ->withErrors($e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function callbackPage($status, $cartId) {
+        try {
+            $transactionInstance = new Transaction();
+            $statusHistory = $transactionInstance->getCartHistoryStatusByPaymentStatus($status);
+
+            $cartInstance = new Cart();
+            $cart = $cartInstance->getCartById($cartId);
+
+            return view('cart.callback', [
+                'status' => $status,
+                'description' => $statusHistory['description'],
+                'cart' => $cart
+            ]);
+        } catch (AppException $e) {
+            return Redirect::route('app.cart.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }

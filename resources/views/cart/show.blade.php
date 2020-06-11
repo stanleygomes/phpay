@@ -155,6 +155,7 @@
     </div>
 </div>
 
+@if($cart->last_status !== $canceledStatus)
 <div class="row mt-5">
     <div class="col-sm-12">
         <h3>Solicitação de cancelamento</h3>
@@ -179,5 +180,6 @@
         </div>
     </div>
 </form>
+@endif
 
 @endsection

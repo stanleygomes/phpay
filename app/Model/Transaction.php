@@ -23,6 +23,43 @@ class Transaction extends Model {
         'deleted_at' => 'datetime'
     ];
 
+    protected $statusList = [
+        'success' => [
+            'type' => 'success',
+            'description' => 'Pagamento efetuado com sucesso.'
+        ],
+        'pending' => [
+            'type' => 'pending',
+            'description' => 'Recebemos sua solicitação. Seu pagamento ainda está em análise.'
+        ],
+        'failure' => [
+            'type' => 'failure',
+            'description' => 'Não foi possível processar seu pagamento.'
+        ]
+    ];
+
+    public function getStatusByType($type) {
+        return $this->statusList[$type];
+    }
+
+    public function getCartHistoryStatusByPaymentStatus($type) {
+        $cartInstance = new Cart();
+        $statusPayment = $this->getStatusByType($type);
+
+        if ($type === 'success') {
+            $statusCartHistory = $cartInstance->getCartStatusByCode('PAID');
+        } else if($type === 'pending') {
+            $statusCartHistory = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
+        } else if($type === 'failure') {
+            $statusCartHistory = $cartInstance->getCartStatusByCode('CANCELED');
+        }
+
+        return [
+            'status' => $statusCartHistory,
+            'description' => $statusPayment['description']
+        ];
+    }
+
     public function storeTransaction($cartId, $preferenceId, $preferenceUrl) {
         $transaction = new Transaction();
         $transaction->cart_id = $cartId;
@@ -32,5 +69,10 @@ class Transaction extends Model {
         $transaction->save();
 
         return $transaction;
+    }
+
+    public function getCartIdByTransaction($preferenceId) {
+        return Transaction::where('preference_id', $preferenceId)
+            ->first();
     }
 }
