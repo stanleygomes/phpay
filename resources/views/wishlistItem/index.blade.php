@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.account')
 @section('pageTitle', 'Lista de favoritos')
 @section('sidebarMenuWishlistItemActive', 'active')
 
-@section('content')
+@section('accountContent')
 
 <div class="row">
     <div class="col-sm-10">

@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.account')
 @section('pageTitle', ($modeEdit === true ? 'Editar' : 'Cadastrar'))
 @section(($modeAccount === true ? 'sidebarMenuUserAccountActive' : 'sidebarMenuUserActive'), 'active')
 
-@section('content')
+@section('accountContent')
 
 <div class="row">
     @if($modeAccount === false)
