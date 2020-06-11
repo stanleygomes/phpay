@@ -1,0 +1,26 @@
+# trigger: push on master branch
+name: Deploy App
+on:
+  push:
+    branches:
+    - master
+jobs:
+  build:
+    name: Connect
+    runs-on: ubuntu-latest
+    steps:
+    - name: Sign in to remote server and run commands
+      uses: appleboy/ssh-action@master
+      with:
+        # github secrets variables
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          # enter dir
+          cd ${{ secrets.APP_DIR }}
+          # remover mudanças feitas no servidor que não foram comitadas
+          git checkout -- .
+          # baixar o codigo mais atualizado
+          git pull ${{ secrets.GITHUB_URL }} master

@@ -344,15 +344,23 @@ class CartController extends Controller {
             $cartInstance = new Cart();
             $cart = $cartInstance->getCartById($cartId);
 
+            $routeCartShow = route('auth.login') . '?redir=' . route('app.cart.show', ['id' => $cart->id]);
+
             return view('cart.callback', [
                 'status' => $status,
                 'description' => $statusHistory['description'],
-                'cart' => $cart
+                'cart' => $cart,
+                'routeCartShow' => $routeCartShow
             ]);
         } catch (AppException $e) {
             return Redirect::route('app.cart.index')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
+    }
+
+    public function updateStatus(Request $request) {
+        $paymentMercadoPagoInstance = new PaymentMercadoPago();
+        $paymentMercadoPagoInstance->updateStatus($request);
     }
 }

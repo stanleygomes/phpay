@@ -182,6 +182,77 @@ class PaymentMercadoPago {
         return $preference;
     }
 
+    public function updateStatus($request) {
+        Log::debug('// -------------- start');
+        Log::debug($request);
+
+        $accesToken = $this->getAccessToken();
+        $MP = new MercadoPago\SDK();
+        $MP->setAccessToken($accesToken);
+
+        $merchantOrder = null;
+        $topic = $request->topic;
+        $id = $request->id;
+
+        if ($topic === null || $id === null) {
+            $message = 'Parametros {topic e id} não informados na requisicao.';
+            Log::debug($message);
+            return ['message' => $message];
+        }
+
+        if ($topic === 'payment') {
+            $payment = MercadoPago\Payment::find_by_id($id);
+            if ($payment === null) {
+                $message = 'Pagamento {' . $id . '} não encontrado.';
+                Log::debug($message);
+                return ['message' => $message];
+            } else {
+                $merchantOrderId = $payment->order->id;
+                $merchantOrder = MercadoPago\MerchantOrder::find_by_id($merchantOrderId);
+            }
+        } else if ($topic === 'merchant_order') {
+            $merchantOrder = MercadoPago\MerchantOrder::find_by_id($id);
+        } else {
+            $message = 'Metodo {' . $topic . '} não suportado.';
+            Log::debug($message);
+            return ['message' => $message];
+        }
+
+        if ($merchantOrder === null) {
+            $message = 'Pedido não encontrado.';
+            Log::debug($message);
+            return ['message' => $message];
+        }
+
+        $paidAmount = 0;
+        foreach ($merchantOrder->payments as $payment) {
+            if ($payment['status'] == 'approved') {
+                $paidAmount += $payment['transaction_amount'];
+            }
+        }
+
+        Log::debug('Total pago: ' . $paidAmount);
+
+        if ($paidAmount >= $merchantOrder->total_amount) {
+            if (count($merchantOrder->shipments) > 0) {
+                if ($merchantOrder->shipments[0]->status == 'ready_to_ship') {
+                    Log::debug('Pedido totalmente pago. Preparado para despacho.');
+                }
+            } else {
+                Log::debug('Pedido totalmente pago.');
+                // TODO: enviar email para o cliente informando que foi pago
+            }
+        } else {
+            Log::debug('Pedido ainda pendente.');
+        }
+
+        // TODO: atualizar status de pagamento pelo reference->id
+
+        Log::debug('// -------------- end');
+
+        return ['message' => 'Fim da verificação.'];
+    }
+
     public function createCustomerSandbox() {
         $accesToken = $this->getAccessToken();
         $url = 'https://api.mercadopago.com/users/test_user?access_token=' . $accesToken;

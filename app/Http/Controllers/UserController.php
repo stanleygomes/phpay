@@ -16,8 +16,13 @@ use App\Helper\Helper;
 class UserController extends Controller {
     public function login(Request $request) {
         if (Auth::user()) {
-            return redirect()
-                ->route('app.dashboard');
+            if ($request->redir != null) {
+                return Redirect::to($request->redir)
+                    ->with('status', $request->redirMessage != null ? $request->redirMessage : '');
+            } else {
+                return redirect()
+                    ->route('app.dashboard');
+            }
         }
 
         return view('user.login', [
