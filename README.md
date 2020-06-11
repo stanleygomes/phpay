@@ -2,9 +2,9 @@
 
 # PHPAY
 
-Come to the PHP side 🚀 🌑
+An open PHP store platform. Focused in small businesses 💰 🛒
 
-The main goal of **phpay** is to set patterns to be easily implemented on PHP projects for payment Gateway. We want to make easy to quick start a PHP ambient with the basic resources need. Check out the patterns we defined this document bellow.
+The main goal of **phpay** is to set patterns to be easily implemented on a web store. We want to make easy to quick start a PHP ambient with the basic resources every store need. Check out the patterns we defined this document bellow.
 
 *******
 Table of contents 
@@ -77,9 +77,10 @@ We recomend use of [VS Code](https://code.visualstudio.com) and [PHP Intelephens
 
 ### Services
 
-- Pagseguro API: https://github.com/pagseguro/pagseguro-php-sdk
 - Mercado Pago API: https://github.com/mercadopago/dx-php
-- PagarMe API: https://github.com/pagarme/pagarme-php
+- Pagseguro API: https://github.com/pagseguro/pagseguro-php-sdk
+- [TODO] PagarMe API: https://github.com/pagarme/pagarme-php
+- [TODO] NFe PHP: https://github.com/nfephp-org/sped-nfe
 
 <div id='gitflow'/>
 
