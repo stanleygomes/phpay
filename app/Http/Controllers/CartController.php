@@ -12,6 +12,8 @@ use App\Model\Address;
 use App\Model\Cart;
 use App\Model\CartItem;
 use App\Model\CartHistory;
+use App\Model\PaymentMercadoPago;
+use App\Model\PaymentMethodsAvailable;
 use App\Model\User;
 
 class CartController extends Controller {
@@ -20,7 +22,7 @@ class CartController extends Controller {
             DB::beginTransaction();
 
             $cartInstance = new Cart();
-            $cartId = $cartInstance->getSessionCartId();
+            $cartId = $cartInstance->getCreateSessionCartId();
             $cart = $cartInstance->getCartById($cartId);
             $cartInstance->updatePriceTotal($cartId);
 
@@ -36,7 +38,13 @@ class CartController extends Controller {
 
             $user = new User();
 
-            return view('cart.cart', [
+            if (count($cartItems) > 0) {
+                $view = 'cart.cart';
+            } else {
+                $view = 'cart.cart-empty';
+            }
+
+            return view($view, [
                 'cart' => $cart,
                 'cartItems' => $cartItems,
                 'user' => $user,
@@ -56,7 +64,7 @@ class CartController extends Controller {
             $userLogged = Auth::user();
 
             if ($userLogged == null) {
-                return Redirect::route('auth.login', ['redir' => '/cart/address']);
+                return Redirect::route('auth.login', ['redir' => '/cart/address/address']);
             }
 
             $addressInstance = new Address();
@@ -168,7 +176,7 @@ class CartController extends Controller {
         try {
             DB::beginTransaction();
             $cartInstance = new Cart();
-            $cartId = $cartInstance->getSessionCartId();
+            $cartId = $cartInstance->getCreateSessionCartId();
 
             $cartItemInstance = new CartItem();
             $cartItem = $cartItemInstance->addCartItem($cartId, $productId);
@@ -189,7 +197,7 @@ class CartController extends Controller {
         try {
             DB::beginTransaction();
             $cartInstance = new Cart();
-            $cartId = $cartInstance->getSessionCartId();
+            $cartId = $cartInstance->getCreateSessionCartId();
 
             $cartItemInstance = new CartItem();
             $cartItem = $cartItemInstance->updateCartItem($cartId, $productId, $request->qty);
@@ -209,7 +217,7 @@ class CartController extends Controller {
         try {
             DB::beginTransaction();
             $cartInstance = new Cart();
-            $cartId = $cartInstance->getSessionCartId();
+            $cartId = $cartInstance->getCreateSessionCartId();
 
             $cartItemInstance = new CartItem();
             $cartItem = $cartItemInstance->deleteCartItemByProductId($cartId, $productId);
@@ -248,15 +256,38 @@ class CartController extends Controller {
             $pendingStatus = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
 
             $cartHistoryInstance = new CartHistory();
-            $cartHistoryInstance->storeCartHistory($cart->id, $pendingStatus, null);
+            $cartHistoryInstance->storeCartHistory($cart->id, $pendingStatus, 'Pedido recebido');
 
             $cartInstance->updateCartStatus($cart->id, $pendingStatus, true);
-            $cartInstance->sendMailCartOrdered($cart);
+            // $cartInstance->sendMailCartOrdered($cart);
+
+            return $customer = $cart;
+            $filter = [
+                'cart_id' => $cart->id
+            ];
+
+            $paymentMethodsAvailableInstance = new PaymentMethodsAvailable();
+            $paymentMethodsAvailable = [
+                'methods' => $paymentMethodsAvailableInstance->getAvailableMethodIdsFromGateway('MERCADO_PAGO'),
+                'installments' => $cartInstance->getMaxInstallments()
+            ];
+
+            $cartItemInstance = new CartItem();
+            $cartItems = $cartItemInstance->getCartItemList($filter, false);
+
+            // solicitacao de pagamento
+            $paymentMercadoPagoInstance = new PaymentMercadoPago();
+            $preference = $paymentMercadoPagoInstance->getPreference($cart, $cartItems, $paymentMethodsAvailable);
+
+            return $paymentUrl = $preference->init_point;
+
+            // descontar o estoque
+
+            // salvar o transaction
 
             // chamar API mercado pago, enviando os parametros (customer, methods, items)
-            return 1;
-
             DB::commit();
+            return 1;
 
             return Redirect::back()
                 ->with('status', '');

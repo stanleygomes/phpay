@@ -7,33 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class PaymentMercadoPagoController extends Controller {
-    public function preview() {
-        // payment page
-        $customer = null;
-        $items = [1, 2, 3];
-        $paymentMethodsAvailable = [
-            'methods' => ['visa', 'master'],
-            'installments' => 10
-        ];
-
-        try {
-            // criar dados para solicitacao de pagamento
-            $preference = $this->getPreference($customer, $items, $paymentMethodsAvailable);
-            // TODO: criar um pagamento aqui numa tabela do banco e referenciar cliente e $preference->id
-
-        } catch(AppException $e) {
-            Log::error($e);
-            return 'Ocorreu um erro ao gerar a solicitação de pagamento.';
-        }
-
-        $paymentUrl = $preference->init_point;
-
-        return view('mercado-pago.preview', [
-            'preference' => $preference,
-            'paymentUrl' => $paymentUrl
-        ]);
-    }
-
 
     public function callback(Request $request, $type) {
         // TODO: salvar essa response na tabela relacionando ao pagamento

@@ -91,6 +91,20 @@ class PaymentMethodsAvailable extends Model {
             ->first();
     }
 
+    public function getAvailableMethodIdsFromGateway($gateway) {
+        $paymentMethodsAvailable = PaymentMethodsAvailable::where('gateway', $gateway)
+            ->get();
+
+        $methodIds = [];
+
+        for ($i = 0; $i < count($paymentMethodsAvailable); $i++) {
+            $item = $paymentMethodsAvailable[$i];
+            array_push($methodIds, $item->method_id);
+        }
+
+        return $methodIds;
+    }
+
     public function getPaymentMethodsAvailableList($filter = null, $paginate = false, $limit = 15) {
         $paymentMethodsAvailable = PaymentMethodsAvailable::orderBy('id', 'desc');
 

@@ -35,9 +35,6 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
     });
 
     Route::group(['as' => 'cart.', 'prefix' => 'cart'], function () {
-        Route::get('payment', ['as' => 'payment', 'uses' => 'CartController@payment']);
-        Route::get('{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
-
         Route::group(['as' => '', 'prefix' => 'user'], function () {
             Route::get('edit', ['as' => 'userEdit', 'uses' => 'UserController@cartUserEdit']);
             Route::post('update', ['as' => 'userUpdate', 'uses' => 'UserController@cartUserUpdate']);
@@ -57,6 +54,9 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
             Route::get('update/{id}', ['as' => 'updateProduct', 'uses' => 'CartController@updateProduct']);
             Route::get('delete/{id}', ['as' => 'deleteProduct', 'uses' => 'CartController@deleteProduct']);
         });
+
+        Route::get('payment', ['as' => 'payment', 'uses' => 'CartController@payment']);
+        Route::get('{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
     });
 });
 
@@ -71,14 +71,6 @@ Route::group(['as' => 'auth.', 'prefix' => 'auth'], function () {
     Route::post('password-request', ['as' => 'passwordRequestPost', 'uses' => 'UserController@passwordRequestPost']);
     Route::get('password-reset', ['as' => 'passwordReset', 'uses' => 'UserController@passwordReset']);
     Route::post('password-reset', ['as' => 'passwordResetPost', 'uses' => 'UserController@passwordResetPost']);
-});
-
-// payment routes
-Route::group(['as' => 'mercadoPago.', 'prefix' => 'mercado-pago'], function () {
-    Route::get('preview', 'MercadoPagoController@preview')->name('preview');
-    Route::get('create-customer-sandbox', 'MercadoPagoController@createCustomerSandbox')->name('createCustomerSandbox');
-    Route::get('status', 'MercadoPagoController@status')->name('status');
-    Route::get('callback/{type}', 'MercadoPagoController@callback')->name('callback');
 });
 
 // app routes

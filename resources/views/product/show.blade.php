@@ -144,7 +144,7 @@
     <div class="row mt-3 mb-3">
         <div class="col-sm-12 mb-2">
             <h3>
-                <strong>Produtos relacionados</strong>
+                <strong>Mais produtos dessa categoria</strong>
             </h3>
         </div>
         @foreach($relatedProducts as $key => $product)

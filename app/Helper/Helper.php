@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Model\Category;
 use App\Model\Store;
@@ -14,6 +15,28 @@ use App\Model\Cart;
 use App\Model\CartItem;
 
 class Helper {
+    public static function splitName($fullName) {
+        $split = explode(' ', $fullName);
+        $lastName = array_pop($split);
+        $firstName = implode(" ", $split);
+
+        return [
+            'first_name' => $firstName,
+            'last_name' => $lastName
+        ];
+    }
+
+    public static function splitPhone($phone) {
+        if ($phone == null) {
+            return null;
+        }
+
+        return [
+            'area_code' => substr($phone, 1, 2),
+            'number' => trim(substr($phone, 4, 100))
+        ];
+    }
+
     public static function getDayFromDateUS($date) {
         $dateArray = explode('-', $date);
         if ($dateArray != null && count($dateArray) === 3) {
@@ -81,10 +104,26 @@ class Helper {
         }
     }
 
+    public static function getSessionCartId($action = null) {
+        $cartSessionId = Session::get('cart_id');
+        Log::debug('############### GET');
+        Log::debug($cartSessionId);
+        Log::debug($action);
+        Log::debug('###############');
+        return $cartSessionId;
+    }
+
+    public static function putSessionCartId($cartId) {
+        $cartSessionId = Session::put('cart_id', $cartId);
+        Log::debug('############### GET');
+        Log::debug($cartSessionId);
+        Log::debug('###############');
+        return $cartId;
+    }
+
     public static function getCartItemCount() {
         try {
-            $cartInstance = new Cart();
-            $cartId = $cartInstance->getSessionCartId();
+            $cartId = Helper::getSessionCartId();
 
             $cartItemInstance = new CartItem();
             return $cartItemInstance->getCartItemCount($cartId);
