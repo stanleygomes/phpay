@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 use App\Exceptions\AppException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Helper\Helper;
-use Carbon\Carbon;
 
 class Cart extends Model {
     use SoftDeletes;
@@ -51,6 +50,12 @@ class Cart extends Model {
         'CANCELED' => 'Cancelado',
         'PAID' => 'Pago'
     ];
+
+    protected $maxInstallments = 10;
+
+    public function getMaxInstallments() {
+        return $this->maxInstallments;
+    }
 
     public function getCartStatusByCode($code) {
         return $this->cartStatus[$code];
@@ -187,38 +192,22 @@ class Cart extends Model {
         ];
     }
 
-    public function getSessionCartId() {
-        $cartSessionId = Session::get('cart_id');
+    public function getCreateSessionCartId() {
+        $cartSessionId = Helper::getSessionCartId();
 
         if ($cartSessionId == null) {
-
-
-
-
-
-            Log::debug('###############');
-            Log::debug('###############');
-            Log::debug('###############');
-            Log::debug($cartSessionId);
             $cart = $this->storeCart();
             $cartId = $cart['data']->id;
-            Log::debug($cart);
-            Log::debug('###############');
-            Log::debug('###############');
-            Log::debug('###############');
 
-            Session::put('cart_id', $cartId);
-            $cartSessionId = $cartId;
-
-
-            exit();
-
-
-
-
-
+            Helper::putSessionCartId($cartId);
+            return $cartId;
         }
 
+        return $cartSessionId;
+    }
+
+    public function getSessionCartId() {
+        $cartSessionId = Helper::getSessionCartId();
         return $cartSessionId;
     }
 

@@ -382,7 +382,7 @@ class UserController extends Controller {
             $userLogged = Auth::user();
 
             if ($userLogged == null) {
-                return Redirect::route('auth.login', ['redir' => '/cart/user']);
+                return Redirect::route('auth.login', ['redir' => '/cart/user/edit']);
             }
 
             $userInstance = new User();
@@ -404,7 +404,7 @@ class UserController extends Controller {
             $userLogged = Auth::user();
 
             if ($userLogged == null) {
-                return Redirect::route('auth.login', ['redir' => '/cart/user']);
+                return Redirect::route('auth.login', ['redir' => '/cart/user/edit']);
             }
 
             $userInstance = new User();

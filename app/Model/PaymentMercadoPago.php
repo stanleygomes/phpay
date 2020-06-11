@@ -5,6 +5,7 @@ namespace App\Model;
 use MercadoPago;
 use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Log;
+use App\Helper\Helper;
 
 class PaymentMercadoPago {
     public function getAccessToken() {
@@ -83,23 +84,35 @@ class PaymentMercadoPago {
     public function getPayer($customer = null) {
         $payer = new MercadoPago\Payer();
 
-        $payer->name = "Joao";
-        $payer->surname = "Silva";
-        $payer->email = "user@email.com";
-        $payer->date_created = "2018-06-02T12:58:41.425-04:00";
-        $payer->phone = array(
-            "area_code" => "11",
-            "number" => "4444-4444"
-        );
-        $payer->identification = array(
-            "type" => "CPF",
-            "number" => "19119119100"
-        );
-        $payer->address = array(
-            "street_name" => "Street",
-            "street_number" => 123,
-            "zip_code" => "06233200"
-        );
+        $customerName = Helper::splitName($customer->user_name);
+
+        $payer->name = $customerName['first_name'];
+        $payer->surname = $customerName['last_name'];
+        $payer->email = $customer->user_email;
+        $payer->date_created = date('Y-m-d') . 'T' . date('H:m:s') .  '.0-03:00';
+
+        if ($customer->user_phone != null) {
+            $phone = Helper::splitName($customer->user_phone);
+            $payer->phone = array(
+                'area_code' => $phone['area_code'],
+                'number' => $phone['number']
+            );
+        }
+
+        if ($customer->user_cpf != null) {
+            $payer->identification = array(
+                'type' => 'CPF',
+                'number' => $customer->user_cpf
+            );
+        }
+
+        if ($customer->address_street != null) {
+            $payer->address = array(
+                'street_name' => $customer->address_street,
+                'street_number' => $customer->address_number,
+                'zip_code' => $customer->address_zipcode
+            );
+        }
 
         return $payer;
     }
@@ -121,9 +134,9 @@ class PaymentMercadoPago {
 
     public function getItem($item = null) {
         $item = new MercadoPago\Item();
-        $item->title = 'Meu produto';
-        $item->quantity = 1;
-        $item->unit_price = 75.56;
+        $item->title = $item->product_title;
+        $item->quantity = $item->qty;
+        $item->unit_price = $item->product_price;
 
         return $item;
     }
