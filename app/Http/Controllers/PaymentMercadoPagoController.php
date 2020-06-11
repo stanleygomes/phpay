@@ -8,10 +8,63 @@ use Illuminate\Support\Facades\Log;
 
 class PaymentMercadoPagoController extends Controller {
 
+    public function preview() {
+        /*
+
+
+<script src="https://www.mercadopago.com/v2/security.js" view="{{ env('APP_DOMAIN') }}"></script>
+
+<form enctype="multipart/form-data" action="{{ route('mercadoPago.preview') }}" method="POST">
+    <script
+        src="https://www.mercadopago.com.br/integrations/v1/web-payment-checkout.js"
+        data-header-color="#c0392b"
+        data-elements-color="#81ecec"
+        data-button-label="Pagar"
+        data-preference-id="<?php echo $preference->id; ?>"
+    >
+    </script>
+</form>
+
+Deixar claro para o cliente, que ele será redirecionado para a página do mercado pago para fazer o pagamento com segurança.
+
+<a href="<?php echo $preference->init_point; ?>">Pagar com Mercado Pago</a>
+
+*/
+
+
+    }
+
     public function callback(Request $request, $type) {
+
+        // http://localhost:8000/mercado-pago/callback/failure?
+        // collection_id=null
+        // &collection_status=null
+        // &external_reference=
+        // &payment_type=null
+        // &merchant_order_id=null
+        // &preference_id=152969681-9486732f-3779-41fa-b75f-728b964d30d0
+        // &site_id=MLB
+        // &processing_mode=aggregator
+        // &merchant_account_id=null
+
         // TODO: salvar essa response na tabela relacionando ao pagamento
         $callbackData = $request;
         // TODO: enviar email para o cliente informando o status atual do pedido
+
+        /*
+
+        @if($type === 'success')
+        Pagamento efetuado com sucesso.
+        @elseif($type === 'pending')
+        Recebemos sua solicitação. Seu pagamento ainda está em análise.
+        @elseif($type === 'failure')
+        Não foi possível processar seu pagamento.
+        @endif
+
+
+        */
+
+
         return view('mercado-pago.callback', [
             'type' => $type
         ]);

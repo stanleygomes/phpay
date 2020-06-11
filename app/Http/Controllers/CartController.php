@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Helper\Helper;
 use App\Model\Address;
 use App\Model\Cart;
 use App\Model\CartItem;
 use App\Model\CartHistory;
 use App\Model\PaymentMercadoPago;
 use App\Model\PaymentMethodsAvailable;
+use App\Model\Transaction;
 use App\Model\User;
 
 class CartController extends Controller {
@@ -261,7 +263,6 @@ class CartController extends Controller {
             $cartInstance->updateCartStatus($cart->id, $pendingStatus, true);
             // $cartInstance->sendMailCartOrdered($cart);
 
-            return $customer = $cart;
             $filter = [
                 'cart_id' => $cart->id
             ];
@@ -275,22 +276,22 @@ class CartController extends Controller {
             $cartItemInstance = new CartItem();
             $cartItems = $cartItemInstance->getCartItemList($filter, false);
 
-            // solicitacao de pagamento
+            // payment request
             $paymentMercadoPagoInstance = new PaymentMercadoPago();
             $preference = $paymentMercadoPagoInstance->getPreference($cart, $cartItems, $paymentMethodsAvailable);
 
-            return $paymentUrl = $preference->init_point;
+            $preferenceId = $preference->id;
+            $preferenceUrl = $preference->init_point;
 
-            // descontar o estoque
+            // save transaction
+            $transactionInstance = new Transaction();
+            $transactionInstance->storeTransaction($cart->id, $preferenceId, $preferenceUrl);
 
-            // salvar o transaction
+            Helper::removeSessionCartId();
 
-            // chamar API mercado pago, enviando os parametros (customer, methods, items)
             DB::commit();
-            return 1;
 
-            return Redirect::back()
-                ->with('status', '');
+            return Redirect::to($preferenceUrl);
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::back()

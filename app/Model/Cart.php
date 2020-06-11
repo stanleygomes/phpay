@@ -91,8 +91,8 @@ class Cart extends Model {
 
     public function getCartsByDayChart($dateStart, $dateEnd) {
         $cartsResume = Cart::select([DB::raw('DATE(created_at) as date'), DB::raw('count(*) as qty')])
-            // ->where('date_order', '>=', $dateStart)
-            // ->where('date_order', '<=', $dateEnd)
+            ->where('order_date', '>=', $dateStart)
+            ->where('order_date', '<=', $dateEnd)
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -120,8 +120,8 @@ class Cart extends Model {
         ];
 
         $cartsResume = Cart::whereIn('last_status', $statusList)
-            // ->where('date_order', '>=', $dateStart)
-            // ->where('date_order', '<=', $dateEnd)
+            ->where('order_date', '>=', $dateStart)
+            ->where('order_date', '<=', $dateEnd)
             ->select([DB::raw('SUM(price_total) as price_total'), 'last_status'])
             ->groupBy('last_status')
             ->get();

@@ -55,7 +55,7 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
             Route::get('delete/{id}', ['as' => 'deleteProduct', 'uses' => 'CartController@deleteProduct']);
         });
 
-        Route::get('payment', ['as' => 'payment', 'uses' => 'CartController@payment']);
+        Route::post('payment', ['as' => 'payment', 'uses' => 'CartController@payment']);
         Route::get('{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
     });
 });
