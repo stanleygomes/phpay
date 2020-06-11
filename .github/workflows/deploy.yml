@@ -24,3 +24,5 @@ jobs:
           git checkout -- .
           # baixar o codigo mais atualizado
           git pull ${{ secrets.GIT_URL }} master
+          # copy .htaccess locaweb
+          cp public_html/.htaccess-locaweb public_html/.htaccess
