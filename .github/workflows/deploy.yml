@@ -23,4 +23,4 @@ jobs:
           # remover mudanças feitas no servidor que não foram comitadas
           git checkout -- .
           # baixar o codigo mais atualizado
-          git pull ${{ secrets.GITHUB_URL }} master
+          git pull ${{ secrets.GIT_COMMAND }} master
