@@ -40,7 +40,7 @@
             </form>
         </div>
         <div class="col-sm-6 text-center">
-            <img src="/img/login-illustration.png" class="w-100 d-block align-middle" />
+            <img src="/img/illustration-login.png" class="w-100 d-block align-middle" />
             <div>
                 <h3>Ainda não tem conta?</h3>
                 <p>Clica no botão abaixo.</p>

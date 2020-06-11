@@ -67,6 +67,56 @@ a.not-underlined:hover {
     max-height: 200px;
 }
 
+.icon-30 {
+    font-size: 30px;
+}
+
+.bg-loading {
+    min-height: 50px;
+    background-image: url('../img/loading.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Bootstrap components */
+.card .card-image-container {
+    height: 200px;
+}
+
+.card .card-image-container .image {
+    max-height: 200px;
+    max-width: 100%;
+}
+
+.carousel .carousel-image {
+    width: auto;
+    max-height: 350px;
+}
+
+.carousel .carousel-thumbnails .carousel-thumbnail {
+    width: auto;
+    height: auto;
+    max-width: 70px;
+    max-height: 70px;
+    cursor: pointer;
+}
+
+.carousel .carousel-thumbnails .carousel-thumbnail.active {
+    border: 3px solid #007bff;
+}
+
+.cart .list-items .thumbnail {
+    max-width: 100px;
+    max-height: 50px;
+}
+
+/* stepper defaults */
+.bs-stepper .step-trigger:hover {
+    background: transparent;
+}
+
+/* specific css */
+
 .main-menu .logo {
     max-height: 50px;
 }
@@ -116,50 +166,6 @@ a.not-underlined:hover {
     background-color: #007bff;
 }
 
-.icon-30 {
-    font-size: 30px;
-}
-
-.bg-loading {
-    min-height: 50px;
-    background-image: url('../img/loading.gif');
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* Bootstrap components */
-.card .card-image-container {
-    height: 200px;
-}
-
-.card .card-image-container .image {
-    max-height: 200px;
-    max-width: 100%;
-}
-
-.carousel .carousel-image {
-    width: auto;
-    max-height: 350px;
-}
-
-.carousel .carousel-thumbnails .carousel-thumbnail {
-    width: auto;
-    height: auto;
-    max-width: 70px;
-    max-height: 70px;
-    cursor: pointer;
-}
-
-.carousel .carousel-thumbnails .carousel-thumbnail.active {
-    border: 3px solid #007bff;
-}
-
-.cart .list-items .thumbnail {
-    max-width: 100px;
-    max-height: 50px;
-}
-
-/* stepper defaults */
-.bs-stepper .step-trigger:hover {
-    background: transparent;
+.error-page .image {
+    max-width: 200px;
 }
