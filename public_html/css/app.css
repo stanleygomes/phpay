@@ -1,0 +1,171 @@
+/* vars */
+/*
+    Primary color: #007bff
+    Secondary color: #007bff
+*/
+
+html, body {
+    background-color: #fff;
+    color: #636b6f;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    height: 100vh;
+    margin: 0;
+}
+
+.page-content {
+    margin-top: 100px;
+}
+
+strong {
+    font-weight: 800;
+}
+
+header {
+  padding: 100px 0;
+}
+
+section {
+  padding: 100px 0;
+}
+
+/* forms */
+.formulary button[type=submit] {
+    margin-top: 30px;
+}
+
+.auth-form {
+    padding: 50px 0;
+}
+
+/* general config */
+.form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+a.not-underlined:hover {
+    text-decoration: none;
+}
+
+.width-max-100 {
+    max-width: 100%;
+}
+
+.height-max-200 {
+    max-height: 200px;
+}
+
+.icon-30 {
+    font-size: 30px;
+}
+
+.bg-loading {
+    min-height: 50px;
+    background-image: url('../img/loading.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Bootstrap components */
+.card .card-image-container {
+    height: 200px;
+}
+
+.card .card-image-container .image {
+    max-height: 200px;
+    max-width: 100%;
+}
+
+.carousel .carousel-image {
+    width: auto;
+    max-height: 350px;
+}
+
+.carousel .carousel-thumbnails .carousel-thumbnail {
+    width: auto;
+    height: auto;
+    max-width: 70px;
+    max-height: 70px;
+    cursor: pointer;
+}
+
+.carousel .carousel-thumbnails .carousel-thumbnail.active {
+    border: 3px solid #007bff;
+}
+
+.cart .list-items .thumbnail {
+    max-width: 100px;
+    max-height: 50px;
+}
+
+/* stepper defaults */
+.bs-stepper .step-trigger:hover {
+    background: transparent;
+}
+
+/* specific css */
+
+.main-menu .logo {
+    max-height: 50px;
+}
+
+.main-menu .button-icon {
+    color: #777;
+}
+
+.main-menu .badge-cart-item-count {
+    width: 24px;
+    height: 24px;
+    bottom: 0;
+    right: -5px;
+    top: auto;
+    box-sizing: border-box;
+    position: absolute;
+    padding: 3px;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+
+.main-menu .button-icon:hover {
+    color: #007bff;
+}
+
+.main-menu .button-link {
+    padding: 5px 10px;
+}
+
+.main-footer .social-icon {
+    font-size: 25px;
+}
+
+.side-menu .list-group-item {
+    color: #555;
+}
+
+.side-menu .list-group-item:hover {
+    color: #007bff;
+    text-decoration: none;
+    background: #eee;
+}
+
+.side-menu .list-group-item.active {
+    color: #fff;
+    background-color: #007bff;
+}
+
+.error-page .image {
+    max-width: 200px;
+}
