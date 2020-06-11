@@ -188,6 +188,12 @@ class User extends Authenticatable {
             ->first();
     }
 
+    public function otherUserWithEmail($id, $email) {
+        return User::where('id', '<>', $id)
+            ->where('email', $email)
+            ->first();
+    }
+
     public function getUserList($filter = null, $paginate = false, $limit = 15) {
         $user = User::orderBy('name', 'asc');
 
@@ -253,6 +259,12 @@ class User extends Authenticatable {
 
         if ($user == null) {
             throw new AppException('Cadastro [' . $id . '] não encontrado.');
+        }
+
+        $otherUserWithEmail = $this->otherUserWithEmail($user->id, $request->email);
+
+        if ($otherUserWithEmail != null) {
+            throw new AppException('Este email [' . $request->email . '] ja esta cadastrado para outro usuario.');
         }
 
         $user->name = $request->name;

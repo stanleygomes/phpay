@@ -92,7 +92,7 @@ class PaymentMercadoPago {
         $payer->date_created = date('Y-m-d') . 'T' . date('H:m:s') .  '.0-03:00';
 
         if ($customer->user_phone != null) {
-            $phone = Helper::splitName($customer->user_phone);
+            $phone = Helper::splitPhone($customer->user_phone);
             $payer->phone = array(
                 'area_code' => $phone['area_code'],
                 'number' => $phone['number']
@@ -132,11 +132,11 @@ class PaymentMercadoPago {
         return $itemsPayment;
     }
 
-    public function getItem($item = null) {
+    public function getItem($product = null) {
         $item = new MercadoPago\Item();
-        $item->title = $item->product_title;
-        $item->quantity = $item->qty;
-        $item->unit_price = $item->product_price;
+        $item->title = $product->product_title;
+        $item->quantity = $product->qty;
+        $item->unit_price = $product->product_price;
 
         return $item;
     }

@@ -17,8 +17,8 @@ use App\Model\CartItem;
 class Helper {
     public static function splitName($fullName) {
         $split = explode(' ', $fullName);
-        $lastName = array_pop($split);
-        $firstName = implode(" ", $split);
+        $firstName = array_shift($split);
+        $lastName = implode(' ', $split);
 
         return [
             'first_name' => $firstName,
@@ -104,21 +104,18 @@ class Helper {
         }
     }
 
-    public static function getSessionCartId($action = null) {
+    public static function getSessionCartId() {
         $cartSessionId = Session::get('cart_id');
-        Log::debug('############### GET');
-        Log::debug($cartSessionId);
-        Log::debug($action);
-        Log::debug('###############');
         return $cartSessionId;
     }
 
     public static function putSessionCartId($cartId) {
-        $cartSessionId = Session::put('cart_id', $cartId);
-        Log::debug('############### GET');
-        Log::debug($cartSessionId);
-        Log::debug('###############');
+        Session::put('cart_id', $cartId);
         return $cartId;
+    }
+
+    public static function removeSessionCartId() {
+        Session::remove('cart_id');
     }
 
     public static function getCartItemCount() {
@@ -195,7 +192,6 @@ class Helper {
     }
 
     public function uploadFile($file, $folder) {
-        // TODO: move to cloud storage
         $yearMonth = date('Y/m/');
         $originalName = $file->getClientOriginalName();
         $originalExtension = $file->getClientOriginalExtension();
