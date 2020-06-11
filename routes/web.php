@@ -56,6 +56,8 @@ Route::group(['as' => 'website.', 'prefix' => ''], function () {
         });
 
         Route::post('payment', ['as' => 'payment', 'uses' => 'CartController@payment']);
+        Route::get('callback/{status}', ['as' => 'callback', 'uses' => 'CartController@callback']);
+        Route::get('callback/{status}/{cart_id}', ['as' => 'callbackPage', 'uses' => 'CartController@callbackPage']);
         Route::get('{finish?}', ['as' => 'cart', 'uses' => 'CartController@cart']);
     });
 });
