@@ -16,8 +16,8 @@ class AppController extends Controller {
         }
 
         $yearMonth = date('Y-m');
-        $dateStart = $yearMonth . '01 00:00:00';
-        $dateEnd = $yearMonth . '0' . date('t') . ' 23:59:59';
+        $dateStart = $yearMonth . '-01 00:00:00';
+        $dateEnd = $yearMonth . '-' . date('t') . ' 23:59:59';
         $dateStartShow = '01' . date('/m/Y') . ' 00:00';
         $dateEndShow = date('t/m/Y') . ' 23:59';
         $monthName = Helper::getMonthByNum(date('m'));
