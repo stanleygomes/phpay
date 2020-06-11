@@ -1,3 +1,8 @@
+##### LOCAWEB - NAO REMOVER #####
+AddHandler php72-script .php
+suPHP_ConfigPath /home/phpaytecnologia1/
+##### LOCAWEB - NAO REMOVER #####
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
