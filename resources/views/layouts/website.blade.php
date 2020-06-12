@@ -41,13 +41,13 @@
 
     <nav class="main-menu navbar navbar-expand-lg bg-white border-bottom fixed-top">
         <div class="container">
+            <a class="nav-link mr-2" href="{{ route('app.wishlistItem.index') }}">
+                <i class="fa fa-bars text-dark button-icon icon-30"></i>
+            </a>
             <a class="navbar-brand" href="{{ route('website.home') }}">
                 <img src="/uploads/store/logo/{{ App\Helper\Helper::getStoreData()->logo_url }}" class="logo mr-3" />
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="w-100 text-center">
+            <div class="w-100 text-center hidden-xs">
                 <form enctype="multipart/form-data" class="search-form formulary" method="get" action="{{ route('website.product.search') }}">
                     {!! csrf_field() !!}
                     <input type="hidden" name="category_id" value="{{ isset($filter) && isset($filter['category_id']) ? $filter['category_id'] : '' }}" />
@@ -55,39 +55,37 @@
                     <input class="form-control w-100 align-middle" name="title" type="text" placeholder="Buscar produtos" aria-label="Search" value="{{ isset($filter) && isset($filter['title']) ? $filter['title'] : '' }}" />
                 </form>
             </div>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link ml-4 mr-2" href="{{ route('app.wishlistItem.index') }}">
-                            <i class="fa fa-heart button-icon icon-30"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mr-4 position-relative" href="{{ route('website.cart.cart') }}">
-                            <i class="fa fa-shopping-bag button-icon position-relative icon-30"></i>
-                            <strong class="text-dark bg-warning text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @yield('pageLoginActive')" href="{{ route('auth.login') }}">
-                            <span class="btn btn-sm btn-primary">Minha&nbsp;conta</span>
-                        </a>
-                    </li>
-                    @if(Auth::user() == null)
-                    <li class="nav-item">
-                        <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">
-                            <span class="btn btn-sm btn-outline-primary">Cadastrar</span>
-                        </a>
-                    </li>
-                    @else
-                    <li class="nav-item">
-                        <a class="nav-link @yield('pageRegisterActive') pr-0" href="{{ route('auth.logout') }}">
-                            <span class="btn btn-sm btn-outline-primary">Sair</span>
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </div>
+            <ul class="navbar-nav ml-auto hidden-xs">
+                <li class="nav-item">
+                    <a class="nav-link ml-4 mr-2" href="{{ route('app.wishlistItem.index') }}">
+                        <i class="fa fa-heart button-icon icon-30"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mr-4 position-relative" href="{{ route('website.cart.cart') }}">
+                        <i class="fa fa-shopping-bag button-icon position-relative icon-30"></i>
+                        <strong class="text-dark bg-warning text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @yield('pageLoginActive')" href="{{ route('auth.login') }}">
+                        <span class="btn btn-sm btn-primary">Minha&nbsp;conta</span>
+                    </a>
+                </li>
+                @if(Auth::user() == null)
+                <li class="nav-item">
+                    <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">
+                        <span class="btn btn-sm btn-outline-primary">Cadastrar</span>
+                    </a>
+                </li>
+                @else
+                <li class="nav-item">
+                    <a class="nav-link @yield('pageRegisterActive') pr-0" href="{{ route('auth.logout') }}">
+                        <span class="btn btn-sm btn-outline-primary">Sair</span>
+                    </a>
+                </li>
+                @endif
+            </ul>
         </div>
     </nav>
 
@@ -97,7 +95,7 @@
 
     <footer class="py-5 bg-light main-footer">
         <div class="container">
-            <hr />
+            <hr class="hidden-xs" />
             <div class="row">
                 <div class="col-sm-6">
                     <div>
@@ -121,11 +119,11 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-sm-6 text-right">
-                    <div class="mt-2">
+                <div class="col-sm-6 text-right text-left-xs">
+                    <div class="mt-2 mt-2-xs">
                         @if(App\Helper\Helper::getStoreData()->instagram_url != null)
                         <a href="{{ App\Helper\Helper::getStoreData()->instagram_url }}">
-                            <i class="social-icon ml-2 fab fa-instagram text-dark"></i>
+                            <i class="social-icon fab fa-instagram text-dark"></i>
                         </a>
                         @endif
                         @if(App\Helper\Helper::getStoreData()->facebook_url != null)
@@ -144,7 +142,7 @@
                         </a>
                         @endif
                     </div>
-                    <div class="mt-2">
+                    <div class="mt-2 mt-2-xs">
                         <a href="{{ route('website.delivery') }}">
                             Entregas
                         </a>
@@ -166,7 +164,7 @@
                     </div>
                 </div>
             </div>
-            <p class="m-0 text-center">Copyright &copy; {{ App\Helper\Helper::getStoreData()->name }} {{ date('Y') }}</p>
+            <p class="mt-4 text-center text-left-xs">Copyright &copy; {{ App\Helper\Helper::getStoreData()->name }} {{ date('Y') }}</p>
         </div>
     </footer>
 

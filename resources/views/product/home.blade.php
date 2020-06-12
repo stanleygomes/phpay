@@ -5,23 +5,18 @@
 
 <div class="container">
     <div class="row">
+        <!-- <div class="col-sm-3">
+            <button class="btn btn-outline-primary navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCategory" aria-controls="navbarCategory" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars text-dark"></i>
+            </button>
+        </div> -->
+        <!-- <div class="collapse navbar-collapse" id="navbarCategory"> -->
+        <!-- </div> -->
 
         <div class="col-sm-12">
-            @include('layouts.components.alert-messages')
-        </div>
-
-        <div class="col-sm-3">
-            <div class="col-sm-12">
-                <h4>
-                    <strong>Categorias</strong>
-                </h4>
+            <div class="mb-2">
+                @include('layouts.components.alert-messages')
             </div>
-
-            <div class="mt-3">
-                @include('layouts.components.category-sidebar')
-            </div>
-        </div>
-        <div class="col-sm-9">
             <div id="carouselFeatured" class="carousel slide bg-light bg-loading" data-ride="carousel">
                 <ol class="carousel-indicators">
                     @foreach($featureds as $key => $featured)
@@ -52,14 +47,18 @@
                     <span class="sr-only">Anterior</span>
                 </a>
             </div>
-            <div class="mt-5 mb-5">
+            <div class="mt-4">
+                <div class="col-sm-12 mb-3">
+                    <h3>Categorias</h3>
+                </div>
+                <div>
+                    @include('layouts.components.category-navbar')
+                </div>
+            </div>
+            <div class="mt-3 mb-5">
                 @if(count($products) > 0)
-                <div class="row mb-3">
-                    <div class="col-sm-12">
-                        <h2>
-                            <strong>Produtos em destaque</strong>
-                        </h2>
-                    </div>
+                <div class="col-sm-12 mb-3">
+                    <h3>Produtos <span class="hidden-xs">em destaque</span></h3>
                 </div>
                 @endif
                 <div class="row">
@@ -79,18 +78,26 @@
                                     <h5 class="text-dark mt-2">
                                         <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                                     </h5>
+                                    <!--
                                     <button type="button" class="btn btn-sm btn-outline-primary mt-3">
                                         Visualizar
                                     </button>
+                                    -->
                                 </div>
                             </div>
                         </a>
                     </div>
                     @endforeach
                 </div>
+                <div class="text-center">
+                    <a href="{{ route('website.product.search') }}" class="mt-3 visible-xs">
+                        <button class="btn btn-primary">
+                            Ver mais produtos
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-@endsection
+    @endsection

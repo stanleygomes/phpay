@@ -11,7 +11,9 @@
         </div>
     </div>
 
-    @include('layouts.components.cart-stepper', ['step' => ($finish == null ? 'cart' : 'finish')])
+    <div class="hidden-xs">
+        @include('layouts.components.cart-stepper', ['step' => ($finish == null ? 'cart' : 'finish')])
+    </div>
 
     <div class="row mb-5">
         <div class="col-sm-12">
