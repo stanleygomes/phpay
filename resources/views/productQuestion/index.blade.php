@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <button type="submit" class="btn btn-lg btn-secondary btn-block" data-message="Buscando...">Buscar</button>
+            <button type="submit" class="btn btn-lg btn-secondary btn-block mt-0-xs" data-message="Buscando...">Buscar</button>
         </div>
     </div>
 </form>
@@ -39,7 +39,7 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row p-3 mb-2 border-top border-bottom">
+        <div class="row py-3 mb-2 border-top border-bottom hidden-xs">
             <div class="col-sm-4">
                 <strong>Produto</strong>
             </div>
@@ -54,7 +54,7 @@
             </div>
         </div>
         @foreach($productQuestions as $key => $productQuestion)
-        <div class="row p-3 mb-1 border rounded mb-2">
+        <div class="row py-3 mb-1 border rounded mb-2">
             <div class="col-sm-4">
                 {{ $productQuestion->product_title }}
             </div>
@@ -64,18 +64,20 @@
             <div class="col-sm-2">
                 {{ $productQuestion->created_at->format('d/m/Y H:i') }}
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="col-12 col-sm-3 text-right text-left-xs mt-1-xs">
                 @if($loggedUser->profile !== 'CUSTOMER')
                 @if($productQuestion->answer == null)
                 <a href="{{ route('app.productQuestion.edit', [ 'id' => $productQuestion->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Responder">
                         <i class="fa fa-envelope"></i>
+                        <span class="visible-xs">Responder</span>
                     </button>
                 </a>
                 @endif
                 <a href="{{ route('app.productQuestion.delete', [ 'id' => $productQuestion->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
+                        <span class="visible-xs">Deletar</span>
                     </button>
                 </a>
                 @endif
