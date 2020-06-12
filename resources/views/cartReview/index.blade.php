@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <button type="submit" class="btn btn-lg btn-secondary btn-block" data-message="Buscando...">Buscar</button>
+            <button type="submit" class="btn btn-lg btn-secondary btn-block mt-0-xs" data-message="Buscando...">Buscar</button>
         </div>
     </div>
 </form>
@@ -39,7 +39,7 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row p-3 mb-3 border-top border-bottom">
+        <div class="row py-3 mb-3 border-top border-bottom hidden-xs">
             <div class="col-sm-3">
                 <strong>Nome</strong>
             </div>
@@ -58,7 +58,7 @@
         </div>
 
         @foreach($cartReviews as $key => $cartReview)
-        <div class="row p-3 mb-1 border rounded mb-2">
+        <div class="row py-3 mb-1 border rounded mb-2">
             <div class="col-sm-3">
                 {{ $cartReview->user_name }}
             </div>
@@ -71,10 +71,11 @@
             <div class="col-sm-1">
                 <strong>Nota&nbsp;{{ $cartReview->evaluation }}</strong>
             </div>
-            <div class="col-sm-2 text-right">
+            <div class="col-12 col-sm-2 text-right text-left-xs mt-1-xs">
                 <a href="{{ route('app.cart.show', [ 'id' => $cartReview->cart_id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar pedido">
                         <i class="fa fa-shopping-bag"></i>
+                        <span class="visible-xs">Visualizar</span>
                     </button>
                 </a>
                 <!--
@@ -85,7 +86,7 @@
                 </a>
                 -->
             </div>
-            <div class="col-sm-10 pt-2 border-top">
+            <div class="col-sm-10 pt-2 border-top mt-2-xs">
                 <strong>Mais informações</strong>
                 <div>
                     {{ $cartReview->description }}
