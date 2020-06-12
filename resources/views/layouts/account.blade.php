@@ -12,7 +12,7 @@
 <div class="container pb-5">
     <div class="row">
         <div class="col-sm-3">
-            <div class="side-menu list-group">
+            <div class="side-menu list-group hidden-xs">
                 <!-- ADMIN -->
                 @if(Auth::user()->profile === 'ADMIN')
                 <div class="col-sm-12">

@@ -71,6 +71,17 @@ a.not-underlined:hover {
     font-size: 30px;
 }
 
+.visible-xs {
+    display: none;
+}
+
+.float-button {
+    position: fixed;
+    z-index: 9;
+    right: 30px;
+    bottom: 30px;
+}
+
 .bg-loading {
     min-height: 50px;
     background-image: url('../img/loading.gif');
@@ -175,10 +186,6 @@ a.not-underlined:hover {
     max-width: 200px;
 }
 
-.visible-xs {
-    display: none;
-}
-
 /* mobile */
 @media(max-width:767px) {
     .text-right-xs {
@@ -199,6 +206,10 @@ a.not-underlined:hover {
 
     .visible-xs {
         display: inline;
+    }
+
+    .mt-0-xs {
+        margin-top: 0 !important;
     }
 
     .mt-2-xs {
