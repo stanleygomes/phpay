@@ -189,12 +189,16 @@ a.not-underlined:hover {
         text-align: left !important;
     }
 
+    .w-100-xs {
+        width: 100% !important;
+    }
+
     .hidden-xs {
         display: none;
     }
 
     .visible-xs {
-        display: block;
+        display: inline;
     }
 
     .mt-2-xs {
