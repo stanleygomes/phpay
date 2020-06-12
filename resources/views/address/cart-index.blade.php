@@ -5,8 +5,9 @@
 @section('content')
 
 <div class="container cart mb-5">
-
-    @include('layouts.components.cart-stepper', ['step' => 'address'])
+    <div class="hidden-xs">
+        @include('layouts.components.cart-stepper', ['step' => 'address'])
+    </div>
 
     @include('layouts.components.alert-messages')
 

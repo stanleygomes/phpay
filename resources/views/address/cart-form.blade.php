@@ -5,8 +5,9 @@
 @section('content')
 
 <div class="container cart mb-5">
-
-    @include('layouts.components.cart-stepper', ['step' => 'address'])
+    <div class="hidden-xs">
+        @include('layouts.components.cart-stepper', ['step' => 'address'])
+    </div>
 
     <div class="row">
         <div class="col-sm-12 mt-3">
@@ -78,17 +79,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-3">
-                <a href="{{ route('website.cart.address') }}" class="not-underlined">
-                    <button type="button" class="btn btn-lg btn-outline-primary btn-block mt-3">
-                        <i class="fa fa-chevron-left"></i>
-                        Voltar aos endereços
-                    </button>
-                </a>
-            </div>
-            <div class="col-sm-6"></div>
-            <div class="col-sm-3">
-                <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Salvando...">Salvar</button>
+            <div class="container">
+                <div class="w-100-xs float-right">
+                    <button type="submit" class="btn btn-lg btn-primary btn-block" data-message="Salvando...">Salvar</button>
+                </div>
+                <div class="w-100-xs float-left">
+                    <a href="{{ route('website.cart.address') }}" class="not-underlined">
+                        <button type="button" class="btn btn-lg btn-outline-primary btn-block mt-3">
+                            <i class="fa fa-chevron-left"></i>
+                            Voltar aos endereços
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </form>

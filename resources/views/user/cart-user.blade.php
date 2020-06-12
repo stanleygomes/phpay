@@ -6,7 +6,9 @@
 
 <div class="container cart">
 
-    @include('layouts.components.cart-stepper', ['step' => 'user'])
+    <div class="hidden-xs">
+        @include('layouts.components.cart-stepper', ['step' => 'user'])
+    </div>
 
     @include('layouts.components.alert-messages')
 
@@ -58,17 +60,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-3">
-                <a href="{{ route('website.cart.cart') }}" class="not-underlined">
-                    <button type="button" class="btn btn-lg btn-outline-primary btn-block mt-3">
-                        <i class="fa fa-chevron-left"></i>
-                        Voltar ao carrinho
-                    </button>
-                </a>
-            </div>
-            <div class="col-sm-6"></div>
-            <div class="col-sm-3 text-right">
-                <button type="submit" class="btn btn-lg btn-primary mt-3 btn-block" data-message="Salvando...">Continuar</button>
+            <div class="container">
+                <div class="w-100-xs float-right text-right">
+                    <button type="submit" class="btn btn-lg btn-primary mt-3 btn-block" data-message="Salvando...">Continuar</button>
+                </div>
+                <div class="w-100-xs float-left">
+                    <a href="{{ route('website.cart.cart') }}" class="not-underlined">
+                        <button type="button" class="btn btn-lg btn-outline-primary btn-block mt-3">
+                            <i class="fa fa-chevron-left"></i>
+                            Voltar ao carrinho
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </form>
