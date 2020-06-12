@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-sm-6">
-            <h2 class="mt-2">
+            <h2 class="mt-2 hidden-xs">
                 <strong>Resultados</strong>
             </h2>
             @if($filter != null && isset($filter['title']))
@@ -26,6 +26,11 @@
                     <input type="hidden" name="title" value="{{ $filter != null && isset($filter['title']) ? $filter['title'] : '' }}" />
                     <div class="col-sm-6">
                         <div class="form-group">
+                            <div class="col-sm-12">
+                                <label for="inputCategory" class="mt-2">
+                                    <strong>Categorias</strong>
+                                </label>
+                            </div>
                             <select name="category_id" id="inputCategory" required class="form-control onchange-submit">
                                 <option value="" {{ $filter == null || !isset($filter['category_id']) ? 'selected 1' : '' }}>
                                     Escolher categoria
@@ -39,9 +44,14 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <label for="inputOrderBy" class="mt-2">
+                                <strong>Ordenação dos produtos</strong>
+                            </label>
+                        </div>
                         <select name="order_by" id="inputOrderBy" required class="form-control onchange-submit">
                             <option value="" {{ old('featured') === '' ? 'selected' : '' }}>
-                                Ordenar resultados
+                                Ordenar por
                             </option>
                             <option value="title#asc" {{ $filter != null && isset($filter['order_by']) && $filter['order_by'] == 'title#asc' ? 'selected' : '' }}>
                                 Alfabética
@@ -58,8 +68,8 @@
             </form>
         </div>
     </div>
-    <div class="row text-center">
-        @if(count($products) === 0)
+    @if(count($products) === 0)
+    <div class="row text-center mt-3">
         <div class="col-sm-12 text-center mt-5">
             <h1>
                 <div class="mb-3">
@@ -68,8 +78,8 @@
                 Não foram encontrados resultados.
             </h1>
         </div>
-        @endif
     </div>
+    @endif
     <div class="row mt-3 mb-3">
         @foreach($products as $key => $product)
         <div class="col-md-3">
@@ -87,9 +97,11 @@
                         <h5 class="text-dark mt-2">
                             <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                         </h5>
+                        <!--
                         <button type="button" class="btn btn-sm btn-outline-primary mt-3">
                             Visualizar
                         </button>
+                        -->
                     </div>
                 </div>
             </a>
