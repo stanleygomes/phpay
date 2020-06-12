@@ -39,7 +39,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-6 text-center">
+        <div class="col-sm-6 text-center hidden-xs">
             <img src="/img/illustration-login.png" class="w-100 d-block align-middle" />
             <div>
                 <h3>Ainda não tem conta?</h3>

@@ -27,28 +27,30 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row p-3 mb-1 border-top border-bottom">
+        <div class="row py-3 mb-1 border-top border-bottom">
             <div class="col-sm-9">
                 <strong>Produto</strong>
             </div>
-            <div class="col-sm-3 text-center">
+            <div class="col-sm-3 text-center hidden-xs">
                 <strong>Opções</strong>
             </div>
         </div>
         @foreach($wishlistItems as $key => $wishlistItem)
-        <div class="row p-3 mb-1 border-bottom">
+        <div class="row py-3 mb-1 border-bottom">
             <div class="col-sm-9">
                 {{ $wishlistItem->product_title }}
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="col-12 col-sm-3 text-right text-left-xs mt-1-xs">
                 <a href="{{ route('website.product.show', [ 'id' => $wishlistItem->product_id, 'slug' => $wishlistItem->product_slug ]) }}" class="not-underlined" target="_blank">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar no site">
                         <i class="fa fa-store-alt"></i>
+                        <span class="visible-xs">Visualizar</span>
                     </button>
                 </a>
                 <a href="{{ route('app.wishlistItem.delete', [ 'id' => $wishlistItem->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
+                        <span class="visible-xs">Deletar</span>
                     </button>
                 </a>
             </div>
