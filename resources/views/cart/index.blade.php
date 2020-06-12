@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <button type="submit" class="btn btn-lg btn-secondary btn-block" data-message="Buscando...">Buscar</button>
+            <button type="submit" class="btn btn-lg btn-secondary btn-block mt-0-xs" data-message="Buscando...">Buscar</button>
         </div>
     </div>
 </form>
@@ -39,7 +39,7 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row p-3 mb-1 border-top border-bottom">
+        <div class="row py-3 mb-1 border-top border-bottom hidden-xs">
             <div class="col-sm-2">
                 <strong>Cód.</strong>
             </div>
@@ -57,7 +57,7 @@
             </div>
         </div>
         @foreach($carts as $key => $cart)
-        <div class="row p-3 mb-1 border-bottom">
+        <div class="row py-3 mb-1 border-bottom">
             <div class="col-sm-2">
                 <strong>#{{ App\Helper\Helper::formatCartId($cart->id) }}</strong>
             </div>
@@ -70,15 +70,17 @@
             <div class="col-sm-2">
                 <span class="badge badge-{{ App\Helper\Helper::statusColorCart($cart->last_status) }}">{{ $cart->last_status }}</span>
             </div>
-            <div class="col-sm-2 text-right">
+            <div class="col-12 col-sm-2 text-right text-left-xs mt-2-xs">
                 <a href="{{ route('app.cartReview.create', [ 'cart_id' => $cart->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" title="Avaliar pedido">
                         <i class="fa fa-star"></i>
+                        <span class="visible-xs">Avaliar</span>
                     </button>
                 </a>
                 <a href="{{ route('app.cart.show', [ 'id' => $cart->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar pedido">
                         <i class="fa fa-shopping-bag"></i>
+                        <span class="visible-xs">Visualizar</span>
                     </button>
                 </a>
                 {{--
