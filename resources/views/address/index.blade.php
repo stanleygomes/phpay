@@ -10,7 +10,10 @@
     </div>
     <div class="col-sm-2">
         <a href="{{ route('app.address.create') }}" class="not-underlined">
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Cadastrar</button>
+            <button type="submit" class="btn btn-lg btn-primary btn-block hidden-xs">Cadastrar</button>
+            <button type="submit" class="btn btn-lg btn-primary rounded-circle py-3 px-4 shadow-lg float-button visible-xs">
+                <i class="fa fa-plus"></i>
+            </button>
         </a>
     </div>
 </div>
@@ -25,7 +28,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <button type="submit" class="btn btn-lg btn-secondary btn-block" data-message="Buscando...">Buscar</button>
+            <button type="submit" class="btn btn-lg btn-secondary btn-block mt-0-xs" data-message="Buscando...">Buscar</button>
         </div>
     </div>
 </form>
@@ -44,7 +47,7 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row p-3 mb-1 border-top border-bottom">
+        <div class="row p-3 mb-1 border-top border-bottom hidden-xs">
             <div class="col-sm-9">
                 <strong>Nome</strong>
             </div>
@@ -54,10 +57,10 @@
         </div>
         @foreach($addresses as $key => $address)
         <div class="row p-3 mb-1 border-bottom">
-            <div class="col-sm-9">
+            <div class="col-7 col-sm-9">
                 {{ $address->name }}
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="col-5 col-sm-3 text-right">
                 <a href="{{ route('app.address.edit', [ 'id' => $address->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Editar">
                         <i class="fa fa-pencil-alt"></i>
