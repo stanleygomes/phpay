@@ -163,6 +163,11 @@ a.not-underlined:hover {
     padding: 5px 10px;
 }
 
+.main-menu .account-menu {
+    left: auto;
+    right: 0;
+}
+
 .main-footer .social-icon {
     font-size: 25px;
 }
@@ -227,5 +232,18 @@ a.not-underlined:hover {
     .py-1-xs {
         padding-top: 10px !important;
         padding-bottom: 10px !important;
+    }
+
+    .page-content {
+        margin-top: 150px;
+    }
+}
+
+/* desktop */
+@media(min-width:768px) {
+    .collapse.dont-collapse-sm {
+        display: block;
+        height: auto !important;
+        visibility: visible;
     }
 }

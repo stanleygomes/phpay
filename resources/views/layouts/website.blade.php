@@ -41,13 +41,33 @@
 
     <nav class="main-menu navbar navbar-expand-lg bg-white border-bottom fixed-top">
         <div class="container">
+            <!--
             <a class="nav-link mr-2" href="{{ route('app.wishlistItem.index') }}">
                 <i class="fa fa-bars text-dark button-icon icon-30"></i>
             </a>
+            -->
             <a class="navbar-brand" href="{{ route('website.home') }}">
                 <img src="/uploads/store/logo/{{ App\Helper\Helper::getStoreData()->logo_url }}" class="logo mr-3" />
             </a>
-            <div class="w-100 text-center hidden-xs">
+            <a class="position-relative visible-xs" href="{{ route('website.cart.cart') }}">
+                <i class="fa fa-shopping-bag button-icon position-relative icon-30"></i>
+                <strong class="text-dark bg-warning text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
+            </a>
+            <span class="dropdown visible-xs">
+                <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user-circle button-icon icon-30"></i>
+                </a>
+                <div class="dropdown-menu account-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('auth.login') }}?redir={{ route('app.user.accountUpdate') }}">Minha conta</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ route('auth.login') }}?redir={{ route('app.wishlistItem.index') }}">Meus favoritos</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ route('auth.login') }}?redir={{ route('app.address.index') }}">Meus endereços</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ route('auth.logout') }}">Sair</a>
+                </div>
+            </span>
+            <div class="w-100 text-center">
                 <form enctype="multipart/form-data" class="search-form formulary" method="get" action="{{ route('website.product.search') }}">
                     {!! csrf_field() !!}
                     <input type="hidden" name="category_id" value="{{ isset($filter) && isset($filter['category_id']) ? $filter['category_id'] : '' }}" />
@@ -57,7 +77,7 @@
             </div>
             <ul class="navbar-nav ml-auto hidden-xs">
                 <li class="nav-item">
-                    <a class="nav-link ml-4 mr-2" href="{{ route('app.wishlistItem.index') }}">
+                    <a class="nav-link ml-4 mr-2" href="{{ route('auth.login') }}?redir={{ route('app.wishlistItem.index') }}" data-toggle="tooltip" data-placement="bottom" title="Meus favoritos">
                         <i class="fa fa-heart button-icon icon-30"></i>
                     </a>
                 </li>
@@ -67,19 +87,19 @@
                         <strong class="text-dark bg-warning text-center badge-cart-item-count">{{ App\Helper\Helper::getCartItemCount() }}</strong>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item hidden-xs">
                     <a class="nav-link @yield('pageLoginActive')" href="{{ route('auth.login') }}">
                         <span class="btn btn-sm btn-primary">Minha&nbsp;conta</span>
                     </a>
                 </li>
                 @if(Auth::user() == null)
-                <li class="nav-item">
+                <li class="nav-item hidden-xs">
                     <a class="nav-link @yield('pageRegisterActive')" href="{{ route('auth.register') }}">
                         <span class="btn btn-sm btn-outline-primary">Cadastrar</span>
                     </a>
                 </li>
                 @else
-                <li class="nav-item">
+                <li class="nav-item hidden-xs">
                     <a class="nav-link @yield('pageRegisterActive') pr-0" href="{{ route('auth.logout') }}">
                         <span class="btn btn-sm btn-outline-primary">Sair</span>
                     </a>
