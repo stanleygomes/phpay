@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <button type="submit" class="btn btn-lg btn-secondary btn-block" data-message="Buscando...">Buscar</button>
+            <button type="submit" class="btn btn-lg btn-secondary btn-block mt-0-xs" data-message="Buscando...">Buscar</button>
         </div>
     </div>
 </form>
@@ -40,7 +40,7 @@
 @else
 <div class="col-sm-12">
     <div class="mt-3">
-        <div class="row p-3 mb-3 border-top border-bottom">
+        <div class="row py-3 mb-3 border-top border-bottom hidden-xs">
             <div class="col-sm-3">
                 <strong>Nome</strong>
             </div>
@@ -56,7 +56,7 @@
         </div>
 
         @foreach($contacts as $key => $contact)
-        <div class="row p-3 mb-1 border rounded mb-2">
+        <div class="row py-3 mb-1 border rounded mb-2">
             <div class="col-sm-3">
                 {{ $contact->name }}
             </div>
@@ -66,15 +66,17 @@
             <div class="col-sm-3">
                 {{ $contact->phone }}
             </div>
-            <div class="col-sm-2 text-right">
+            <div class="col-12 col-sm-2 text-right text-left-xs mt-1-xs">
                 <a href="{{ route('app.contact.reply', [ 'id' => $contact->id ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Responder">
                         <i class="fa fa-envelope"></i>
+                        <span class="visible-xs">Responder</span>
                     </button>
                 </a>
                 <a href="{{ route('app.contact.delete', [ 'id' => $contact->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar?">
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                         <i class="fa fa-trash"></i>
+                        <span class="visible-xs">Deletar</span>
                     </button>
                 </a>
             </div>

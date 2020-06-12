@@ -18,7 +18,7 @@
 </div>
 
 <div class="col-sm-12">
-    <div class="row p-3 mb-3 border rounded">
+    <div class="row py-3 mb-3 border rounded">
         <div class="col-sm-3">
             {{ $contact->name }}
         </div>
@@ -28,10 +28,11 @@
         <div class="col-sm-3">
             {{ $contact->phone }}
         </div>
-        <div class="col-sm-2 text-right">
+        <div class="col-12 col-sm-2 text-right text-left-xs mt-1-xs">
             <a href="{{ route('app.contact.delete', [ 'id' => $contact->id ]) }}" class="not-underlined confirmAction" data-message="Deseja deletar a mensagem de {{ $contact->name }}?">
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Deletar">
                     <i class="fa fa-trash"></i>
+                    <span class="visible-xs">Deletar</span>
                 </button>
             </a>
         </div>
@@ -71,7 +72,7 @@
 
     <div class="col-sm-12">
         @foreach($contactReplies as $key => $reply)
-        <div class="row p-3 mb-3 border rounded">
+        <div class="row py-3 mb-3 border rounded">
             <div class="col-sm-6">
                 Data: {{ $reply->created_at->format('d/m/Y') }} br
             </div>
