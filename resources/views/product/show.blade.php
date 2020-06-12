@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <h3 class="card-title">{{ $product->title }}</h3>
+            <h3 class="card-title mt-2-xs">{{ $product->title }}</h3>
             <p>{{ $category->name }}</p>
             <h4>
                 <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
@@ -65,7 +65,7 @@
             </p>
             @if($product->stock_qty < 5) <p class="text-danger">Apenas {{ $product->stock_qty }} unidades em estoque.</p> @endif
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-3 col-sm-6">
                     @if($wishlistItem != null)
                     <a href="{{ route('app.wishlistItem.deleteByProductId', [ 'id' => $product->id ]) }}">
                         <i class="fa fa-heart text-danger icon-30" data-toggle="tooltip" data-placement="top" data-title="Remover dos favoritos"></i>
@@ -76,7 +76,7 @@
                     </a>
                     @endif
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-9 col-sm-6 text-right">
                     <a href="{{ route('website.cart.addProduct', [ 'id' => $product->id]) }}">
                         <button type="button" class="btn btn-lg btn-success">
                             <i class="fa fa-shopping-bag"></i>
@@ -163,9 +163,11 @@
                         <h5 class="text-dark mt-2">
                             <strong>R$ {{ \App\Helper\Helper::convertMoneyFromUStoBR($product->price) }}</strong>
                         </h5>
+                        <!--
                         <button type="button" class="btn btn-sm btn-outline-primary mt-3">
                             Visualizar
                         </button>
+                        -->
                     </div>
                 </div>
             </a>
