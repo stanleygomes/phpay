@@ -11,6 +11,7 @@ Table of contents
  1. [How to get Started](#startup)
  2. [Gitflow recommendations](#gitflow)
  3. [Patterns and libs](#patterns)
+ 3. [Features](#features)
 *******
 
 <div id='startup'/>
@@ -110,3 +111,24 @@ These are some of patterns definitions to help us to keep a default arquitecture
 - Logs: [Laravel logging](https://laravel.com/docs/7.x/logging)
 - SMTP email: Send emails using [Laravel mail](https://laravel.com/docs/7.x/mail) and blade templates with mustache
 - Docker compose and dockerfile attached running migrations e starting database and nodejs
+
+<div id='features'/>
+
+## Features
+
+Some of the features covered
+
+- Products & Categories
+- Featured
+- Product Wishlist
+- Multiple addresses per account
+- Store config
+- Payment methods available config
+- Product questions and answers
+- Order online using a customer account and selecting and address
+- Pay online using a gateway (Mercado pago or Pagseguro)
+- Order review
+- Custom pages like about, refund, policies and delivering
+- Product stock history 
+- Dashboard page for resume
+- Admin and colaborator profile with different access levels

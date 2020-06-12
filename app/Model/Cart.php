@@ -368,7 +368,7 @@ class Cart extends Model {
         }
     }
 
-    public function sendMailCartOrdered($cart) {
+    public function sendMailCartOrdered($cart, $cartItems) {
         $param = [
             'from_email' => env('MAIL_FROM_ADDRESS'),
             'from_name' => env('MAIL_FROM_NAME'),
@@ -377,9 +377,10 @@ class Cart extends Model {
             'to_email' => $cart->user_email,
             'to_name' => $cart->user_name
         ];
-        $subject = 'Seu pedido foi recebido';
+        $subject = 'Recebemos seu pedido';
         $template = 'cart-order';
         $data = $cart;
+        $data->itens = $cartItems;
 
         try {
             $helperInstance = new Helper();
