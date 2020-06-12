@@ -264,7 +264,6 @@ class CartController extends Controller {
             $cartHistoryInstance->storeCartHistory($cart->id, $pendingStatus, 'Pedido recebido');
 
             $cartInstance->updateCartStatus($cart->id, $pendingStatus, true);
-            // $cartInstance->sendMailCartOrdered($cart);
 
             $filter = [
                 'cart_id' => $cart->id
@@ -278,6 +277,10 @@ class CartController extends Controller {
 
             $cartItemInstance = new CartItem();
             $cartItems = $cartItemInstance->getCartItemList($filter, false);
+
+            $cartInstance->sendMailCartOrdered($cart, $cartItems,);
+
+            exit();
 
             // payment request
             $paymentMercadoPagoInstance = new PaymentMercadoPago();
