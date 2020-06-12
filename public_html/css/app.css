@@ -212,6 +212,10 @@ a.not-underlined:hover {
         margin-top: 0 !important;
     }
 
+    .mt-1-xs {
+        margin-top: 15px !important;
+    }
+
     .mt-2-xs {
         margin-top: 30px !important;
     }
