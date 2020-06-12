@@ -13,14 +13,14 @@
             <div class="col-sm-6">
                 <p>Referente ao mês de <strong>{{ $monthName }}</strong></p>
             </div>
-            <div class="col-sm-6 text-right">
+            <div class="col-sm-6 text-right text-left-xs">
                 <span>{{ $dateStart }}</span>
                 -
                 <span>{{ $dateEnd }}</span>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-2-xs">
         @foreach($cartsResume as $key => $cartResume)
         <div class="col-sm-4">
             <div class="alert alert-{{ App\Helper\Helper::statusColorCart($cartResume['last_status']) }}" role="alert">
@@ -54,7 +54,7 @@
     </div>
     <div class="col-sm-12 py-2">
         <div class="mt-3">
-            <div class="row p-3 mb-1 border-top border-bottom">
+            <div class="row py-3 mb-1 border-top border-bottom hidden-xs">
                 <div class="col-sm-2">
                     <strong>Cód.</strong>
                 </div>
@@ -72,7 +72,7 @@
                 </div>
             </div>
             @foreach($carts as $key => $cart)
-            <div class="row p-3 mb-1 border-bottom">
+            <div class="row py-3 mb-1 border-bottom">
                 <div class="col-sm-2">
                     <strong>#{{ App\Helper\Helper::formatCartId($cart->id) }}</strong>
                 </div>
@@ -85,10 +85,11 @@
                 <div class="col-sm-2">
                     <span class="badge badge-{{ App\Helper\Helper::statusColorCart($cart->last_status) }}">{{ $cart->last_status }}</span>
                 </div>
-                <div class="col-sm-2 text-center">
+                <div class="col-12 col-sm-2 text-center text-left-xs mt-2-xs">
                     <a href="{{ route('app.cart.show', [ 'id' => $cart->id ]) }}" class="not-underlined">
                         <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Visualizar pedido">
                             <i class="fa fa-shopping-bag"></i>
+                            <span class="visible-xs">Visualizar pedido</span>
                         </button>
                     </a>
                 </div>

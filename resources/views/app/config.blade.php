@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="col-sm-10">
-        <h1>Configurações da loja</h1>
+        <h1>Configurações <span class="hidden-xs">da loja</span></h1>
     </div>
 </div>
 
@@ -20,10 +20,10 @@
             </div>
         </div>
         <div class="row p-3 border-bottom">
-            <div class="col-sm-9">
+            <div class="col-7 col-sm-9">
                 Dados da loja
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="col-5 col-sm-3 text-right">
                 <a href="{{ route('app.store.edit', [ 'id' => 1 ]) }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Configurar">
                         ATUALIZAR
@@ -32,10 +32,10 @@
             </div>
         </div>
         <div class="row p-3 border-bottom">
-            <div class="col-sm-9">
+            <div class="col-7 col-sm-9">
                 Formas de pagamento
             </div>
-            <div class="col-sm-3 text-right">
+            <div class="col-5 col-sm-3 text-right">
                 <a href="{{ route('app.paymentMethodsAvailable.index') }}" class="not-underlined">
                     <button type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Configurar">
                         CONFIGURAR
