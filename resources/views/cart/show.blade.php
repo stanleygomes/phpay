@@ -20,7 +20,7 @@
         <h2>Pedido #{{ App\Helper\Helper::formatCartId($cart->id) }}</h2>
         <p>Data: {{ $cart->order_date != null ? $cart->order_date->format('d/m/Y H:i') : '' }}</p>
     </div>
-    <div class="col-sm-3 mt-4 text-right">
+    <div class="col-sm-3 mt-4 text-right text-left-xs">
         <a href="{{ route('app.cartReview.create', [ 'cart_id' => $cart->id ]) }}" class="not-underlined">
             <button type="button" class="btn btn-warning btn-sm">
                 <i class="fa fa-star"></i>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="border rounded py-4 px-3">
+            <div class="border rounded py-4 px-3 mt-2-xs">
                 <h5>
                     <strong>Endereço</strong>
                     <hr />
@@ -65,22 +65,22 @@
     </div>
 
     <div class="col-sm-12">
-        <div class="row mt-4 p-3 border-bottom border-top">
+        <div class="row mt-4 py-3 border-bottom border-top">
             <div class="col-sm-6">
                 <strong>Produto</strong>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 hidden-xs">
                 <strong>Qtd.</strong>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 hidden-xs">
                 <strong>Preço Un.</strong>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 hidden-xs">
                 <strong>Preço total</strong>
             </div>
         </div>
         @foreach($cartItems as $key => $cartItem)
-        <div class="row p-3 border-bottom list-items">
+        <div class="row py-3 border-bottom list-items">
             <div class="col-sm-1">
                 <a href="{{ route('website.product.show', ['id' => $cartItem->product_id]) }}">
                     <img src="{{ '/uploads/product/' . $cartItem->product_photo_url }}" class="thumbnail border" />
@@ -95,15 +95,18 @@
                 <em>Código: {{ $cartItem->product_code }}</em>
             </div>
             <div class="col-sm-2">
+                <span class="visible-xs">Quantidade:</span>
                 <span>{{ $cartItem->qty }}</span>
             </div>
             <div class="col-sm-2">
                 <h5>
+                    <span class="visible-xs">Unidade:</span>
                     <span>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($cartItem->product_price) }}</span>
                 </h5>
             </div>
             <div class="col-sm-2">
                 <h5>
+                    <span class="visible-xs">Total:</span>
                     <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($cartItem->product_price * $cartItem->qty) }}</strong>
                 </h5>
             </div>
@@ -111,10 +114,10 @@
         @endforeach
 
         <div class="row p-3">
-            <div class="col-sm-10 text-right">
+            <div class="col-3 col-sm-10 text-right">
                 <strong>Total:</strong>
             </div>
-            <div class="col-sm-2">
+            <div class="col-9 col-sm-2 text-right-xs">
                 <h5>
                     <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR(App\Helper\Helper::sumCartItem($cartItems)) }}</strong>
                 </h5>
@@ -128,7 +131,7 @@
                 <h3>Histórico do pedido</h3>
             </div>
         </div>
-        <div class="row mt-4 p-3 border-bottom border-top">
+        <div class="row mt-4 py-3 border-bottom border-top hidden-xs">
             <div class="col-sm-3">
                 <strong>Data</strong>
             </div>
@@ -140,7 +143,7 @@
             </div>
         </div>
         @foreach($cartHistories as $key => $cartHistory)
-        <div class="row p-3 border-bottom list-items">
+        <div class="row py-3 border-bottom list-items">
             <div class="col-sm-3">
                 {{ $cartHistory->created_at != null ? $cartHistory->created_at->format('d/m/Y H:i') : '' }}
             </div>
