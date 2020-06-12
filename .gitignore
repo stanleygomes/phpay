@@ -21,3 +21,6 @@ php.ini
 .gems
 logs
 .bashprofile
+.gemrc
+.gitconfig
+.viminfo
