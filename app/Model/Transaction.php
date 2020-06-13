@@ -30,7 +30,7 @@ class Transaction extends Model {
         ],
         'pending' => [
             'type' => 'pending',
-            'description' => 'Obrigado por sua compra. Recebemos sua solicitação. Seu pagamento ainda está em análise.'
+            'description' => 'Obrigado por sua compra. Recebemos sua solicitação. Seu pagamento está em análise.'
         ],
         'failure' => [
             'type' => 'failure',
