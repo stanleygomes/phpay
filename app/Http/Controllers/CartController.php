@@ -280,8 +280,6 @@ class CartController extends Controller {
 
             $cartInstance->sendMailCartOrdered($cart, $cartItems,);
 
-            exit();
-
             // payment request
             $paymentMercadoPagoInstance = new PaymentMercadoPago();
             $preference = $paymentMercadoPagoInstance->getPreference($cart, $cartItems, $paymentMethodsAvailable);
