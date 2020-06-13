@@ -384,6 +384,8 @@ class CartController extends Controller {
     }
 
     public function updateStatus(Request $request, $gateway) {
+        // disabled CSRF-TOKEN
+        // app/Http/Middleware/VerifyCsrfToken.php
         if ($gateway === 'mercadopago') {
             $paymentMercadoPagoInstance = new PaymentMercadoPago();
             $paymentMercadoPagoInstance->updateStatus($request);
