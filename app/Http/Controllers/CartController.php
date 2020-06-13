@@ -261,9 +261,7 @@ class CartController extends Controller {
             $pendingStatus = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
 
             $cartHistoryInstance = new CartHistory();
-            $cartHistoryInstance->storeCartHistory($cart->id, $pendingStatus, 'Pedido recebido');
-
-            $cartInstance->updateCartStatus($cart->id, $pendingStatus, true);
+            $cartHistoryInstance->storeCartHistory($cart->id, $pendingStatus['code'], $pendingStatus['description']);
 
             $filter = [
                 'cart_id' => $cart->id
@@ -287,9 +285,7 @@ class CartController extends Controller {
             $preferenceId = $preference->id;
             $preferenceUrl = $preference->init_point;
 
-            // save transaction
-            $transactionInstance = new Transaction();
-            $transactionInstance->storeTransaction($cart->id, $preferenceId, $preferenceUrl);
+            $cartInstance->updateCartStatus($cart->id, $pendingStatus, true, $preferenceId);
 
             Helper::removeSessionCartId();
 
@@ -307,33 +303,24 @@ class CartController extends Controller {
     public function callback(Request $request, $status) {
         try {
             DB::beginTransaction();
-            $transactionInstance = new Transaction();
-            $transaction = $transactionInstance->getCartIdByTransaction($request->preference_id);
+            $cartInstance = new Cart();
+            $cart = $cartInstance->getCartByPreferenceId($request->preference_id);
 
-            if ($transaction === null) {
+            if ($cart === null) {
                 $message = 'Pedido inválido.';
                 return Redirect::route('website.home')
-                    ->withErrors($message)
+                ->withErrors($message)
                     ->withInput();
             }
 
-            $cartInstance = new Cart();
-            $cart = $cartInstance->getCartById($transaction->cart_id);
-
-            $cartHistoryInstance = new CartHistory();
-            $lastStatus = null;
-
-            if ($status === 'success' || $status === 'pending') {
-                $lastStatus = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
-                $statusDescription = $transactionInstance->getStatusDescriptionByType('pending');
-                $cartHistoryInstance->storeCartHistory($cart->id, $lastStatus, $statusDescription);
-            } else if ($status === 'failure') {
+            if ($status === 'failure') {
                 $lastStatus = $cartInstance->getCartStatusByCode('CANCELED');
-                $statusDescription = $transactionInstance->getStatusDescriptionByType('failure');
-                $cartHistoryInstance->storeCartHistory($cart->id, $lastStatus, $statusDescription);
+
+                $cartHistoryInstance = new CartHistory();
+                $cartHistoryInstance->storeCartHistory($cart->id, $lastStatus['code'], $lastStatus['description']);
+                $cartInstance->updateCartStatus($cart->id, $lastStatus['code']);
             }
 
-            $cartInstance->updateCartStatus($cart->id, $lastStatus);
             /*
             $paidStatus = $cartInstance->getCartStatusByCode('PAID');
             if ($statusHistory['status'] === $paidStatus) {
@@ -357,22 +344,19 @@ class CartController extends Controller {
 
     public function callbackPage($status, $cartId) {
         try {
-            $transactionInstance = new Transaction();
-
-            if ($status === 'success' || $status === 'pending') {
-                $status = 'pending';
-            }
-
-            $statusDescription = $transactionInstance->getStatusDescriptionByType($status);
-
             $cartInstance = new Cart();
             $cart = $cartInstance->getCartById($cartId);
-
             $routeCartShow = route('auth.login') . '?redir=' . route('app.cart.show', ['id' => $cart->id]);
+
+            if ($status === 'success' || $status === 'pending') {
+                $statusCart = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
+            } else if ($status === 'failure') {
+                $statusCart = $cartInstance->getCartStatusByCode('CANCELED');
+            }
 
             return view('cart.callback', [
                 'status' => $status,
-                'description' => $statusDescription,
+                'description' => $statusCart['description'],
                 'cart' => $cart,
                 'routeCartShow' => $routeCartShow
             ]);

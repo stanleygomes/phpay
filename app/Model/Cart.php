@@ -33,6 +33,7 @@ class Cart extends Model {
         'payment_methods_available_id',
         'price_total',
         'last_status',
+        'payment_preference_id',
         'order_date',
         'created_by'
     ];
@@ -45,10 +46,26 @@ class Cart extends Model {
     ];
 
     protected $cartStatus = [
-        'CREATED' => 'Criado',
-        'PAYMENT_PENDING' => 'Pendente',
-        'CANCELED' => 'Cancelado',
-        'PAID' => 'Pago'
+        'CREATED' => [
+            'code' => 'Criado',
+            'description' => 'Carrinho iniciado pelo cliente.'
+        ],
+        'PAYMENT_PENDING' => [
+            'code' => 'Pendente',
+            'description' => 'Obrigado por sua compra. Recebemos sua solicitação. Seu pagamento está em análise.'
+        ],
+        'CANCELED' => [
+            'code' => 'Cancelado',
+            'description' => 'Não foi possível processar seu pagamento.'
+        ],
+        'FAILED' => [
+            'CODE' => 'Falha',
+            'description' => 'Não foi possível processar seu pagamento.'
+        ],
+        'PAID' => [
+            'code' => 'Pago',
+            'description' => 'Obrigado por sua compra. Pagamento efetuado com sucesso.'
+        ]
     ];
 
     protected $maxInstallments = 10;
@@ -79,6 +96,11 @@ class Cart extends Model {
 
     public function getCartById($id) {
         return Cart::where('id', $id)
+            ->first();
+    }
+
+    public function getCartByPreferenceId($id) {
+        return Cart::where('payment_preference_id', $id)
             ->first();
     }
 
@@ -114,9 +136,9 @@ class Cart extends Model {
 
     public function getCartsResumeByYearMonth($dateStart, $dateEnd) {
         $statusList = [
-            $this->cartStatus['PAID'],
-            $this->cartStatus['PAYMENT_PENDING'],
-            $this->cartStatus['CANCELED']
+            $this->getCartStatusByCode('PAID')['code'],
+            $this->getCartStatusByCode('PAYMENT_PENDING')['code'],
+            $this->getCartStatusByCode('CANCELED')['code']
         ];
 
         $cartsResume = Cart::whereIn('last_status', $statusList)
@@ -171,7 +193,7 @@ class Cart extends Model {
         return $cart;
     }
 
-    public function updateCartStatus($cartId, $status, $dateOrder = null) {
+    public function updateCartStatus($cartId, $status, $dateOrder = null, $preferenceId = null) {
         $cart = $this->getCartById($cartId);
 
         if ($cart == null) {
@@ -180,8 +202,12 @@ class Cart extends Model {
 
         $cart->last_status = $status;
 
-        if ($dateOrder === true) {
+        if ($dateOrder != null) {
             $cart->order_date = date_create_from_format('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        }
+
+        if ($preferenceId != null) {
+            $cart->payment_preference_id = $preferenceId;
         }
 
         $cart->save();
@@ -263,11 +289,13 @@ class Cart extends Model {
     public function storeCart() {
         $cart = new Cart();
 
-        $createdStatus = $this->cartStatus['CREATED'];
+        $createdStatus = $this->getCartStatusByCode('CREATED');
+        $statusCode = $createdStatus['code'];
+        $statusDescription = $createdStatus['description'];
 
         $cart->address_id = null;
         $cart->price_total = 0;
-        $cart->last_status = $createdStatus;
+        $cart->last_status = $statusCode;
 
         $loggedUser = Auth::user();
 
@@ -282,7 +310,7 @@ class Cart extends Model {
         $cart->save();
 
         $cartHistoryInstance = new CartHistory();
-        $cartHistoryInstance->storeCartHistory($cart->id, $createdStatus);
+        $cartHistoryInstance->storeCartHistory($cart->id, $statusCode, $statusDescription);
 
         return [
             'message' => 'Cadastro efetuado com sucesso.',
