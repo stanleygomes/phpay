@@ -26,11 +26,11 @@ class Transaction extends Model {
     protected $statusList = [
         'success' => [
             'type' => 'success',
-            'description' => 'Pagamento efetuado com sucesso.'
+            'description' => 'Obrigado por sua compra. Pagamento efetuado com sucesso.'
         ],
         'pending' => [
             'type' => 'pending',
-            'description' => 'Recebemos sua solicitação. Seu pagamento ainda está em análise.'
+            'description' => 'Obrigado por sua compra. Recebemos sua solicitação. Seu pagamento ainda está em análise.'
         ],
         'failure' => [
             'type' => 'failure',
@@ -40,6 +40,10 @@ class Transaction extends Model {
 
     public function getStatusByType($type) {
         return $this->statusList[$type];
+    }
+
+    public function getStatusDescriptionByType($type) {
+        return $this->statusList[$type]['description'];
     }
 
     public function getCartHistoryStatusByPaymentStatus($type) {

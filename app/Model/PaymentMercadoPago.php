@@ -102,8 +102,6 @@ class PaymentMercadoPago {
     public function getPaymentMethods($paymentMethodsAvailable) {
         $excludedPaymentMethods = $this->getExcludedPaymentMethods($paymentMethodsAvailable['methods']);
 
-        Log::debug($excludedPaymentMethods);
-
         return [
             'excluded_payment_methods' => $excludedPaymentMethods,
             'excluded_payment_types' => [],

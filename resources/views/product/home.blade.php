@@ -5,14 +5,6 @@
 
 <div class="container">
     <div class="row">
-        <!-- <div class="col-sm-3">
-            <button class="btn btn-outline-primary navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCategory" aria-controls="navbarCategory" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fa fa-bars text-dark"></i>
-            </button>
-        </div> -->
-        <!-- <div class="collapse navbar-collapse" id="navbarCategory"> -->
-        <!-- </div> -->
-
         <div class="col-sm-12">
             <div class="mb-2">
                 @include('layouts.components.alert-messages')
