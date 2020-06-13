@@ -32,53 +32,11 @@ class PaymentMercadoPago {
     }
 
     public function getBackUrls() {
-        $env = env('MP_ENV');
-
-        if ($env === 'PRD') {
-            $urlSuccess = env('MP_PROD_URL_CALLBACK_SUCCESS');
-            $urlFailure = env('MP_PROD_URL_CALLBACK_FAILURE');
-            $urlPending = env('MP_PROD_URL_CALLBACK_PENDING');
-
-            if ($urlSuccess == null || $urlSuccess == '') {
-                throw new AppException('Por favor, informe o MP_PROD_URL_CALLBACK_SUCCESS no arquivo .env');
-            }
-
-            if ($urlFailure == null || $urlFailure == '') {
-                throw new AppException('Por favor, informe o MP_PROD_URL_CALLBACK_FAILURE no arquivo .env');
-            }
-
-            if ($urlPending == null || $urlPending == '') {
-                throw new AppException('Por favor, informe o MP_PROD_URL_CALLBACK_PENDING no arquivo .env');
-            }
-
-            return [
-                'success' => $urlPending,
-                'failure' => $urlFailure,
-                'pending' => $urlPending
-            ];
-        } else {
-            $urlSuccess = env('MP_TEST_URL_CALLBACK_SUCCESS');
-            $urlFailure = env('MP_TEST_URL_CALLBACK_FAILURE');
-            $urlPending = env('MP_TEST_URL_CALLBACK_PENDING');
-
-            if ($urlSuccess == null || $urlSuccess == '') {
-                throw new AppException('Por favor, informe o MP_TEST_URL_CALLBACK_SUCCESS no arquivo .env');
-            }
-
-            if ($urlFailure == null || $urlFailure == '') {
-                throw new AppException('Por favor, informe o MP_TEST_URL_CALLBACK_FAILURE no arquivo .env');
-            }
-
-            if ($urlPending == null || $urlPending == '') {
-                throw new AppException('Por favor, informe o MP_TEST_URL_CALLBACK_PENDING no arquivo .env');
-            }
-
-            return [
-                'success' => $urlPending,
-                'failure' => $urlFailure,
-                'pending' => $urlPending
-            ];
-        }
+        return [
+            'success' => route('website.cart.callback', ['status' => 'success']),
+            'failure' => route('website.cart.callback', ['status' => 'failure']),
+            'pending' => route('website.cart.callback', ['status' => 'pending'])
+        ];
     }
 
     public function getPayer($customer = null) {
