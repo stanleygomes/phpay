@@ -383,8 +383,10 @@ class CartController extends Controller {
         }
     }
 
-    public function updateStatus(Request $request) {
-        $paymentMercadoPagoInstance = new PaymentMercadoPago();
-        $paymentMercadoPagoInstance->updateStatus($request);
+    public function updateStatus(Request $request, $gateway) {
+        if ($gateway === 'mercadopago') {
+            $paymentMercadoPagoInstance = new PaymentMercadoPago();
+            $paymentMercadoPagoInstance->updateStatus($request);
+        }
     }
 }
