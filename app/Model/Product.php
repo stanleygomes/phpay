@@ -152,6 +152,31 @@ class Product extends Model {
         ];
     }
 
+    public function updateProductStock($productId, $valueStock, $action) {
+        $productInstance = new Product();
+        $product = $productInstance->getProductById($productId);
+
+        if ($product == null) {
+            throw new AppException('Cadastro [' . $productId . '] não encontrado.');
+        }
+
+        if ($action === 'ADD') {
+            $product->stock_qty = $product->stock_qty + $valueStock;
+        } else if ($action === 'REMOVE') {
+            $product->stock_qty = $product->stock_qty - $valueStock;
+        }
+
+        $product->save();
+
+        $productStockMovementInstance = new ProductStockMovement();
+        $productStockMovementInstance->storeProductStockMovement($product->id, $product->stock_qty, $action);
+
+        return [
+            'message' => 'Estoque atualizado com sucesso.',
+            'data' => $product
+        ];
+    }
+
     public function updateProduct($request, $id) {
         $productInstance = new Product();
         $product = $productInstance->getProductById($id);

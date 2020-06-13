@@ -315,6 +315,28 @@ class Cart extends Model {
         $cart->save();
     }
 
+    public function updateStockOnPaymentAproved($cartId) {
+        $cartItemInstance = new CartItem();
+        $filter = [
+            'cart_item' => $cartId
+        ];
+
+        $cartItems = $cartItemInstance->getCartItemList($filter, false);
+
+        for ($i = 0; $i < count($cartItems); $i++) {
+            $cartItem = $cartItems[$i];
+            $value = $cartItem->qty * $cartItem->product_price;
+
+            $productInstance = new Product();
+            $productInstance->updateProductStock($cartItem->product_id, $value, 'REMOVE');
+        }
+
+        return [
+            'message' => 'Estoque atualizado com sucesso.',
+            'data' => null
+        ];
+    }
+
     public function updateCart($request, $id) {
         $cart = $this->getCartById($id);
 

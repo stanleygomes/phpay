@@ -309,7 +309,6 @@ class CartController extends Controller {
             DB::beginTransaction();
             $transactionInstance = new Transaction();
             $transaction = $transactionInstance->getCartIdByTransaction($request->preference_id);
-            $statusHistory = $transactionInstance->getCartHistoryStatusByPaymentStatus($status);
 
             if ($transaction === null) {
                 $message = 'Pedido inválido.';
@@ -322,13 +321,32 @@ class CartController extends Controller {
             $cart = $cartInstance->getCartById($transaction->cart_id);
 
             $cartHistoryInstance = new CartHistory();
-            $cartHistoryInstance->storeCartHistory($cart->id, $statusHistory['status'], $statusHistory['description']);
+            $lastStatus = null;
 
-            $cartInstance->updateCartStatus($cart->id, $statusHistory['status']);
+            if ($status === 'success' || $status === 'pending') {
+                $lastStatus = $cartInstance->getCartStatusByCode('PAYMENT_PENDING');
+                $statusDescription = $transactionInstance->getStatusDescriptionByType('pending');
+                $cartHistoryInstance->storeCartHistory($cart->id, $lastStatus, $statusDescription);
+            } else if ($status === 'failure') {
+                $lastStatus = $cartInstance->getCartStatusByCode('CANCELED');
+                $statusDescription = $transactionInstance->getStatusDescriptionByType('failure');
+                $cartHistoryInstance->storeCartHistory($cart->id, $lastStatus, $statusDescription);
+            }
+
+            $cartInstance->updateCartStatus($cart->id, $lastStatus);
+            /*
+            $paidStatus = $cartInstance->getCartStatusByCode('PAID');
+            if ($statusHistory['status'] === $paidStatus) {
+                $cartInstance->updateStockOnPaymentAproved($cart->id);
+            }
+            */
 
             DB::commit();
 
-            return Redirect::route('website.cart.callbackPage', ['status' => $status, 'cart_id' => $cart->id]);
+            return Redirect::route('website.cart.callbackPage', [
+                'status' => $status,
+                'cart_id' => $cart->id
+            ]);
         } catch (AppException $e) {
             DB::rollBack();
             return Redirect::route('app.cart.index')
@@ -340,7 +358,12 @@ class CartController extends Controller {
     public function callbackPage($status, $cartId) {
         try {
             $transactionInstance = new Transaction();
-            $statusHistory = $transactionInstance->getCartHistoryStatusByPaymentStatus($status);
+
+            if ($status === 'success' || $status === 'pending') {
+                $status = 'pending';
+            }
+
+            $statusDescription = $transactionInstance->getStatusDescriptionByType($status);
 
             $cartInstance = new Cart();
             $cart = $cartInstance->getCartById($cartId);
@@ -349,7 +372,7 @@ class CartController extends Controller {
 
             return view('cart.callback', [
                 'status' => $status,
-                'description' => $statusHistory['description'],
+                'description' => $statusDescription,
                 'cart' => $cart,
                 'routeCartShow' => $routeCartShow
             ]);

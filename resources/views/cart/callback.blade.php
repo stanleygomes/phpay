@@ -19,12 +19,14 @@
             </a>
         </div>
         <div class="col-sm-6 mt-5">
+            @if($status !== 'failure')
             <div class="text-center mt-5">
                 {!! QrCode::size(200)->generate($routeCartShow) !!}
                 <p class="mt-3">
                     <strong>Acompanhe seu pedido</strong>
                 </p>
             </div>
+            @endif
         </div>
     </div>
 </div>
