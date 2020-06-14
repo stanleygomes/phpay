@@ -13,7 +13,15 @@
 @endif
 
 <br />
+<br />
 
-Você pode acessar o sistema para visualizar os detalhes da avaliação.
+Acesse o site para visualizar mais informações sobre seu pedido:
+
+<br />
+<br />
+
+<a href="{{ route('auth.login') . '?redir=' . route('app.cart.show', ['id' => $data->id]) }}">
+    Clique aqui
+</a>
 
 @endsection

@@ -247,11 +247,44 @@ CREATE TABLE `contact_reply` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1;
 
+CREATE TABLE `transaction_fee` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `cart_id` int(10) NOT NULL,
+    `transaction_id` int(10) NOT NULL,
+    `amount` float(8, 2) NOT NULL,
+    `fee_payer` varchar(255) NOT NULL,
+    `fee_payer_description` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `type_description` varchar(255) NOT NULL,
+    `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_by` int(10) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
 CREATE TABLE `transaction` (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `cart_id` int(10) NOT NULL,
     `preference_id` varchar(255) NOT NULL,
-    `preference_url` varchar(255) NOT NULL,
+    `gateway` varchar(255) NOT NULL,
+    `data_id` varchar(255) NOT NULL,
+    `type` varchar(255) NOT NULL,
+    `operation_type` varchar(255) NOT NULL,
+    `date_of_expiration` varchar(255) NULL,
+    `application_fee` varchar(255) NULL,
+    `currency_id` varchar(255) NOT NULL,
+    `transaction_amount` float(8, 2) NOT NULL,
+    `merchant_order_id` varchar(255) NOT NULL,
+    `installments` int(10) NULL,
+    `payment_type_id` varchar(255) NULL,
+    `call_for_authorize_id` varchar(255) NULL,
+    `payment_type_id_description` varchar(255) NOT NULL,
+    `payment_method_id` varchar(255) NOT NULL,
+    `payment_method_id_description` varchar(255) NOT NULL,
+    `status` varchar(255) NOT NULL,
+    `status_description` varchar(255) NOT NULL,
+    `status_detail` varchar(255) NOT NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     `deleted_at` timestamp NULL DEFAULT NULL,
@@ -339,5 +372,9 @@ ALTER TABLE `contact` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `contact_reply` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 ALTER TABLE `transaction` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
 ALTER TABLE `transaction` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
+
+ALTER TABLE `transaction_fee` ADD FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`);
+ALTER TABLE `transaction_fee` ADD FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`id`);
+ALTER TABLE `transaction_fee` ADD FOREIGN KEY (`created_by`) REFERENCES `user` (`id`);
 
 CREATE UNIQUE INDEX user_email_unique ON `user` (`email`);

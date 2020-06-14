@@ -61,7 +61,7 @@ class ProductStockMovement extends Model {
         $productReview->product_id = $productId;
         $productReview->value = $value;
         $productReview->action = $action;
-        $productReview->created_by = Auth::user()->id;
+        $productReview->created_by = Auth::user() != null ? Auth::user()->id : 1;
 
         $productReview->save();
 
