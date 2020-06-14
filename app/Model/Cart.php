@@ -418,6 +418,28 @@ class Cart extends Model {
         }
     }
 
+    public function sendMailPaid($cart) {
+        $param = [
+            'from_email' => env('MAIL_FROM_ADDRESS'),
+            'from_name' => env('MAIL_FROM_NAME'),
+            'cc_email' => env('MAIL_FROM_ADDRESS'),
+            'cc_name' => env('MAIL_FROM_NAME'),
+            'to_email' => $cart->user_email,
+            'to_name' => $cart->user_name
+        ];
+        $subject = 'Pagamento Aprovado';
+        $template = 'cart-paid';
+        $data = $cart;
+
+        try {
+            $helperInstance = new Helper();
+            $helperInstance->sendMail($param, $data, $template, $subject);
+        } catch(AppException $e) {
+            Log::error($e);
+            throw new AppException('Erro ao enviar email.');
+        }
+    }
+
     public function sendMailCartOrdered($cart, $cartItems) {
         $param = [
             'from_email' => env('MAIL_FROM_ADDRESS'),

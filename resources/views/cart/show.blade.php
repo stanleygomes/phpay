@@ -156,6 +156,92 @@
         </div>
         @endforeach
     </div>
+
+    <div class="col-sm-12">
+        <div class="row mt-5">
+            <div class="col-sm-12">
+                <h3>Histórico de pagamento</h3>
+            </div>
+        </div>
+        <div class="row mt-4 py-3 border-bottom border-top hidden-xs">
+            <div class="col-sm-2">
+                <strong>Gateway</strong>
+            </div>
+            <div class="col-sm-1">
+                <strong>Parcelas</strong>
+            </div>
+            <div class="col-sm-3">
+                <strong>Forma de pagto.</strong>
+            </div>
+            <div class="col-sm-2">
+                <strong>Status</strong>
+            </div>
+            <div class="col-sm-2">
+                <strong>Data</strong>
+            </div>
+            <div class="col-sm-2">
+                <strong>Preço</strong>
+            </div>
+        </div>
+        @foreach($transactions as $key => $transaction)
+        <div class="row py-3 border-bottom list-items">
+            <div class="col-sm-2">
+                <span>{{ $transaction->gateway }}</span>
+            </div>
+            <div class="col-sm-1">
+                <span>{{ $transaction->installments }}x</span>
+            </div>
+            <div class="col-sm-3">
+                <span>{{ $transaction->payment_type_id_description }}</span>
+            </div>
+            <div class="col-sm-2">
+                <span>{{ $transaction->status_description }}</span>
+            </div>
+            <div class="col-sm-2">
+                {{ $transaction->created_at != null ? $transaction->created_at->format('d/m/Y H:i') : '' }}
+            </div>
+            <div class="col-sm-2">
+                <span class="visible-xs">Preço:</span>
+                <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($transaction->transaction_amount) }}</strong>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    @if(count($transactionFees) > 0)
+    <div class="col-sm-12">
+        <div class="row mt-5">
+            <div class="col-sm-12">
+                <h3>Taxas</h3>
+            </div>
+        </div>
+        <div class="row mt-4 py-3 border-bottom border-top hidden-xs">
+            <div class="col-sm-3">
+                <strong>Pagador</strong>
+            </div>
+            <div class="col-sm-3">
+                <strong>Preço</strong>
+            </div>
+            <div class="col-sm-6">
+                <strong>Descrição</strong>
+            </div>
+        </div>
+        @foreach($transactionFees as $key => $transactionFee)
+        <div class="row py-3 border-bottom list-items">
+            <div class="col-sm-3">
+                <span>{{ $transactionFee->fee_payer_description }}</span>
+            </div>
+            <div class="col-sm-3">
+                <span class="visible-xs">Preço:</span>
+                <strong>R$ {{ App\Helper\Helper::convertMoneyFromUStoBR($transactionFee->amount) }}</strong>
+            </div>
+            <div class="col-sm-6">
+                <span>{{ $transactionFee->type_description }}</span>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @endif
 </div>
 
 @if($cart->last_status !== $canceledStatus)

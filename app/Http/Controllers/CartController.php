@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Exceptions\AppException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Helper\Helper;
@@ -16,6 +18,7 @@ use App\Model\CartHistory;
 use App\Model\PaymentMercadoPago;
 use App\Model\PaymentMethodsAvailable;
 use App\Model\Transaction;
+use App\Model\TransactionFee;
 use App\Model\User;
 
 class CartController extends Controller {
@@ -119,11 +122,19 @@ class CartController extends Controller {
 
             $canceledStatus = $cartInstance->getCartStatusByCode('CANCELED');
 
+            $transactionFeeInstance = new TransactionFee();
+            $transactionFees = $transactionFeeInstance->getTransactionFeeList($filter, false);
+
+            $transactionInstance = new Transaction();
+            $transactions = $transactionInstance->getTransactionList($filter, false);
+
             return view('cart.show', [
                 'cart' => $cart,
                 'cartItems' => $cartItems,
                 'cartHistories' => $cartHistories,
-                'canceledStatus' => $canceledStatus
+                'canceledStatus' => $canceledStatus,
+                'transactions' => $transactions,
+                'transactionFees' => $transactionFees
             ]);
         } catch (AppException $e) {
             return Redirect::route('app.cart.index')
@@ -321,13 +332,6 @@ class CartController extends Controller {
                 $cartInstance->updateCartStatus($cart->id, $lastStatus['code']);
             }
 
-            /*
-            $paidStatus = $cartInstance->getCartStatusByCode('PAID');
-            if ($statusHistory['status'] === $paidStatus) {
-                $cartInstance->updateStockOnPaymentAproved($cart->id);
-            }
-            */
-
             DB::commit();
 
             return Redirect::route('website.cart.callbackPage', [
@@ -370,9 +374,48 @@ class CartController extends Controller {
     public function updateStatus(Request $request, $gateway) {
         // disabled CSRF-TOKEN
         // app/Http/Middleware/VerifyCsrfToken.php
-        if ($gateway === 'mercadopago') {
-            $paymentMercadoPagoInstance = new PaymentMercadoPago();
-            $paymentMercadoPagoInstance->updateStatus($request);
+
+        try {
+            DB::beginTransaction();
+            if ($gateway === 'mercadopago') {
+                $paymentMercadoPagoInstance = new PaymentMercadoPago();
+                return $paymentData = $paymentMercadoPagoInstance->getPaymentStatusFromApi($request);
+
+                $cartInstance = new Cart();
+                $cart = $cartInstance->getCartByPreferenceId($paymentData['preference_id']);
+
+                if ($cart == null) {
+                    throw new AppException('Carrinho nao encontrado para o preference_id: ' . $paymentData['preference_id']);
+                }
+
+                $paymentMethodsAvailableInstance = new PaymentMethodsAvailable();
+                $gateway = $paymentMethodsAvailableInstance->getGateway('MERCADO_PAGO');
+
+                $paymentData['cart_id'] = $cart->id;
+                $paymentData['gateway'] = $gateway['id'];
+
+                $transactionInstance = new Transaction();
+                $transaction = $transactionInstance->storeTransaction($paymentData);
+
+                $transactionFeeInstance = new TransactionFee();
+                $transactionFeeInstance->storeTransactionFeeList($paymentData['fees'], $transaction['data']->id, $cart->id);
+
+                $cartHistoryInstance = new CartHistory();
+                $cartHistoryInstance->storeCartHistory($cart->id, $paymentData['status'], $paymentData['status_description']);
+
+                $cartInstance->updateCartStatus($cart->id, $paymentData['status']);
+
+                if ($paymentData['status'] === 'approved') {
+                    $cartInstance->updateStockOnPaymentAproved($cart->id);
+                    $cartInstance->sendMailPaid($cart);
+                }
+
+                DB::commit();
+            }
+        } catch (AppException $e) {
+            DB::rollBack();
+            return $e;
+            Log::error($e);
         }
     }
 }

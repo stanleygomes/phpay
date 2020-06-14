@@ -138,7 +138,7 @@ class PaymentMercadoPago {
         return $preference;
     }
 
-    public function updateStatus($request) {
+    public function getPaymentStatusFromApi($request) {
         Log::debug('// -------------- start');
         Log::debug($request);
 
@@ -147,66 +147,138 @@ class PaymentMercadoPago {
         $MP->setAccessToken($accesToken);
 
         $merchantOrder = null;
-        $topic = $request->topic;
+        $type = $request->type;
         $id = $request->id;
+        $dataId = $request->data_id;
 
-        if ($topic === null || $id === null) {
-            $message = 'Parametros {topic e id} não informados na requisicao.';
+        // test a payment
+        // curl -X GET https://api.mercadopago.com/v1/payments/:data_id?access_token=ACCESS_TOKEN
+
+        if ($type === null || $dataId === null) {
+            $message = 'Parametros {type e data_id} não informados na requisicao.';
+
+            Log::debug('// -------------- start');
+            Log::debug($request);
             Log::debug($message);
-            return ['message' => $message];
+            Log::debug('// -------------- end');
+
+            return [
+                'message' => $message
+            ];
         }
 
-        if ($topic === 'payment') {
-            $payment = MercadoPago\Payment::find_by_id($id);
-            if ($payment === null) {
-                $message = 'Pagamento {' . $id . '} não encontrado.';
+        if ($type === 'payment') {
+            $payment = MercadoPago\Payment::find_by_id($dataId);
+            if ($payment == null) {
+                $message = 'Pagamento {' . $dataId . '} não encontrado.';
+                Log::debug('// -------------- start');
+                Log::debug($request);
                 Log::debug($message);
+                Log::debug('// -------------- end');
                 return ['message' => $message];
             } else {
                 $merchantOrderId = $payment->order->id;
                 $merchantOrder = MercadoPago\MerchantOrder::find_by_id($merchantOrderId);
+                Log::debug('MERCHANT ORDER');
             }
-        } else if ($topic === 'merchant_order') {
+        } else if ($type === 'merchant_order') {
             $merchantOrder = MercadoPago\MerchantOrder::find_by_id($id);
         } else {
-            $message = 'Metodo {' . $topic . '} não suportado.';
+            $message = 'Metodo {' . $type . '} não suportado.';
+            Log::debug('// -------------- start');
+            Log::debug($request);
             Log::debug($message);
-            return ['message' => $message];
+            Log::debug('// -------------- end');
+            return [
+                'message' => $message
+            ];
         }
 
-        if ($merchantOrder === null) {
+        $fees = [];
+
+        for ($i = 0; $i < count($payment->fee_details); $i++) {
+            $fee = $payment->fee_details[$i];
+            $feePayerDescription = null;
+
+            if ($fee->fee_payer === 'collector') {
+                $feePayerDescription = 'Loja';
+            } else if ($fee->fee_payer === 'payer') {
+                $feePayerDescription = 'Cliente';
+            }
+
+            $feeFormated = [
+                'amount' => $fee->amount,
+                'fee_payer' => $fee->fee_payer,
+                'fee_payer_description' => $feePayerDescription,
+                'type' => $fee->type,
+                'type_description' => $this->getFee($fee->type)['description']
+            ];
+
+            array_push($fees, $feeFormated);
+        }
+
+        if ($merchantOrder == null) {
             $message = 'Pedido não encontrado.';
+            Log::debug('// -------------- start');
+            Log::debug($request);
             Log::debug($message);
-            return ['message' => $message];
+            Log::debug('// -------------- end');
+            return [
+                'message' => $message
+            ];
         }
 
-        $paidAmount = 0;
-        foreach ($merchantOrder->payments as $payment) {
-            if ($payment['status'] == 'approved') {
-                $paidAmount += $payment['transaction_amount'];
-            }
-        }
+        return [
+            'data_id' => $request->data_id,
+            'type' => $request->type,
+            'operation_type' => $payment->operation_type,
+            'date_of_expiration' => $payment->date_of_expiration,
+            'preference_id' => $merchantOrder->preference_id,
+            'application_fee' => $payment->application_fee,
+            'currency_id' => $payment->currency_id,
+            'transaction_amount' => $payment->transaction_amount,
+            'merchant_order_id' => $payment->order->id,
+            'installments' => $payment->installments,
+            'payment_type_id' => $payment->payment_type_id,
+            'call_for_authorize_id' => $payment->call_for_authorize_id,
+            'payment_type_id_description' => $this->getPaymentType($payment->payment_type_id)['description'],
+            'payment_method_id' => $payment->payment_method_id,
+            'payment_method_id_description' => $this->getPaymentMethod($payment->payment_method_id)['method'],
+            'status' => $payment->status,
+            'status_description' => $this->getPaymentStatus($payment->status)['description'],
+            'status_detail' => $payment->status_detail,
+            'fees' => $fees
+        ];
 
-        Log::debug('Total pago: ' . $paidAmount);
+        // $paidAmount = 0;
+        // foreach ($merchantOrder->payments as $payment) {
+        //     if ($payment['status'] == 'approved') {
+        //         $paidAmount += $payment['transaction_amount'];
+        //     }
+        // }
 
-        if ($paidAmount >= $merchantOrder->total_amount) {
-            if (count($merchantOrder->shipments) > 0) {
-                if ($merchantOrder->shipments[0]->status == 'ready_to_ship') {
-                    Log::debug('Pedido totalmente pago. Preparado para despacho.');
-                }
-            } else {
-                Log::debug('Pedido totalmente pago.');
-                // TODO: enviar email para o cliente informando que foi pago
-            }
-        } else {
-            Log::debug('Pedido ainda pendente.');
-        }
+        // quando for implementar a parte de frete
+        // $merchantOrder->shipping_cost
+        // $merchantOrder->shipments
 
-        // TODO: atualizar status de pagamento pelo reference->id
+        // Log::debug('Total pago: ' . $paidAmount);
 
-        Log::debug('// -------------- end');
+        // if ($paidAmount >= $merchantOrder->total_amount) {
+        //     if (count($merchantOrder->shipments) > 0) {
+        //         if ($merchantOrder->shipments[0]->status == 'ready_to_ship') {
+        //             Log::debug('Pedido totalmente pago. Preparado para despacho.');
+        //         }
+        //     } else {
+        //         Log::debug('Pedido totalmente pago.');
+        //         // TODO: enviar email para o cliente informando que foi pago
+        //     }
+        // } else {
+        //     Log::debug('Pedido ainda pendente.');
+        // }
 
-        return ['message' => 'Fim da verificação.'];
+        // Log::debug('// -------------- end');
+
+        // return ['message' => 'Fim da verificação.'];
     }
 
     public function createCustomerSandbox() {
@@ -234,6 +306,78 @@ class PaymentMercadoPago {
         curl_close($ch);
 
         return $output;
+    }
+
+    public function getExcludedPaymentMethods($paymentMethodsAvailable = []) {
+        $excludedPaymentMethods = [];
+        $paymentMethods = $this->getAllPaymentMethods();
+
+        for ($i = 0; $i < count($paymentMethods); $i++) {
+            $paymentMethod = $paymentMethods[$i];
+            $exists = in_array($paymentMethod['id'], $paymentMethodsAvailable);
+
+            if ($exists === false) {
+                $method = [
+                    'id' => $paymentMethod['id']
+                ];
+
+                array_push($excludedPaymentMethods, $method);
+            }
+        }
+
+        return $excludedPaymentMethods;
+    }
+
+    public function getPaymentStatus($lookup) {
+        $allStatus = $this->getAllPaymentStatus();
+
+        for ($i = 0; $i < count($allStatus); $i++) {
+            $status = $allStatus[$i];
+            if ($status['code'] === $lookup) {
+                return $status;
+            }
+        }
+
+        return null;
+    }
+
+    public function getPaymentType($lookup) {
+        $allTypes = $this->getAllPaymentTypes();
+
+        for ($i = 0; $i < count($allTypes); $i++) {
+            $type = $allTypes[$i];
+            if ($type['type'] === $lookup) {
+                return $type;
+            }
+        }
+
+        return null;
+    }
+
+    public function getPaymentMethod($lookup) {
+        $allMethods = $this->getAllPaymentMethods();
+
+        for ($i = 0; $i < count($allMethods); $i++) {
+            $method = $allMethods[$i];
+            if ($method['id'] === $lookup) {
+                return $method;
+            }
+        }
+
+        return null;
+    }
+
+    public function getFee($lookup) {
+        $allFees = $this->getAllFees();
+
+        for ($i = 0; $i < count($allFees); $i++) {
+            $fee = $allFees[$i];
+            if ($fee['code'] === $lookup) {
+                return $fee;
+            }
+        }
+
+        return null;
     }
 
     public function failureStatusMessage($status, $statusDetail) {
@@ -336,24 +480,109 @@ class PaymentMercadoPago {
         return 'Seu método de pagamento não processa o pagamento.';
     }
 
-    public function getExcludedPaymentMethods($paymentMethodsAvailable = []) {
-        $excludedPaymentMethods = [];
-        $paymentMethods = $this->getAllPaymentMethods();
+    public function getAllFees() {
+        $fees = [
+            [
+                'code' => 'mercadopago_fee',
+                'description' => 'Custo de utilização do Mercado Pago.'
+            ],
+            [
+                'code' => 'coupon_fee',
+                'description' => 'Desconto de cupom.'
+            ],
+            [
+                'code' => 'financing_fee',
+                'description' => 'Custos de parcelamento.'
+            ],
+            [
+                'code' => 'shipping_fee',
+                'description' => 'Custos de envio.'
+            ],
+            [
+                'code' => 'application_fee',
+                'description' => 'Comissão do Marketplace pelo serviço.'
+            ],
+            [
+                'code' => 'discount_fee',
+                'description' => 'Desconto dado pelo seller (por meio de absorção dos custos).'
+            ]
+        ];
 
-        for ($i = 0; $i < count($paymentMethods); $i++) {
-            $paymentMethod = $paymentMethods[$i];
-            $exists = in_array($paymentMethod['id'], $paymentMethodsAvailable);
+        return $fees;
+    }
 
-            if ($exists === false) {
-                $method = [
-                    'id' => $paymentMethod['id']
-                ];
+    public function getAllPaymentStatus() {
+        $paymentStatus = [
+            [
+                'code' => 'approved',
+                'description' => 'O pagamento foi aprovado.',
+            ],
+            [
+                'code' => 'authorized',
+                'description' => 'O pagamento foi autorizado, mas ainda não recebemos.'
+            ],
+            [
+                'code' => 'in_process',
+                'description' => 'O pagamento está em análise.'
+            ],
+            [
+                'code' => 'in_mediation',
+                'description' => 'Solicitante iniciou uma disputa.'
+            ],
+            [
+                'code' => 'rejected',
+                'description' => 'O pagamento foi rejeitado. O cliente precisa tentar novamente.'
+            ],
+            [
+                'code' => 'cancelled',
+                'description' => 'O pagamento foi cancelado por uma das partes ou o tempo para pagamento expirou'
+            ],
+            [
+                'code' => 'refunded',
+                'description' => 'O pagamento foi devolvido ao cliente.'
+            ],
+            [
+                'code' => 'charged_back',
+                'description' => 'Foi feito um estorno no cartão de crédito do cliente.'
+            ]
+        ];
 
-                array_push($excludedPaymentMethods, $method);
-            }
-        }
+        return $paymentStatus;
+    }
 
-        return $excludedPaymentMethods;
+    public function getAllPaymentTypes() {
+        $paymentTypes = [
+            [
+                'type' => 'account_money',
+                'description' => 'Dinheiro da conta do MercadoPago.'
+            ],
+            [
+                'type' => 'ticket',
+                'description' => 'Boleto impresso.'
+            ],
+            [
+                'type' => 'bank_transfer',
+                'description' => 'Transferência bancária.'
+            ],
+            [
+                'type' => 'atm',
+                'description' => 'Pagamento em caixa eletonico (ATM).'
+            ],
+            [
+                'type' => 'credit_card',
+                'description' => 'Pagamento em cartão de crédito.'
+            ],
+            [
+                'type' => 'debit_card',
+                'description' => 'Pagamento em cartão de débito.'
+            ],
+            [
+                'type' => 'prepaid_card',
+                'description' => 'Pagamento em cartão pré-pago.'
+            ]
+        ];
+
+        return $paymentTypes;
     }
 
     public function getAllPaymentMethods() {

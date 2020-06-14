@@ -41,6 +41,10 @@ class PaymentMethodsAvailable extends Model {
         return $this->gateways;
     }
 
+    public function getGateway($code) {
+        return $this->gateways[$code];
+    }
+
     public $validationRules = [
         'method_code' => 'required'
     ];
