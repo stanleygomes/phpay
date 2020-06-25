@@ -1,4 +1,5 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/stanleygomes/phpay/badge)](https://www.codefactor.io/repository/github/stanleygomes/phpay)
+![Deploy App](https://github.com/stanleygomes/phpay/workflows/Deploy%20App/badge.svg)
 
 # PHPAY
 
